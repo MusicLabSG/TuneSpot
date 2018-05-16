@@ -3,6 +3,7 @@ import QtQuick.Layouts 1.2
 
 import "../scripts/InstrumentsContext.js" as Context
 import "shared.js" as Shared
+import "colors.js" as Color
 
 Item {
 
@@ -15,8 +16,8 @@ Item {
 
         anchors.bottom: parent.bottom
         gradient: Gradient {
-                    GradientStop { position: 0.0; color: "#1e2327" }
-                    GradientStop { position: 1.0; color: "#32373a" }
+                    GradientStop { position: 0.0; color: Color.dark }
+                    GradientStop { position: 1.0; color: Color.light }
                 }
 
         id: instruments_indicator
@@ -37,7 +38,7 @@ Item {
         width: parent.width
 
         anchors.bottom: parent.bottom
-        color: "#32373a"
+        color: Color.light
         id: instruments_selector
 
         visible: false
@@ -94,7 +95,17 @@ Item {
 
         Item {
             width: parent.width
-            height: 40
+            height: 45
+
+            Image {
+                anchors.right: text.left
+                anchors.rightMargin: 20
+                anchors.verticalCenter: text.verticalCenter
+                fillMode: Image.PreserveAspectFit
+                transform: Rotation { origin.x: 25; origin.y: 25; angle: rotate ? 45 : 0}
+                source: icon || ""
+                height: 40
+            }
 
             FontLoader {
                 id: localFont
@@ -105,8 +116,9 @@ Item {
                 anchors.horizontalCenter: parent.horizontalCenter
                 color: "#FFFFFF"
                 font: localFont.name
-                text: name
+                id: text
                 scale: 1.8
+                text: name
             }
 
             MouseArea {

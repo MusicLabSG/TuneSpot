@@ -21,5 +21,12 @@
         <file>scripts/InstrumentsContext.js</file>
         <file>scripts/TunerContext.js</file>
         <file>main.cpp</file>
+        <file>resources/FrequencySelector.qml</file>
+        <file>scripts/FrequencySelectorContext.js</file>
+        <file>resources/colors.js</file>
+        <file>data/icons/guitar.png</file>
+        <file>data/icons/cello.png</file>
+        <file>data/icons/piano.png</file>
+        <file>data/icons/vocals.png</file>
     </qresource>
 </RCC>

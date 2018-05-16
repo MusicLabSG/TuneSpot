@@ -13,8 +13,11 @@ function onCreate(instruments_indicator, instruments_selector) {
 }
 
 function populateList(id) {
-    id.append({"name":"Guitar"});
-    id.append({"name":"Cello"});
+    var path = "../data/icons/"
+    id.append({"name":"Cello", "icon":path+"cello.png","rotate":true});
+    id.append({"name":"Piano", "icon":path+"piano.png","rotate":false});
+    id.append({"name":"Guitar", "icon":path+"guitar.png", "rotate":true});
+    id.append({"name":"Vocals", "icon":path+"vocals.png", "rotate":false});
 }
 
 function onInstrumentClicked(name) {
