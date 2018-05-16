@@ -1,0 +1,25 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>data/fonts/OpenSans-Bold.ttf</file>
+        <file>data/fonts/OpenSans-BoldItalic.ttf</file>
+        <file>data/fonts/OpenSans-ExtraBold.ttf</file>
+        <file>data/fonts/OpenSans-ExtraBoldItalic.ttf</file>
+        <file>data/fonts/OpenSans-Italic.ttf</file>
+        <file>data/fonts/OpenSans-Light.ttf</file>
+        <file>data/fonts/OpenSans-LightItalic.ttf</file>
+        <file>data/fonts/OpenSans-Regular.ttf</file>
+        <file>data/fonts/OpenSans-SemiBold.ttf</file>
+        <file>data/fonts/OpenSans-SemiBoldItalic.ttf</file>
+        <file>data/icons/arrow_24dp.png</file>
+        <file>data/icons/arrow_24dp.qrc</file>
+        <file>data/icons/arrow_48dp.png</file>
+        <file>resources/IndicatorText.qml</file>
+        <file>resources/Instruments_list.qml</file>
+        <file>resources/shared.js</file>
+        <file>resources/Tuner.qml</file>
+        <file>scripts/InstrumentsContext.js</file>
+        <file>scripts/TunerContext.js</file>
+        <file>main.cpp</file>
+    </qresource>
+</RCC>

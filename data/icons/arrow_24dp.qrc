@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/new/arrow">
+        <file>arrow_24dp.png</file>
+        <file>arrow_48dp.png</file>
+    </qresource>
+</RCC>
