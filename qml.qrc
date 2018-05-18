@@ -28,5 +28,6 @@
         <file>data/icons/cello.png</file>
         <file>data/icons/piano.png</file>
         <file>data/icons/vocals.png</file>
+        <file>scripts/MainContext.js</file>
     </qresource>
 </RCC>

@@ -1,17 +1,21 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.2
+import QtQuick.Controls 2.3
 
 import "../scripts/InstrumentsContext.js" as Context
 import "shared.js" as Shared
 import "colors.js" as Color
 
 Item {
+    property bool drawerVisible: false
 
-    Component.onCompleted: Context.onCreate(instruments_indicator, instruments_selector)
+    height: parent.height * 0.13
+    id: main
+    Component.onCompleted: Context.onCreate(parent, main, instruments_indicator, instruments_selector)
 
     // Minimazed
     Rectangle {
-        height: parent.height * 0.13
+        height: parent.height
         width: parent.width
 
         anchors.bottom: parent.bottom
@@ -25,67 +29,72 @@ Item {
         MouseArea {
             anchors.fill: parent
             onClicked: {
-                instruments_indicator.visible = false
-                instruments_selector.visible = true
+                Context.maximize()
             }
         }
     }
 
 
     // Full width
-    Rectangle {
-        height: parent.height * 0.8
+    Drawer {
+        height: parent.height * 0.6
         width: parent.width
 
-        anchors.bottom: parent.bottom
-        color: Color.light
         id: instruments_selector
+        edge: Qt.BottomEdge
 
-        visible: false
+        onClosed: Context.minimize()
+        onPositionChanged: Context.onDrawerPositionChanged(position)
 
-        // Close handler
+        visible: drawerVisible
+
         Rectangle {
-            height: parent.height * 0.1; width: parent.width
+            anchors.fill: parent
 
-            anchors.top: parent.top
-            color: "transparent"
-            id: close_pane
+            color: Color.light
+            // Close handler
+            Rectangle {
+                height: parent.height * 0.1; width: parent.width
 
-            Image {
-                anchors.centerIn: parent
-                opacity: 1
-                source: "../data/icons/arrow_48dp.png"
-            }
+                anchors.top: parent.top
+                color: "transparent"
+                id: close_pane
 
-            MouseArea {
-                anchors.fill: parent
-                onClicked: {
-                    instruments_indicator.visible = true
-                    instruments_selector.visible = false
+                Image {
+                    anchors.centerIn: parent
+                    opacity: 1
+                    source: "../data/icons/arrow_48dp.png"
+                }
+
+                MouseArea {
+                    anchors.fill: parent
+                    onClicked: {
+                        Context.minimize()
+                    }
                 }
             }
-        }
 
 
-        // Populate the list of available instruments
-        ListModel {
-            id: instruments_list
+            // Populate the list of available instruments
+            ListModel {
+                id: instruments_list
 
-            Component.onCompleted: {
-                Context.populateList(instruments_list)
+                Component.onCompleted: {
+                    Context.populateList(instruments_list)
+                }
             }
-        }
 
-        ListView {
-            anchors.fill: parent
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.topMargin: close_pane.height
+            ListView {
+                anchors.fill: parent
+                anchors.horizontalCenter: parent.horizontalCenter
+                anchors.topMargin: close_pane.height
 
-            delegate: instrument_delecate
-            height: instruments_selector.height
-            model: instruments_list
+                delegate: instrument_delecate
+                height: instruments_selector.height
+                model: instruments_list
 
-            id: myListView
+                id: myListView
+            }
         }
 
     }

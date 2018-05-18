@@ -89,6 +89,11 @@ Item {
             freq.frequency = Context.changeFrequency(mouseY)
             freqShade1.visible = true
             freqShade2.visible = true
+
+            if (freq.frequency === Context.minFreq)
+                freqShade1.visible = false
+            if (freq.frequency === Context.maxFreq)
+                freqShade2.visible = false
         }
 
         onReleased: {

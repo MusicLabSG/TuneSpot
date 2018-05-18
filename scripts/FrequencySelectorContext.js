@@ -1,3 +1,6 @@
+var maxFreq = 500;
+var minFreq = 330;
+
 var currentFreq = 440;
 var startingY = -1;
 
@@ -8,10 +11,18 @@ function changeFrequency(mouseY) {
     }
 
     var diff = startingY - mouseY;
+    // Make the percision bigger
+    diff *= 0.3
     startingY = mouseY;
     currentFreq -= diff;
-    currentFreq = Math.ceil(currentFreq);
-    return currentFreq;
+
+    // Check bounds
+    if (currentFreq < minFreq)
+        currentFreq = minFreq;
+    if (currentFreq > maxFreq)
+        currentFreq = maxFreq;
+
+    return Math.ceil(currentFreq);
 }
 
 function resetY() {

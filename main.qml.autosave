@@ -47,14 +47,14 @@ Window {
         propagateComposedEvents: true
 
         // Detect swipe up
-//        onClicked: Context.onClick(mouseY);
+        onClicked: Context.onClick(mouseY);
 
-//        onReleased: {
+        onReleased: {
 
-//            if (Context.isSwipe(mouseY)) {
-//                list.drawerVisible = true
-//            }
-//        }
+            if (Context.isSwipe(mouseY)) {
+                list.drawerVisible = true
+            }
+        }
     }
 
 }
