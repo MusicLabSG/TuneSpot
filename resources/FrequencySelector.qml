@@ -36,7 +36,7 @@ Item {
 
     Text {
         anchors.bottom: freq.top
-        anchors.bottomMargin: 10
+        anchors.bottomMargin: 15
         anchors.horizontalCenter: freq.horizontalCenter
         color: "#FFFFFF"
         font.family: localFont.name
@@ -50,7 +50,7 @@ Item {
 
     Text {
         anchors.top: freq.bottom
-        anchors.topMargin: 10
+        anchors.topMargin: 15
         anchors.horizontalCenter: freq.horizontalCenter
         color: "#FFFFFF"
         font.family: localFont.name
@@ -85,6 +85,10 @@ Item {
         anchors.fill: container
 
         onPositionChanged: {
+            // Make the indicator bigger
+            container.width = Context.maxWidth;
+            container.height = Context.maxHeight;
+
             helper.visible = false
             freq.frequency = Context.changeFrequency(mouseY)
             freqShade1.visible = true
@@ -100,6 +104,10 @@ Item {
             Context.resetY()
             freqShade1.visible = false
             freqShade2.visible = false
+
+            // Make the indicator the preferred size
+            container.width = Context.prefWidth;
+            container.height = Context.prefHeight;
         }
 
         onDoubleClicked: helper.visible = true

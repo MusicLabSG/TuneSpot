@@ -4,6 +4,7 @@ var parent_obj;
 var main_obj;
 var instruments_indicator_obj;
 var instruments_selector_obj;
+var instruments_list_obj;
 var selected_instrument_obj;
 var dragger_obj;
 
@@ -23,11 +24,18 @@ function onCreate(parent, main, instruments_indicator, instruments_selector, dra
 }
 
 function populateList(id) {
-    var path = "../data/icons/"
-    id.append({"name":"Cello", "icon":path+"cello.png","rotate":true});
-    id.append({"name":"Piano", "icon":path+"piano.png","rotate":false});
-    id.append({"name":"Guitar", "icon":path+"guitar.png", "rotate":true});
-    id.append({"name":"Free mode", "icon":path+"vocals.png", "rotate":false});
+    if (instruments_list_obj === undefined)
+        instruments_list_obj = id;
+
+    var path = "../data/icons/";
+    id.append({"name":"Cello", "icon":path+"cello.png","rotate":true, "selected":isSelected("Cello")});
+    id.append({"name":"Piano", "icon":path+"piano.png","rotate":false, "selected":isSelected("Piano")});
+    id.append({"name":"Guitar", "icon":path+"guitar.png", "rotate":true, "selected":isSelected("Guitar")});
+    id.append({"name":"Free mode", "icon":path+"vocals.png", "rotate":false, "selected":isSelected("Free mode")});
+}
+
+function isSelected(name) {
+    return name === selectedInstrument;
 }
 
 function onInstrumentClicked(name) {
@@ -49,6 +57,10 @@ function maximize() {
     instruments_selector_obj.visible = true;
     instruments_indicator_obj.visible = false;
     main_obj.height = parent_obj.height * 0.6;
+
+    // Repopulate the list
+    instruments_list_obj.clear();
+    populateList(instruments_list_obj);
 }
 
 function onDrawerPositionChanged(percent) {

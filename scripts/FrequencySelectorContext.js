@@ -1,6 +1,11 @@
 var maxFreq = 500;
 var minFreq = 330;
 
+var prefHeight = 45;
+var prefWidth = 80;
+var maxHeight = 60;
+var maxWidth = 105;
+
 var currentFreq = 440;
 var startingY = -1;
 

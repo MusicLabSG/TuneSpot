@@ -123,7 +123,7 @@ Item {
 
             Text {
                 anchors.horizontalCenter: parent.horizontalCenter
-                color: "#FFFFFF"
+                color: selected ? Color.accent : Color.white;
                 font: localFont.name
                 id: text
                 scale: 1.8
