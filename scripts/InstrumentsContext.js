@@ -48,14 +48,12 @@ function onInstrumentClicked(name) {
 }
 
 function minimize() {
-    instruments_selector_obj.visible = false;
-    instruments_indicator_obj.visible = true;
+    instruments_selector_obj.close();
     main_obj.height = parent_obj.height * 0.13;
 }
 
 function maximize() {
-    instruments_selector_obj.visible = true;
-    instruments_indicator_obj.visible = false;
+    instruments_selector_obj.open();
     main_obj.height = parent_obj.height * 0.6;
 
     // Repopulate the list
@@ -67,19 +65,6 @@ function onDrawerPositionChanged(percent) {
     main_obj.height = (parent_obj.height * 0.6) * percent;
 }
 
-function calculateReal(mouseY) {
-    var min = parent_obj.height * 0.13;
-
-    // The mouseY will take negative values if the event is continued out of the box
-    var realY = mouseY;
-    if (mouseY < 0) {
-        realY = Math.abs(mouseY) + min;
-    } else {
-        // If the event is inside the box then we must calculate the difference
-        realY = mouseY - startingPoint;
-    }
-    return realY;
-}
 
 function getSelectedInstrument() {
     return selectedInstrument;

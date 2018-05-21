@@ -7,7 +7,6 @@ import "shared.js" as Shared
 import "colors.js" as Color
 
 Item {
-    property bool drawerVisible: false
 
     height: parent.height * 0.13
     id: main
@@ -18,7 +17,7 @@ Item {
         height: parent.height
         width: parent.width
 
-        anchors.bottom: parent.bottom
+        //anchors.bottom: parent.bottom
         gradient: Gradient {
                     GradientStop { position: 0.0; color: Color.dark }
                     GradientStop { position: 1.0; color: Color.light }
@@ -37,16 +36,15 @@ Item {
 
     // Full width
     Drawer {
-        height: parent.height * 0.6
-        width: parent.width
+        height: parent.height * 0.6; width: parent.width
 
-        id: instruments_selector
+        //Component.onCompleted: instruments_selector.close()
         edge: Qt.BottomEdge
+        id: instruments_selector
 
         onClosed: Context.minimize()
-        onPositionChanged: Context.onDrawerPositionChanged(position)
+        onPositionChanged: Context.onDrawerPositionChanged(position) 
 
-        visible: drawerVisible
 
         Rectangle {
             anchors.fill: parent
