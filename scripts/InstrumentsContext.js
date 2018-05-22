@@ -34,6 +34,14 @@ function populateList(id) {
     id.append({"name":"Free mode", "icon":path+"vocals.png", "rotate":false, "selected":isSelected("Free mode")});
 }
 
+/*
+  Repopulates the list handling any property changes.
+*/
+function repopulateList() {
+    instruments_list_obj.clear();
+    populateList(instruments_list_obj);
+}
+
 function isSelected(name) {
     return name === selectedInstrument;
 }
@@ -55,10 +63,6 @@ function minimize() {
 function maximize() {
     instruments_selector_obj.open();
     main_obj.height = parent_obj.height * 0.6;
-
-    // Repopulate the list
-    instruments_list_obj.clear();
-    populateList(instruments_list_obj);
 }
 
 function onDrawerPositionChanged(percent) {

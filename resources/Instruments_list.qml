@@ -17,7 +17,6 @@ Item {
         height: parent.height
         width: parent.width
 
-        //anchors.bottom: parent.bottom
         gradient: Gradient {
                     GradientStop { position: 0.0; color: Color.dark }
                     GradientStop { position: 1.0; color: Color.light }
@@ -38,13 +37,12 @@ Item {
     Drawer {
         height: parent.height * 0.6; width: parent.width
 
-        //Component.onCompleted: instruments_selector.close()
         edge: Qt.BottomEdge
         id: instruments_selector
 
+        onAboutToShow: Context.repopulateList()
         onClosed: Context.minimize()
         onPositionChanged: Context.onDrawerPositionChanged(position) 
-
 
         Rectangle {
             anchors.fill: parent
