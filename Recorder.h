@@ -71,15 +71,28 @@ public slots:
      * @brief recordXMilliseconds is a function that records sound for the test sound file that we need to analise for x milliseconds
      * @param x is the amount of the milliseconds
      */
-    void recordXMilliseconds(quint32 x);
+    void recordForXMilliseconds(quint32 x);
 
     /**
      * @brief deleteTestFile is a function that deletes the test file that we created
      */
     void deleteTestFile();
 
+    /**
+     * @brief getOutputFilePath is a function that return the outputFilePath
+     * @return the outputFilePath
+     */
     QString getOutputFilePath();
+private slots:
+    /**
+     * @brief record is a function that starts the recording
+     */
+    void record();
 
+    /**
+     * @brief stop is a function that stops the recording
+     */
+    void stop();
 private:
     QAudioRecorder *audioRecorder;
 
