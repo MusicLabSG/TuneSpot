@@ -16,12 +16,12 @@ public:
     /**
      * @brief Recorder is a trivial constructor of the Recorder class
      */
-    Recorder();
+    explicit Recorder();
 
     /**
      * @brief ~Recorder is a trivial destructor of the Recorder class
      */
-    ~Recorder();
+    explicit ~Recorder();
 
 public slots:
     /**
