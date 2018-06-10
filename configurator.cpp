@@ -21,48 +21,32 @@ Configurator::~Configurator() {
     closestNote = "";
 }
 
-//  cello functions
-
-void Configurator::setCello1String() {
-    closestNote = "A3";
+void Configurator::setCelloXString(quint16 x) {
+    if (x == 1) {
+        closestNote == "A3";
+    } else if (x == 2) {
+        closestNote == "D3";
+    } else if (x == 3) {
+        closestNote == "G2";
+    } else if (x == 4) {
+        closestNote == "C2";
+    }
 }
 
-void Configurator::setCello2String() {
-    closestNote = "D3";
-}
-
-void Configurator::Configurator::setCello3String() {
-    closestNote = "G2";
-}
-
-void Configurator::setCello4String() {
-    closestNote = "C2";
-}
-
-//  guitar functions
-
-void Configurator::setGuitar1String() {
-    closestNote = "E4";
-}
-
-void Configurator::setGuitar2String() {
-    closestNote = "B3";
-}
-
-void Configurator::setGuitar3String() {
-    closestNote = "G3";
-}
-
-void Configurator::setGuitar4String() {
-    closestNote = "D3";
-}
-
-void Configurator::setGuitar5String() {
-    closestNote = "A2";
-}
-
-void Configurator::setGuitar6String() {
-    closestNote = "E2";
+void Configurator::setGuitarXString(quint16 x) {
+    if (x == 1) {
+        closestNote == "E4";
+    } else if (x == 2) {
+        closestNote == "B3";
+    } else if (x == 3) {
+        closestNote == "G3";
+    } else if (x == 4) {
+        closestNote == "D3";
+    } else if (x == 5) {
+        closestNote == "A2";
+    } else if (x == 6) {
+        closestNote == "E2";
+    }
 }
 
 void Configurator::setFreeMode() {

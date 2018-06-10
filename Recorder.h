@@ -21,7 +21,7 @@ public:
     /**
      * @brief ~Recorder is a trivial destructor of the Recorder class
      */
-    explicit ~Recorder();
+    ~Recorder();
 
 public slots:
     /**

@@ -8,6 +8,7 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
+#include <QMap>
 #include <QObject>
 
 class Configurator : public QObject
@@ -16,64 +17,26 @@ class Configurator : public QObject
 public:
     explicit Configurator();
 
-    explicit ~Configurator();
+    ~Configurator();
 
 public slots:
-    //  cello functions
-
     /**
-     * @brief setCello1String is a function that sets the variables for the A3 note
+     * @brief setCello1String is a function that sets the variables for the x string
+     * 1 is the string with the highest pitch and 4 is the string with the lowest pitch
+     * String: 1 = A3, 2 = D3, 3 = G2, 4 = C2
+     * @param x is the number of the string
      */
-    void setCello1String();
-
-    /**
-     * @brief setCello2String is a function that sets the variables for the D3 note
-     */
-    void setCello2String();
-
-    /**
-     * @brief setCello3String is a function that sets the variables for the G2 note
-     */
-    void setCello3String();
-
-    /**
-     * @brief setCello4String is a function that sets the variables for the C2 note
-     */
-    void setCello4String();
+    void setCelloXString(quint16 x);
 
     //  guitar functions
 
     /**
-     * @brief setGuitar1String is a function that sets the variables for the E4 note
+     * @brief setGuitarXString is a function that sets the variables x string.
+     * 1 is the string with the highest pitch and 6 is the string with the lowest pitch
+     * String: 1 = E4, 2 = B3, 3 = G3, 4 = D3, 5 = A, 6 = E2
+     * @param x is the number of the string
      */
-    void setGuitar1String();
-
-    /**
-     * @brief setGuitar2String is a function that sets the variables for the B3 note
-     */
-    void setGuitar2String();
-
-    /**
-     * @brief setGuitar3String is a function that sets the variables for the G3 note
-     */
-    void setGuitar3String();
-
-    /**
-     * @brief setGuitar4String is a function that sets the variables for the D3 note
-     */
-    void setGuitar4String();
-
-    /**
-     * @brief setGuitar5String is a function that sets the variables for the A2 note
-     */
-    void setGuitar5String();
-
-    /**
-     * @brief setGuitar6String is a function that sets the variables for the E2 note
-     */
-    void setGuitar6String();
-
-    //  free mode
+    void setGuitarXString(quint16 x);
 
     /**
      * @brief setFreeMode is a function that sets the variables for the input note
@@ -90,6 +53,7 @@ public slots:
 
     /**
      * @brief changeBaseFrequency is a function that changes the base frequency
+     * @param frequency is the base frequency value that we want to set
      */
     void changeBaseFrequency(quint16 frequency);
 
