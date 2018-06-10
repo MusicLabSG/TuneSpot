@@ -53,13 +53,13 @@ void Recorder::recordForXMilliseconds(quint32 x) {
     timer->start(x); //time specified in ms
 }
 
+QString Recorder::getOutputFilePath() {
+    return outputFilePath;
+}
+
 void Recorder::deleteTestFile() {
     QFile file (outputFilePath);
     file.remove();
-}
-
-QString Recorder::getOutputFilePath() {
-    return outputFilePath;
 }
 
 void Recorder::record() {

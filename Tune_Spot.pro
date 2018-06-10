@@ -47,4 +47,7 @@ DISTFILES += \
     data/fonts/OpenSans-LightItalic.ttf \
     data/fonts/OpenSans-Regular.ttf \
     data/fonts/OpenSans-SemiBold.ttf \
-    data/fonts/OpenSans-SemiBoldItalic.ttf
+    data/fonts/OpenSans-SemiBoldItalic.ttf\
+    data/notes/baseFrequency.txt \
+    data/notes/frequenciesOfNotes.txt \
+    data/notes/namesOfNotes.txt

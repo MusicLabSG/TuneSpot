@@ -10,6 +10,7 @@
 
 #include <QMap>
 #include <QObject>
+#include "Recorder.h"
 
 class Configurator : public QObject
 {
@@ -28,8 +29,6 @@ public slots:
      */
     void setCelloXString(quint16 x);
 
-    //  guitar functions
-
     /**
      * @brief setGuitarXString is a function that sets the variables x string.
      * 1 is the string with the highest pitch and 6 is the string with the lowest pitch
@@ -42,8 +41,6 @@ public slots:
      * @brief setFreeMode is a function that sets the variables for the input note
      */
     void setFreeMode();
-
-    // rest functions
 
     /**
      * @brief getBaseFrequency is a function that returns the base frequency
@@ -91,8 +88,11 @@ private slots:
      */
     void setCurrentFrequency();
 private:
+    //  we use this recorder to record the test input file
+    Recorder *recorder;
+
     //  this variable stores the currunt frequency that has recognized from the test input file
-    double currentFrequency;
+    qreal currentFrequency;
 
     //  this variable is used for graphical reasons
     quint16 percentageOfDistanceFromTheClosestNote;
@@ -104,7 +104,7 @@ private:
     quint16 baseFrequency;
 
     //  this variable stores the notes with their name and their frequency
-    QMap<QString, double> notes;
+    QMap<QString, qreal> notes;
 };
 
 #endif // CONFIGURATOR_H

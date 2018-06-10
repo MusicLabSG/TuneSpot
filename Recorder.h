@@ -31,15 +31,15 @@ public slots:
     void recordForXMilliseconds(quint32 x);
 
     /**
-     * @brief deleteTestFile is a function that deletes the test file that we created
-     */
-    void deleteTestFile();
-
-    /**
      * @brief getOutputFilePath is a function that return the outputFilePath
      * @return the outputFilePath
      */
     QString getOutputFilePath();
+
+    /**
+     * @brief deleteTestFile is a function that deletes the test file that we created
+     */
+    void deleteTestFile();
 private slots:
     /**
      * @brief record is a function that starts the recording
