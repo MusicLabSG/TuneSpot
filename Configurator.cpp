@@ -19,9 +19,6 @@ Configurator::Configurator() {
     recorder = new Recorder();
     readBaseFrequency();
     readNotes();
-
-    QString db_path = QDir::currentPath();
-    qInfo() <<db_path;    //current path
 }
 
 Configurator::~Configurator() {
@@ -103,15 +100,15 @@ quint16 Configurator::getPercentageOfDistanceFromTheClosestNote() {
 }
 
 void Configurator::setCurrentFrequency() {
-    recorder->recordForXMilliseconds(100);
+    recorder->recordTestFile();
 
+    //  check only the last 100ms of the file (i have to create an 1 sec file in order to get something)
     QFile file(recorder->getOutputFilePath());
+
     // todo fft
 
     // eg
     currentFrequency = 654.5;
-
-    //  recorder ->deleteTestFile();
 }
 
 void Configurator::readBaseFrequency() {
@@ -147,11 +144,6 @@ void Configurator::readNotes() {
     }
     fileForNoteFrequencies.close();
     fileForNoteNames.close();
-
-    QMap<qreal, QString>::iterator i;
-    for (i = notes.begin(); i != notes.end(); i++) {
-        qInfo() << i.key() << " " << i.value() << "\n";
-    }
 }
 
 QString Configurator::findClosestNote() {

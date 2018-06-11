@@ -8,7 +8,7 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     Configurator *configurator = new Configurator();
-    //  configurator->setCurrentFrequency();
+    configurator->setCurrentFrequency();
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
