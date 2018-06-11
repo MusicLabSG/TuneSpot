@@ -7,7 +7,9 @@
 
 #include "Configurator.h"
 #include "Recorder.h"
+#include <QDir>
 #include <QFile>
+#include <QMessageBox>
 #include <QtMath>
 
 Configurator::Configurator() {
@@ -17,6 +19,9 @@ Configurator::Configurator() {
     recorder = new Recorder();
     readBaseFrequency();
     readNotes();
+
+    QString db_path = QDir::currentPath();
+    qInfo() <<db_path;    //current path
 }
 
 Configurator::~Configurator() {
@@ -67,7 +72,18 @@ quint16 Configurator::getBaseFrequency() {
 }
 
 void Configurator::changeBaseFrequency(quint16 frequency) {
+    //  changing base frequency
     baseFrequency = frequency;
+    //  opening the file to define it
+    QFile baseFrequencyFile(":/data/notes/baseFrequency.txt");
+    if(!baseFrequencyFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
+        QMessageBox::information(0, "error", baseFrequencyFile.errorString());
+    }
+    QTextStream out1(&baseFrequencyFile);
+
+    out1 << frequency << "\n";
+    baseFrequencyFile.close();
+
 
     qreal freq;
     for (quint16 i = 1; i <= 88; i++) {
@@ -86,22 +102,6 @@ quint16 Configurator::getPercentageOfDistanceFromTheClosestNote() {
     return percentageOfDistanceFromTheClosestNote;
 }
 
-void Configurator::readBaseFrequency() {
-    // todo
-}
-
-void Configurator::readNotes() {
-    // todo
-}
-
-QString Configurator::findClosestNote() {
-    // todo
-
-    // eg
-    closestNote = "A2";
-    return "";
-}
-
 void Configurator::setCurrentFrequency() {
     recorder->recordForXMilliseconds(100);
 
@@ -111,5 +111,53 @@ void Configurator::setCurrentFrequency() {
     // eg
     currentFrequency = 654.5;
 
-    recorder ->deleteTestFile();
+    //  recorder ->deleteTestFile();
+}
+
+void Configurator::readBaseFrequency() {
+    QFile file(":/data/notes/baseFrequency.txt");
+    if(!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(0, "error", file.errorString());
+    }
+    QTextStream in(&file);
+
+    baseFrequency = in.readLine().toInt();
+    file.close();
+}
+
+void Configurator::readNotes() {
+    notes.clear();
+    //  opening the file with the frequencies of the notes
+    QFile fileForNoteFrequencies(":/data/notes/frequenciesOfNotes.txt");
+    if(!fileForNoteFrequencies.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(0, "error", fileForNoteFrequencies.errorString());
+    }
+
+    //  opening the file with the name of notes
+    QFile fileForNoteNames(":/data/notes/namesOfNotes.txt");
+    if(!fileForNoteNames.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(0, "error", fileForNoteNames.errorString());
+    }
+
+    QTextStream in1(&fileForNoteFrequencies);
+    QTextStream in2(&fileForNoteNames);
+
+    for (quint16 i = 1; i <= 88; i++) {
+       notes.insert(in1.readLine().toFloat(), in2.readLine());
+    }
+    fileForNoteFrequencies.close();
+    fileForNoteNames.close();
+
+    QMap<qreal, QString>::iterator i;
+    for (i = notes.begin(); i != notes.end(); i++) {
+        qInfo() << i.key() << " " << i.value() << "\n";
+    }
+}
+
+QString Configurator::findClosestNote() {
+    // todo
+
+    // eg
+    closestNote = "A2";
+    return "";
 }

@@ -26,9 +26,18 @@ Recorder::Recorder() {
     // we set the default audio input device
     audioRecorder->setAudioInput(audioRecorder->audioInputs().at(0));
 
-    // we define the encoder settings
+    // we define the encoder settings for every os
     QAudioEncoderSettings settings;
-    settings.setCodec("audio/pcm");
+    #ifdef Q_OS_LINUX
+        settings.setCodec("audio/x-adpcm, layout=(string)swf");
+    #endif
+    #ifdef Q_OS_ANDROID
+        settings.setCodec("audio/pcm");
+    #endif
+    #ifdef Q_OS_WIN
+        settings.setCodec("audio/pcm");
+    #endif
+
     // one channel only, change is if you want for fft
     settings.setChannelCount(1);
     settings.setQuality(QMultimedia::HighQuality);

@@ -8,12 +8,10 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
-#include <QMap>
 #include <QObject>
 #include "Recorder.h"
 
-class Configurator : public QObject
-{
+class Configurator : public QObject {
     Q_OBJECT
 public:
     explicit Configurator();
@@ -66,6 +64,11 @@ public slots:
      */
     quint16 getPercentageOfDistanceFromTheClosestNote();
 
+    /**
+     * @brief setCurrentFrequency is a function that sets the current frenquency that has been recognized from the test input file
+     */
+    void setCurrentFrequency();
+
 private slots:
     /**
      * @brief readBaseFrequency is a functions that reads the base Frequency
@@ -83,10 +86,6 @@ private slots:
      */
     QString findClosestNote();
 
-    /**
-     * @brief setCurrentFrequency is a function that sets the current frenquency that has been recognized from the test input file
-     */
-    void setCurrentFrequency();
 private:
     //  we use this recorder to record the test input file
     Recorder *recorder;
@@ -103,8 +102,8 @@ private:
     // this variable stores the base frequency
     quint16 baseFrequency;
 
-    //  this variable stores the notes with their name and their frequency
-    QMap<QString, qreal> notes;
+    //  this variable stores the notes with their frequency their name and
+    QMap<qreal, QString> notes;
 };
 
 #endif // CONFIGURATOR_H

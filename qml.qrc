@@ -14,6 +14,9 @@
         <file>data/icons/arrow_24dp.png</file>
         <file>data/icons/arrow_24dp.qrc</file>
         <file>data/icons/arrow_48dp.png</file>
+        <file>data/notes/baseFrequency.txt</file>
+        <file>data/notes/frequenciesOfNotes.txt</file>
+        <file>data/notes/namesOfNotes.txt</file>
         <file>resources/IndicatorText.qml</file>
         <file>resources/Instruments_list.qml</file>
         <file>resources/shared.js</file>
