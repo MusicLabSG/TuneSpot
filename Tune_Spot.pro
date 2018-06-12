@@ -2,7 +2,7 @@ CONFIG += c++11
 QT += quick
 QT += widgets
 QT += multimedia
-QT += sql
+QT += core
 android : QT += androidextras
 
 # The following define makes your compiler emit warnings if you use
@@ -17,15 +17,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 HEADERS = \
-    Recorder.h \
-    Configurator.h \
-    NotesDb.h
+    NotesController.hpp \
+    Configurator.hpp \
+    Recorder.hpp
 
 SOURCES += \
     main.cpp \
     Recorder.cpp \
     Configurator.cpp \
-    NotesDb.cpp
+    NotesController.cpp
 
 RESOURCES += qml.qrc
 
@@ -51,6 +51,4 @@ DISTFILES += \
     data/fonts/OpenSans-Regular.ttf \
     data/fonts/OpenSans-SemiBold.ttf \
     data/fonts/OpenSans-SemiBoldItalic.ttf\
-    data/notes/baseFrequency.txt \
-    data/notes/frequenciesOfNotes.txt \
     data/notes/namesOfNotes.txt

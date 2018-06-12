@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include <Configurator.h>
+#include <Configurator.hpp>
 
 int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -8,7 +8,11 @@ int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
     Configurator *configurator = new Configurator();
-    configurator->setCurrentFrequency();
+    qInfo() << configurator->getBaseFrequency();
+    qInfo() << configurator->getClosestNote();
+    configurator->setCelloXString(1);
+    qInfo() << configurator->getPercentageOfDistanceFromTheClosestNote();
+
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

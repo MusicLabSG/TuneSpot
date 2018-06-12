@@ -9,7 +9,8 @@
 #define CONFIGURATOR_H
 
 #include <QObject>
-#include "Recorder.h"
+#include "NotesController.hpp"
+#include "Recorder.hpp"
 
 class Configurator : public QObject {
     Q_OBJECT
@@ -69,41 +70,21 @@ public slots:
      */
     void setCurrentFrequency();
 
-private slots:
-    /**
-     * @brief readBaseFrequency is a functions that reads the base Frequency
-     */
-    void readBaseFrequency();
-
-    /**
-     * @brief readNotes is a function that reads the notes
-     */
-    void readNotes();
-
-    /**
-     * @brief findClosestNote is a functions that find the closest not based on the current frequency
-     * @return the closest not based on the current frequency
-     */
-    QString findClosestNote();
-
 private:
     //  we use this recorder to record the test input file
     Recorder *recorder;
 
+    //  we use this notes' controller to handle the notes as name and frequencies and their base frequency
+    NotesController *notesController;
+
     //  this variable stores the currunt frequency that has recognized from the test input file
     qreal currentFrequency;
 
-    //  this variable is used for graphical reasons
-    quint16 percentageOfDistanceFromTheClosestNote;
+    //  this variable is used for graphical reasons and it's range is -100 to 100
+    qreal percentageOfDistanceFromTheClosestNote;
 
     //  this variable is used for graphical reasons
     QString closestNote;
-
-    // this variable stores the base frequency
-    quint16 baseFrequency;
-
-    //  this variable stores the notes with their frequency their name and
-    QMap<qreal, QString> notes;
 };
 
 #endif // CONFIGURATOR_H

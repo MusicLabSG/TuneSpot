@@ -5,7 +5,7 @@
  * Created on Jun 10, 2018, 1:28 PM
  */
 
-#include "Recorder.h"
+#include "Recorder.hpp"
 
 #include <QDir>
 #include <QStandardPaths>
