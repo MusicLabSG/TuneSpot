@@ -17,7 +17,7 @@ function changeFrequency(mouseY) {
 
     var diff = startingY - mouseY;
     // Make the percision bigger
-    diff *= 0.3
+    diff *= 0.20
     startingY = mouseY;
     currentFreq -= diff;
 
