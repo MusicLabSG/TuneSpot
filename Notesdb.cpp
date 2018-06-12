@@ -5,7 +5,7 @@
  * Created on Jun 10, 2018, 5:28 PM
  */
 
-#include "NotesDb.h"
+#include "Notesdb.h"
 
 #include <QSql>
 #include <QDir>
