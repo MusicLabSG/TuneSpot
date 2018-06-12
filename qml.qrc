@@ -30,5 +30,6 @@
         <file>data/icons/piano.png</file>
         <file>data/icons/vocals.png</file>
         <file>scripts/MainContext.js</file>
+        <file>resources/StringCircle.qml</file>
     </qresource>
 </RCC>

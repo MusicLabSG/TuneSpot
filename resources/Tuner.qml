@@ -24,7 +24,17 @@ Item {
         font.weight: Font.Light
         font.pixelSize: Qt.application.font.pixelSize * 5
         text: "A"
+        id: notes_holder
     }
 
-    Component.onCompleted: Context.createLines(lines_container)
+    RowLayout {
+        anchors.horizontalCenter: parent.horizontalCenter;
+        anchors.top: notes_holder.bottom;
+        id: string_holder
+        spacing: 7
+    }
+
+    Component.onCompleted: {
+        Context.onCreate(notes_holder, string_holder, lines_container)
+    }
 }

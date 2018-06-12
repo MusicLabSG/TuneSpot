@@ -113,7 +113,7 @@ Item {
             container.height = Context.prefHeight;
 
             // Sent the result to the backend
-            //root.configurator.changeBaseFrequency(Context.currentFreq)
+            root.configurator.changeBaseFrequency(Context.currentFreq)
         }
 
         onDoubleClicked: helper.visible = true
