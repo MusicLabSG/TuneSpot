@@ -3,17 +3,19 @@
 
 var lines = [];
 var circles = [];
-var previous_circle = -1;
+var current_string = -1;
 var numberOfLines = 19;
 
 var note_holder_obj
 var string_holder_obj;
 var lines_container_obj;
+var configurator_obj;
 
-function onCreate(note_holder, string_holder, lines_container) {
+function onCreate(note_holder, string_holder, lines_container, configurator) {
     note_holder_obj = note_holder;
     string_holder_obj = string_holder;
     lines_container_obj = lines_container;
+    configurator_obj = configurator;
     createLines(lines_container);
     createCircles();
 }
@@ -39,7 +41,7 @@ function createLines(id) {
 
 // Colors the specified line.
 // position -> Left || Right || Center: perfect tune
-// value -> 1: no tune, 9:almost good tune
+// value -> 0: no tune, 9:almost good tune
 function showTuningAccuracy(position, value) {
 
     // Make all lines default color
@@ -50,10 +52,12 @@ function showTuningAccuracy(position, value) {
     if(position === "Right")
         value = numberOfLines/2 + value;
 
-    if(position === "Center")
-        lines[numberOfLines / 2].color = "green"
+    if(position === "Center"){
+        print(numberOfLines);
+        lines[9].color = "green";
+    }
     else
-        lines[value].color = "red"
+        lines[value].color = "red";
 }
 
 // Creates the circles, acting as the selected string
@@ -77,7 +81,7 @@ function onStringClicked(id) {
         obj.width  = 10;
         obj.height = 10;
 
-        if ( i === previous_circle){
+        if ( i === current_string){
             obj.x += 5;
             obj.y += 5;
         }
@@ -89,12 +93,42 @@ function onStringClicked(id) {
     stringNo -= 1;
 
     // Make selection visible
-    previous_circle = stringNo;
+    current_string = stringNo;
     var object = circles[stringNo];
     object.width = 20;
     object.height = 20;
     object.x -= 5;
     object.y -= 5;
+
+    tune(); //Debug only
+}
+
+// Takes the current info from the backend and shows them in the UI
+function tune() {
+    if (current_string < 0)
+        return;
+
+    if(Shared.currentSelectedInstrument === "Guitar"){
+        configurator_obj.setGuitarXString(current_string + 1);
+    } else if(Shared.currentSelectedInstrument === "Cello"){
+        configurator_obj.setCelloXString(current_string + 1);
+    }
+
+
+    var tunePercentage = configurator_obj.getPercentageOfDistanceFromTheClosestNote();
+    if (tunePercentage > 0) {
+        showTuningAccuracy("Left", (100 - tunePercentage) / 100);
+    } else if(tunePercentage === 0 ) {
+        showTuningAccuracy("Center", 0);
+    } else {
+        showTuningAccuracy("Right", (100 + tunePercentage) / 100);
+    }
+
+    // Change the displayed note
+    var note = configurator_obj.getClosestNote().charAt(0);
+    note_holder_obj.text = note;
+    //console.log(configurator_obj.getPercentageOfDistanceFromTheClosestNote());
+    //console.log(configurator_obj.getClosestNote());
 }
 
 // Resets all variables and recalculates them
@@ -110,4 +144,10 @@ function reconfigure() {
 
     // Create the new
     createCircles();
+
+    // Make all lines default color
+    for (i = 0; i < numberOfLines; i++){
+        lines[i].color = "white";
+    }
+    current_string = -1;
 }

@@ -1,12 +1,14 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.3
+import com.github.tune_spot.configurator 1.0
 
 import "../scripts/InstrumentsContext.js" as Context
 import "shared.js" as Shared
 import "colors.js" as Color
 
 Item {
+    property Configurator configurator;
 
     height: parent.height * 0.13
     id: main
@@ -131,6 +133,11 @@ Item {
 
                 onClicked:{
                     Context.onInstrumentClicked(name)
+
+                    if (name === "Free Mode"){
+                        console.log("Free Mode")
+                        configurator.setFreeMode()
+                    }
                 }
             }
         }

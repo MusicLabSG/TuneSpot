@@ -33,6 +33,7 @@ Window {
 
     Tuner {
         anchors.bottom: list.top
+        configurator: configurator
         height: parent.height * 0.7; width: parent.width
         id: tuner
     }
@@ -41,6 +42,7 @@ Window {
         width: parent.width
 
         anchors.bottom: parent.bottom
+        configurator: configurator
         id: list
 
     }
