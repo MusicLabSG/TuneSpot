@@ -2,6 +2,7 @@ CONFIG += c++11
 QT += quick
 QT += widgets
 QT += multimedia
+QT += sql
 android : QT += androidextras
 
 # The following define makes your compiler emit warnings if you use
@@ -17,12 +18,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 HEADERS = \
     Recorder.h \
-    Configurator.h
+    Configurator.h \
+    NotesDb.h
 
 SOURCES += \
     main.cpp \
     Recorder.cpp \
-    Configurator.cpp
+    Configurator.cpp \
+    NotesDb.cpp
 
 RESOURCES += qml.qrc
 

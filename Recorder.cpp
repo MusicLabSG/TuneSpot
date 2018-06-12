@@ -44,8 +44,10 @@ Recorder::Recorder() {
     audioRecorder->setEncodingSettings(settings);
 
     // we set define the path of the output location and the name of the test file
-    QDir folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
-    outputFilePath = folder.path();
+    //  QDir folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    //  outputFilePath = folder.path();
+    QDir path;
+    outputFilePath = path.currentPath();
     outputFilePath.append(QString("/test.wav"));
     audioRecorder->setOutputLocation(QUrl::fromLocalFile(outputFilePath));
 }
@@ -54,21 +56,19 @@ Recorder::~Recorder() {
     delete audioRecorder;
 }
 
-void Recorder::recordForXMilliseconds(quint32 x) {
+void Recorder::recordTestFile() {
+    QTimer *timer = new QTimer(this);
+
     record();
 
-    QTimer *timer = new QTimer(this);
     connect(timer, SIGNAL(timeout()), this, SLOT(stop()));
-    timer->start(x); //time specified in ms
+
+    //  for a weird reason 1680 timer creates an 1000ms file
+    timer->start(1680); //time specified in ms
 }
 
 QString Recorder::getOutputFilePath() {
     return outputFilePath;
-}
-
-void Recorder::deleteTestFile() {
-    QFile file (outputFilePath);
-    file.remove();
 }
 
 void Recorder::record() {
