@@ -1,5 +1,5 @@
-var maxFreq = 500;
-var minFreq = 330;
+var maxFreq = 480;
+var minFreq = 400;
 
 var prefHeight = 45;
 var prefWidth = 80;
