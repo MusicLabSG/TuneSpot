@@ -7,12 +7,8 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
 
-    Configurator *configurator = new Configurator();
-    qInfo() << configurator->getBaseFrequency();
-    qInfo() << configurator->getClosestNote();
-    configurator->setCelloXString(1);
-    qInfo() << configurator->getPercentageOfDistanceFromTheClosestNote();
-
+    // Register the backend as a component
+    qmlRegisterType<Configurator>("com.github.tune_spot.configurator", 1, 0, "Configurator");
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
