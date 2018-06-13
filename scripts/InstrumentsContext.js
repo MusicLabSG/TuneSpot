@@ -1,5 +1,5 @@
 .import "../resources/shared.js" as Shared
-.import "./TunerContext.js" as Tuner
+.import "./Observable.js" as Observable
 
 var parent_obj;
 var main_obj;
@@ -53,9 +53,9 @@ function onInstrumentClicked(name) {
     selected_instrument_obj.destroy();
     Shared.getInstrument();
     loadIndicator();
-    minimize()
+    minimize();
 
-    Tuner.reconfigure()
+    Observable.notifyAll();
 }
 
 function minimize() {

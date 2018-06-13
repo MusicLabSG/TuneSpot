@@ -31,5 +31,6 @@
         <file>data/icons/vocals.png</file>
         <file>scripts/MainContext.js</file>
         <file>resources/StringCircle.qml</file>
+        <file>scripts/Observable.js</file>
     </qresource>
 </RCC>

@@ -1,5 +1,8 @@
 .pragma library
 .import "../resources/shared.js" as Shared
+.import "./Observable.js" as Observable
+
+// Implements observer
 
 var lines = [];
 var circles = [];
@@ -12,6 +15,7 @@ var lines_container_obj;
 var configurator_obj;
 
 function onCreate(note_holder, string_holder, lines_container, configurator) {
+    Observable.addObserver(this)
     note_holder_obj = note_holder;
     string_holder_obj = string_holder;
     lines_container_obj = lines_container;
@@ -49,6 +53,8 @@ function showTuningAccuracy(position, value) {
         lines[i].color = "white"
     }
 
+    print("Shows tuning for value: " + value);
+
     if(position === "Right")
         value = numberOfLines/2 + value;
 
@@ -78,12 +84,12 @@ function onStringClicked(id) {
     // Reset selection
     for (var i = 0; i < circles.length; i++) {
         var obj = circles[i];
-        obj.width  = 10;
-        obj.height = 10;
+        obj.width  = 15;
+        obj.height = 15;
 
         if ( i === current_string){
-            obj.x += 5;
-            obj.y += 5;
+            obj.x += 6;
+            obj.y += 6;
         }
 
     }
@@ -95,10 +101,10 @@ function onStringClicked(id) {
     // Make selection visible
     current_string = stringNo;
     var object = circles[stringNo];
-    object.width = 20;
-    object.height = 20;
-    object.x -= 5;
-    object.y -= 5;
+    object.width = 25;
+    object.height = 25;
+    object.x -= 6;
+    object.y -= 6;
 
     tune(); //Debug only
 }
@@ -116,6 +122,7 @@ function tune() {
 
 
     var tunePercentage = configurator_obj.getPercentageOfDistanceFromTheClosestNote();
+    print("Got percentage: " + tunePercentage);
     if (tunePercentage > 0) {
         showTuningAccuracy("Left", (100 - tunePercentage) / 100);
     } else if(tunePercentage === 0 ) {
@@ -150,4 +157,8 @@ function reconfigure() {
         lines[i].color = "white";
     }
     current_string = -1;
+}
+
+function update() {
+    reconfigure();
 }

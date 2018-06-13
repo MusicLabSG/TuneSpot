@@ -135,7 +135,6 @@ Item {
                     Context.onInstrumentClicked(name)
 
                     if (name === "Free Mode"){
-                        console.log("Free Mode")
                         configurator.setFreeMode()
                     }
                 }

@@ -4,7 +4,7 @@ import "../scripts/TunerContext.js" as Context
 Rectangle {
     property string id
 
-    height: 10; width:10
+    height: 15; width:15
     opacity: 0.9
     radius: width * 0.5
 

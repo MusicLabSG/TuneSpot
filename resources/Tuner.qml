@@ -34,11 +34,11 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter;
         anchors.top: notes_holder.bottom;
         id: string_holder
-        spacing: 7
+        spacing: 12
     }
 
     Component.onCompleted: {
         Context.onCreate(notes_holder, string_holder, lines_container, configurator);
-        Context.tune()
+
     }
 }
