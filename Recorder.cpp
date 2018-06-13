@@ -64,7 +64,7 @@ void Recorder::recordTestFile() {
     connect(timer, SIGNAL(timeout()), this, SLOT(stop()));
 
     //  for a weird reason 1680 timer creates an 1000ms file
-    timer->start(1680); //time specified in ms
+    timer->start(100); //time specified in ms
 }
 
 QString Recorder::getOutputFilePath() {

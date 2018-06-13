@@ -13,8 +13,15 @@
 #include <QTextStream>
 #include <QtMath>
 #include <QDebug>
+#ifdef Q_OS_ANDROID
+    #include <QtAndroidExtras/QtAndroid>
+#endif
+
 
 NotesController::NotesController() {
+#ifdef Q_OS_ANDROID
+    QtAndroid::requestPermissionsSync( QStringList() << "android.permission.WRITE_EXTERNAL_STORAGE" );
+#endif
     readNotes();
 }
 

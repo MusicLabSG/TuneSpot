@@ -29,7 +29,6 @@ Configurator::~Configurator() {
 }
 
 void Configurator::setCelloXString(quint16 x) {
-    setCurrentFrequency();
     if (x == 1) {
         closestNote = "A3";
     } else if (x == 2) {
@@ -62,7 +61,6 @@ void Configurator::setCelloXString(quint16 x) {
 }
 
 void Configurator::setGuitarXString(quint16 x) {
-    setCurrentFrequency();
     if (x == 1) {
         closestNote = "E4";
     } else if (x == 2) {
@@ -99,8 +97,6 @@ void Configurator::setGuitarXString(quint16 x) {
 }
 
 void Configurator::setFreeMode() {
-    setCurrentFrequency();
-
     quint16 minI = -1;
     qreal minDistance = 10000, test ;
     for (quint16 i = 0; i < 88; i++) {

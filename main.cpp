@@ -9,6 +9,8 @@ int main(int argc, char *argv[]) {
 
     // Register the backend as a component
     qmlRegisterType<Configurator>("com.github.tune_spot.configurator", 1, 0, "Configurator");
+    Configurator configurator;
+    configurator.setCurrentFrequency();
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
