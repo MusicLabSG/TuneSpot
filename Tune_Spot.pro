@@ -19,13 +19,15 @@ DEFINES += QT_DEPRECATED_WARNINGS
 HEADERS = \
     NotesController.hpp \
     Configurator.hpp \
-    Recorder.hpp
+    Recorder.hpp \
+    core.h
 
 SOURCES += \
     main.cpp \
     Recorder.cpp \
     Configurator.cpp \
-    NotesController.cpp
+    NotesController.cpp \
+    core.cpp
 
 RESOURCES += qml.qrc
 
