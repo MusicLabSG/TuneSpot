@@ -8,12 +8,13 @@ class Core : public QObject
     Q_OBJECT
 public:
     explicit Core(QObject *parent = nullptr);
-
+    Q_INVOKABLE void emitResults();
 signals:
-    void onFrequencyResult(int frequency);
+    void frequencyResult(int frequency);
 public slots:
+
 private:
-    void emitResults();
+//    void emitResults();
 };
 
 #endif // CORE_H
