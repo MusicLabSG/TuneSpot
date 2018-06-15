@@ -3,6 +3,9 @@
 
 #include <QObject>
 #include "Configurator.hpp"
+#include "Recorder.hpp"
+#include "AudioFile.h"
+#include "PitchDetection/aubioAnalyzer.h"
 
 class Core : public QObject
 {
@@ -29,8 +32,10 @@ public slots:
 private:
     QString instrument;
     qint16 string;
-
     Configurator configurator;
+    Recorder recorder;
+
+    void analize();
     void emitResults();
 };
 
