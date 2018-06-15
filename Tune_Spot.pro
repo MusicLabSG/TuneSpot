@@ -20,63 +20,14 @@ HEADERS = \
     NotesController.hpp \
     Configurator.hpp \
     Recorder.hpp \
-    core.h \
-    AudioFile.h \
-    PitchDetection/aubio/include/aubio/aubio.h \
-    PitchDetection/aubio/include/aubio/aubio_priv.h \
-    PitchDetection/aubio/include/aubio/beattracking.h \
-    PitchDetection/aubio/include/aubio/biquad.h \
-    PitchDetection/aubio/include/aubio/fft.h \
-    PitchDetection/aubio/include/aubio/filter.h \
-    PitchDetection/aubio/include/aubio/hist.h \
-    PitchDetection/aubio/include/aubio/mathutils.h \
-    PitchDetection/aubio/include/aubio/onset.h \
-    PitchDetection/aubio/include/aubio/onsetdetection.h \
-    PitchDetection/aubio/include/aubio/peakpick.h \
-    PitchDetection/aubio/include/aubio/phasevoc.h \
-    PitchDetection/aubio/include/aubio/pitchdetection.h \
-    PitchDetection/aubio/include/aubio/pitchfcomb.h \
-    PitchDetection/aubio/include/aubio/pitchmcomb.h \
-    PitchDetection/aubio/include/aubio/pitchschmitt.h \
-    PitchDetection/aubio/include/aubio/pitchyin.h \
-    PitchDetection/aubio/include/aubio/pitchyinfft.h \
-    PitchDetection/aubio/include/aubio/resample.h \
-    PitchDetection/aubio/include/aubio/sample.h \
-    PitchDetection/aubio/include/aubio/scale.h \
-    PitchDetection/aubio/include/aubio/tempo.h \
-    PitchDetection/aubio/include/aubio/tss.h \
-    PitchDetection/aubio/include/aubio/types.h \
-    PitchDetection/aubio/include/fft/fftw3.h \
-    PitchDetection/aubio/include/libsamplerate/common.h \
-    PitchDetection/aubio/include/libsamplerate/config.h \
-    PitchDetection/aubio/include/libsamplerate/fastest_coeffs.h \
-    PitchDetection/aubio/include/libsamplerate/float_cast.h \
-    PitchDetection/aubio/include/libsamplerate/high_qual_coeffs.h \
-    PitchDetection/aubio/include/libsamplerate/mid_qual_coeffs.h \
-    PitchDetection/aubio/include/libsamplerate/samplerate.h \
-    PitchDetection/aubio/include/libsndfile/sndfile.h \
-    PitchDetection/aubio/include/libsndfile/sndfile.hh \
-    PitchDetection/aubioAnalyzer.h \
-    AudioFile.h \
-    Configurator.hpp \
-    core.h \
-    NotesController.hpp \
-    Recorder.hpp
+    core.h
 
 SOURCES += \
     main.cpp \
     Recorder.cpp \
     Configurator.cpp \
     NotesController.cpp \
-    core.cpp \
-    AudioFile.cpp \
-    PitchDetection/aubioAnalyzer.cpp \
-    AudioFile.cpp \
-    Configurator.cpp \
-    core.cpp \
-    main.cpp \
-    NotesController.cpp \
-    Recorder.cpp
+    core.cpp
 
 RESOURCES += qml.qrc
 
@@ -102,5 +53,4 @@ DISTFILES += \
     data/fonts/OpenSans-Regular.ttf \
     data/fonts/OpenSans-SemiBold.ttf \
     data/fonts/OpenSans-SemiBoldItalic.ttf\
-    data/notes/namesOfNotes.txt \
-    PitchDetection/aubio/lib/aubioOSX.a
+    data/notes/namesOfNotes.txt
