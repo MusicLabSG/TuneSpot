@@ -3,6 +3,7 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.3
 import com.github.tune_spot.configurator 1.0
+import com.github.tune_spot.core 1.0
 
 import "./resources"
 import "./resources/colors.js" as Color
@@ -20,6 +21,11 @@ Window {
     // This is the backend btw
     Configurator {
         id: configurator
+    }
+
+    Core {
+        id: core
+        onFrequencyResult: print(frequency)
     }
 
     FrequencySelector {
@@ -64,4 +70,7 @@ Window {
         //}
     }
 
+    Component.onCompleted: {
+        core.emitResults();
+    }
 }
