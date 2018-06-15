@@ -54,9 +54,12 @@ void Configurator::setCelloXString(quint16 x) {
         percentageOfDistanceFromTheClosestNote = -100;
     } else if (currentFrequency >= freqNext) {
         percentageOfDistanceFromTheClosestNote = 100;
-    } else {
+    } else if (currentFrequency >= freq){
         percentageOfDistanceFromTheClosestNote =
                 ((currentFrequency - freq) / (freqNext - freq)) * 100;
+    } else {
+        percentageOfDistanceFromTheClosestNote =
+                ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
     }
 }
 
@@ -90,9 +93,12 @@ void Configurator::setGuitarXString(quint16 x) {
         percentageOfDistanceFromTheClosestNote = -100;
     } else if (currentFrequency >= freqNext) {
         percentageOfDistanceFromTheClosestNote = 100;
-    } else {
+    } else if (currentFrequency >= freq){
         percentageOfDistanceFromTheClosestNote =
                 ((currentFrequency - freq) / (freqNext - freq)) * 100;
+    } else {
+        percentageOfDistanceFromTheClosestNote =
+                ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
     }
 }
 
@@ -117,9 +123,12 @@ void Configurator::setFreeMode() {
         percentageOfDistanceFromTheClosestNote = -100;
     } else if (currentFrequency >= freqNext) {
         percentageOfDistanceFromTheClosestNote = 100;
-    } else {
+    } else if (currentFrequency >= freq){
         percentageOfDistanceFromTheClosestNote =
                 ((currentFrequency - freq) / (freqNext - freq)) * 100;
+    } else {
+        percentageOfDistanceFromTheClosestNote =
+                ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
     }
 }
 
