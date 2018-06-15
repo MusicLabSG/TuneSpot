@@ -7,5 +7,5 @@ Core::Core(QObject *parent) : QObject(parent)
 
 void Core::emitResults()
 {
-    emit onFrequencyResult(123);
+    emit frequencyResult(123);
 }
