@@ -36,6 +36,28 @@ QString Core::getClosestNote()
     return configurator.getClosestNote();
 }
 
+void Core::start()
+{
+
+}
+
+void Core::stop()
+{
+
+}
+
+void Core::analize()
+{
+    std::string path = ""; // TODO change that with the path for the configurator
+
+    // set up the audio file using double vectors
+    AudioFile<double> recorded_sample;
+    recorded_sample.load(path);
+
+    // get the data vector from the sample
+    std::vector<double> data(recorded_sample.samples[0]);
+}
+
 void Core::emitResults()
 {
     emit frequencyResult(123);

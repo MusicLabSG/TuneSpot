@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "Configurator.hpp"
+#include "AudioFile.h"
 
 class Core : public QObject
 {
@@ -29,8 +30,9 @@ public slots:
 private:
     QString instrument;
     qint16 string;
-
     Configurator configurator;
+
+    void analize();
     void emitResults();
 };
 

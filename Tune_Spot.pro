@@ -20,14 +20,16 @@ HEADERS = \
     NotesController.hpp \
     Configurator.hpp \
     Recorder.hpp \
-    core.h
+    core.h \
+    AudioFile.h
 
 SOURCES += \
     main.cpp \
     Recorder.cpp \
     Configurator.cpp \
     NotesController.cpp \
-    core.cpp
+    core.cpp \
+    AudioFile.cpp
 
 RESOURCES += qml.qrc
 
