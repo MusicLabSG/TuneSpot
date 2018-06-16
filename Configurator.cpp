@@ -111,7 +111,9 @@ void Configurator::setCurrentFrequency() {
     QTimer *timer = new QTimer(this);
 
     recorder->recordTestFile();
-    connect(timer, SIGNAL(timeout()), this, SLOT(analize(recorder->getOutputFilePath();)));
+    QString path = recorder->getOutputFilePath();
+
+    connect(timer, SIGNAL(timeout()), this, SLOT(analize(path)));
     timer->start(3); //time specified in ms
 }
 
