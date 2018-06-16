@@ -108,14 +108,7 @@ quint16 Configurator::getPercentageOfDistanceFromTheClosestNote() {
 
 void Configurator::setCurrentFrequency() {
     recorder->recordTestFile();
-
-    //  check only the last 100ms of the file (i have to create an 1 sec file in order to get something)
-    QFile file(recorder->getOutputFilePath());
-
-    // todo fft
-
-    // eg
-    currentFrequency = 442.3;
+    currentFrequency = analize(recorder->getOutputFilePath());
 }
 
 void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
