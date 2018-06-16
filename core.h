@@ -4,6 +4,11 @@
 #include <QObject>
 #include "Configurator.hpp"
 #include "AudioFile.h"
+#include "yin.h"
+#include <stdint.h>
+#include <thread>
+#include <unordered_map>
+
 
 class Core : public QObject
 {
@@ -31,8 +36,14 @@ private:
     QString instrument;
     qint16 string;
     Configurator configurator;
+    std::thread analisis_thread;
+    typedef std::unordered_map<std::string, std::thread> ThreadMap;
+    ThreadMap tm;
 
-    void analize();
+    void start_thread(const std::string &tname);
+    void stop_thread(const std::string &tname);
+
+    static void analize(Configurator &c);
     void emitResults();
 };
 
