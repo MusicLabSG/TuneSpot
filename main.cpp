@@ -13,9 +13,14 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<Core>("com.github.tune_spot.core", 1, 0, "Core");
     Configurator configurator;
     configurator.setCurrentFrequency();
-    //configurator.analize();
-    //configurator.setFreeMode();
-    //qInfo() << configurator.getClosestNote() << " " << configurator.getPercentageOfDistanceFromTheClosestNote();
+    /*
+    while (true) {
+        //  configurator.setCurrentFrequency();
+        configurator.analize();
+        configurator.setFreeMode();
+        qInfo() << configurator.getClosestNote() << " " << configurator.getPercentageOfDistanceFromTheClosestNote();
+    }
+    //*/
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));

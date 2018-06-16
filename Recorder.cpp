@@ -29,7 +29,7 @@ Recorder::Recorder() {
     // we define the encoder settings for every os
     QAudioEncoderSettings settings;
     #ifdef Q_OS_LINUX
-        settings.setCodec("audio/x-adpcm, layout=(string)swf");
+        settings.setCodec("audio/x-mulaw");
     #endif
     #ifdef Q_OS_ANDROID
         settings.setCodec("audio/pcm");
