@@ -70,13 +70,10 @@ public slots:
      */
     void setCurrentFrequency();
 
-private slots:
-
     /**
      * @brief analize is a function that analise the a wave file and finds the current frequency
-     * @param path is the path of the wav file
      */
-    void analize(QString path);
+    void analize();
 
 private:
     /**

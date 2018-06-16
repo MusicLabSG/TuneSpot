@@ -108,13 +108,7 @@ quint16 Configurator::getPercentageOfDistanceFromTheClosestNote() {
 }
 
 void Configurator::setCurrentFrequency() {
-    QTimer *timer = new QTimer(this);
-
     recorder->recordTestFile();
-    QString path = recorder->getOutputFilePath();
-
-    connect(timer, SIGNAL(timeout()), this, SLOT(analize(path)));
-    timer->start(3); //time specified in ms
 }
 
 void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
@@ -155,8 +149,8 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
     }
 }
 
-void Configurator::analize(QString path) {
-    std::string pathOfFile = path.toStdString();
+void Configurator::analize() {
+    std::string pathOfFile = recorder->getOutputFilePath().toStdString();
 
     // set up the audio file using double vectors
     AudioFile<float> recorded_sample;

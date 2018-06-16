@@ -12,7 +12,6 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<Configurator>("com.github.tune_spot.configurator", 1, 0, "Configurator");
     qmlRegisterType<Core>("com.github.tune_spot.core", 1, 0, "Core");
     Configurator configurator;
-    configurator.setCurrentFrequency();
 
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
