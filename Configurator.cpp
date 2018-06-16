@@ -132,6 +132,7 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
         }
     } else {
         qreal freq = notesController->getNoteFrequencies()[i];
+        qInfo() << freq << "\n";
         qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
         qreal freqNext = notesController->getNoteFrequencies()[i + 1];
 

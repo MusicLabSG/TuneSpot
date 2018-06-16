@@ -14,7 +14,7 @@
 #include <QUrl>
 
 #ifdef Q_OS_ANDROID
-    #include <QtAndroidExtras/QtAndroid>
+#include <QtAndroidExtras/QtAndroid>
 #endif
 
 Recorder::Recorder() {
@@ -47,7 +47,7 @@ void Recorder::recordTestFile() {
 
     record();
     connect(timer, SIGNAL(timeout()), this, SLOT(stop()));
-    timer->start(300); //time specified in ms
+    timer->start(2000); //time specified in ms
 }
 
 QString Recorder::getOutputFilePath() {
@@ -61,7 +61,7 @@ void Recorder::record() {
 }
 
 int rawToWav(const char *rawfn, const char *wavfn, long frequency) {
-    long chunksize = 0x10;
+    long chunkSize = 0x10;
 
     struct {
         unsigned short wFormatTag;
@@ -73,16 +73,17 @@ int rawToWav(const char *rawfn, const char *wavfn, long frequency) {
     } fmt;
 
     FILE *raw = fopen(rawfn, "rb");
-    if (!raw)
+    if (!raw) {
         return -2;
+    }
 
     fseek(raw, 0, SEEK_END);
     long bytes = ftell(raw);
     fseek(raw, 0, SEEK_SET);
 
-    long samplecount = bytes / 2;
-    long riffsize = samplecount * 2 + 0x24;
-    long datasize = samplecount * 2;
+    long sampleCount = bytes / 2;
+    long riffSize = sampleCount * 2 + 0x24;
+    long dataSize = sampleCount * 2;
 
     FILE *wav = fopen(wavfn, "wb");
     if (!wav) {
@@ -91,9 +92,9 @@ int rawToWav(const char *rawfn, const char *wavfn, long frequency) {
     }
 
     fwrite("RIFF", 1, 4, wav);
-    fwrite(&riffsize, 4, 1, wav);
+    fwrite(&riffSize, 4, 1, wav);
     fwrite("WAVEfmt ", 1, 8, wav);
-    fwrite(&chunksize, 4, 1, wav);
+    fwrite(&chunkSize, 4, 1, wav);
 
     fmt.wFormatTag = 1;      // PCM
     fmt.wChannels = 1;      // MONO
@@ -104,12 +105,13 @@ int rawToWav(const char *rawfn, const char *wavfn, long frequency) {
 
     fwrite(&fmt, sizeof(fmt), 1, wav);
     fwrite("data", 1, 4, wav);
-    fwrite(&datasize, 4, 1, wav);
+    fwrite(&dataSize, 4, 1, wav);
     short buff[1024];
     while (!feof(raw)) {
         int cnt = fread(buff, 2, 1024, raw);
-        if (cnt == 0)
+        if (cnt == 0) {
             break;
+        }
         fwrite(buff, 2, cnt, wav);
     }
     fclose(raw);
