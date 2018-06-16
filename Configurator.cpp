@@ -9,6 +9,7 @@
 #include "Recorder.hpp"
 #include <QDir>
 #include <QFile>
+#include <QTimer>
 #include <QtMath>
 #include "AudioFile.h"
 #include "yin.h"
@@ -107,8 +108,11 @@ quint16 Configurator::getPercentageOfDistanceFromTheClosestNote() {
 }
 
 void Configurator::setCurrentFrequency() {
+    QTimer *timer = new QTimer(this);
+
     recorder->recordTestFile();
-    currentFrequency = analize(recorder->getOutputFilePath());
+    connect(timer, SIGNAL(timeout()), this, SLOT(analize(recorder->getOutputFilePath();)));
+    timer->start(3); //time specified in ms
 }
 
 void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
@@ -149,8 +153,8 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
     }
 }
 
-qreal Configurator::analize(QString path) {
-    std::string pathOfFile = path.toUtf8().constData();
+void Configurator::analize(QString path) {
+    std::string pathOfFile = path.toStdString();
 
     // set up the audio file using double vectors
     AudioFile<float> recorded_sample;
@@ -168,5 +172,5 @@ qreal Configurator::analize(QString path) {
     // init of a yin object
     Yin yin;
     Yin_init(&yin, size, 0.05);
-    return Yin_getPitch(&yin, data);
+    currentFrequency = Yin_getPitch(&yin, data);
 }

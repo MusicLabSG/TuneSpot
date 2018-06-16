@@ -221,7 +221,7 @@ template <class T>
 bool AudioFile<T>::load (std::string filePath)
 {
     std::ifstream file (filePath, std::ios::binary);
-    
+
     // check the file exists
     if (! file.good())
     {

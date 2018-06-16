@@ -60,10 +60,7 @@ void Recorder::recordTestFile() {
     QTimer *timer = new QTimer(this);
 
     record();
-
     connect(timer, SIGNAL(timeout()), this, SLOT(stop()));
-
-    //  for a weird reason 1680 timer creates an 1000ms file
     timer->start(350); //time specified in ms
 }
 
