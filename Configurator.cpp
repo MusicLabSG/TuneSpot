@@ -103,7 +103,7 @@ QString Configurator::getClosestNote() {
     return closestNote;
 }
 
-quint16 Configurator::getPercentageOfDistanceFromTheClosestNote() {
+qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
     return percentageOfDistanceFromTheClosestNote;
 }
 
@@ -143,8 +143,7 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
             percentageOfDistanceFromTheClosestNote =
                     ((currentFrequency - freq) / (freqNext - freq)) * 100;
         } else {
-            percentageOfDistanceFromTheClosestNote =
-                    ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
+            percentageOfDistanceFromTheClosestNote = ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     }
 }
@@ -157,17 +156,12 @@ void Configurator::analize() {
     recorded_sample.load(pathOfFile);
 
     // get the data vector from the sample
-    std::vector<float> data_temp(recorded_sample.samples[0]);
-    int size = data_temp.size();
-    float *data = (float*) malloc(sizeof(float)*size);
-    for(int i = 0; i < size; i++)
-    {
-        data[i] = data_temp[i];
-    }
+    float* data = &recorded_sample.samples[0][0];
+    int size = recorded_sample.samples[0].size();
 
     // init of a yin object
     Yin yin;
     Yin_init(&yin, size, 0.05);
     currentFrequency = Yin_getPitch(&yin, data);
-    qInfo() << currentFrequency << "\n";
+    qInfo() <<currentFrequency << "\n";
 }

@@ -8,7 +8,8 @@
 #ifndef Recorder_H
 #define Recorder_H
 
-#include <QAudioRecorder>
+#include <QAudioInput>
+#include <QFile>
 
 class Recorder : public QObject {
     Q_OBJECT
@@ -47,8 +48,19 @@ private slots:
     void stop();
 
 private:
-    QAudioRecorder *audioRecorder;
+    //  A variable that acts as an input stream
+    QAudioInput *audio;
 
+    //  the settings of the recorder
+    QAudioFormat settings;
+
+    //  the outputFile
+    QFile output;
+
+    //  the output folder path
+    QString outputFolder;
+
+    //  the output file path
     QString outputFilePath;
 };
 

@@ -11,6 +11,7 @@
 #include <QObject>
 #include "NotesController.hpp"
 #include "Recorder.hpp"
+#include <QDebug>
 
 class Configurator : public QObject {
     Q_OBJECT
@@ -63,7 +64,7 @@ public slots:
      * @brief getPercentageOfDistanceFromTheClosestNote is a function that returns the percentage of distance from the closest note
      * @return the percentage of distance from the closest note
      */
-    quint16 getPercentageOfDistanceFromTheClosestNote();
+    qreal getPercentageOfDistanceFromTheClosestNote();
 
     /**
      * @brief setCurrentFrequency is a function that sets the current frenquency that has been recognized from the test input file

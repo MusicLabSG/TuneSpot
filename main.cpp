@@ -12,12 +12,12 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<Configurator>("com.github.tune_spot.configurator", 1, 0, "Configurator");
     qmlRegisterType<Core>("com.github.tune_spot.core", 1, 0, "Core");
     Configurator configurator;
-    configurator.setCurrentFrequency();
-    /*
+    //  configurator.setCurrentFrequency();
+    //*
     while (true) {
         //  configurator.setCurrentFrequency();
         configurator.analize();
-        configurator.setFreeMode();
+        configurator.setCelloXString(1);
         qInfo() << configurator.getClosestNote() << " " << configurator.getPercentageOfDistanceFromTheClosestNote();
     }
     //*/
