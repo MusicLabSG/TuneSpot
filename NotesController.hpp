@@ -49,8 +49,13 @@ private slots:
     void readNotes();
 
 private:
+    //  is the base frequency
     qreal baseFrequency;
+
+    //  are the names of the notes
     QVector<QString> noteNames;
+
+    //  are the frequencies of the notes
     QVector<qreal> noteFrequencies;
 };
 

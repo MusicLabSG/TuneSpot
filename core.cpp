@@ -48,9 +48,9 @@ void Core::stop()
 
 void Core::start_thread(const std::string &tname)
 {
-    std::thread thrd = std::thread(analize, std::ref(configurator));
-    thrd.detach();
-    tm[tname] = std::move(thrd);
+    // std::thread thrd = std::thread(std::ref(configurator));
+    // thrd.detach();
+    // tm[tname] = std::move(thrd);
 }
 
 void Core::stop_thread(const std::string &tname)
@@ -60,29 +60,6 @@ void Core::stop_thread(const std::string &tname)
         it->second.std::thread::~thread(); // thread not killed
         tm.erase(tname);
     }
-}
-
-void Core::analize(Configurator &c)
-{
-    std::string path = ""; // TODO change that with the path for the configurator
-
-    // set up the audio file using double vectors
-    AudioFile<float> recorded_sample;
-    recorded_sample.load(path);
-
-    // get the data vector from the sample
-    std::vector<float> data_temp(recorded_sample.samples[0]);
-    int size = data_temp.size();
-    float *data = (float*) malloc(sizeof(float)*size);
-    for(int i = 0; i < size; i++)
-    {
-        data[i] = data_temp[i];
-    }
-
-    // init of a yin object
-    Yin yin;
-    Yin_init(&yin, size, 0.05);
-    float pitch = Yin_getPitch(&yin, data);
 }
 
 void Core::emitResults()

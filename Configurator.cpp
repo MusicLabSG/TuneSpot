@@ -9,8 +9,9 @@
 #include "Recorder.hpp"
 #include <QDir>
 #include <QFile>
-#include <QMessageBox>
 #include <QtMath>
+#include "AudioFile.h"
+#include "yin.h"
 
 Configurator::Configurator() {
     currentFrequency = 0;
@@ -46,21 +47,7 @@ void Configurator::setCelloXString(quint16 x) {
         }
     }
 
-    qreal freq = notesController->getNoteFrequencies()[i];
-    qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
-    qreal freqNext = notesController->getNoteFrequencies()[i + 1];
-
-    if (currentFrequency <= freqPrevious) {
-        percentageOfDistanceFromTheClosestNote = -100;
-    } else if (currentFrequency >= freqNext) {
-        percentageOfDistanceFromTheClosestNote = 100;
-    } else if (currentFrequency >= freq){
-        percentageOfDistanceFromTheClosestNote =
-                ((currentFrequency - freq) / (freqNext - freq)) * 100;
-    } else {
-        percentageOfDistanceFromTheClosestNote =
-                ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
-    }
+    setPercentageOfDistanceFromTheClosestNote(i);
 }
 
 void Configurator::setGuitarXString(quint16 x) {
@@ -85,21 +72,7 @@ void Configurator::setGuitarXString(quint16 x) {
         }
     }
 
-    qreal freq = notesController->getNoteFrequencies()[i];
-    qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
-    qreal freqNext = notesController->getNoteFrequencies()[i + 1];
-
-    if (currentFrequency <= freqPrevious) {
-        percentageOfDistanceFromTheClosestNote = -100;
-    } else if (currentFrequency >= freqNext) {
-        percentageOfDistanceFromTheClosestNote = 100;
-    } else if (currentFrequency >= freq){
-        percentageOfDistanceFromTheClosestNote =
-                ((currentFrequency - freq) / (freqNext - freq)) * 100;
-    } else {
-        percentageOfDistanceFromTheClosestNote =
-                ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
-    }
+    setPercentageOfDistanceFromTheClosestNote(i);
 }
 
 void Configurator::setFreeMode() {
@@ -114,22 +87,7 @@ void Configurator::setFreeMode() {
     }
 
     closestNote = notesController->getNoteNames()[minI];
-
-    qreal freq = notesController->getNoteFrequencies()[minI];
-    qreal freqPrevious = notesController->getNoteFrequencies()[minI - 1];
-    qreal freqNext = notesController->getNoteFrequencies()[minI + 1];
-
-    if (currentFrequency <= freqPrevious) {
-        percentageOfDistanceFromTheClosestNote = -100;
-    } else if (currentFrequency >= freqNext) {
-        percentageOfDistanceFromTheClosestNote = 100;
-    } else if (currentFrequency >= freq){
-        percentageOfDistanceFromTheClosestNote =
-                ((currentFrequency - freq) / (freqNext - freq)) * 100;
-    } else {
-        percentageOfDistanceFromTheClosestNote =
-                ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
-    }
+    setPercentageOfDistanceFromTheClosestNote(minI);
 }
 
 quint16 Configurator::getBaseFrequency() {
@@ -158,4 +116,64 @@ void Configurator::setCurrentFrequency() {
 
     // eg
     currentFrequency = 442.3;
+}
+
+void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
+    if (i == 0) {
+        qreal freq = notesController->getNoteFrequencies()[i];
+        qreal freqNext = notesController->getNoteFrequencies()[i + 1];
+        if (currentFrequency >= freqNext) {
+            percentageOfDistanceFromTheClosestNote = 100;
+        } else if (currentFrequency >= freq){
+            percentageOfDistanceFromTheClosestNote =
+                ((currentFrequency - freq) / (freqNext - freq)) * 100;
+        }
+    } else if (i == 87) {
+        qreal freq = notesController->getNoteFrequencies()[i];
+        qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
+        if (currentFrequency <= freqPrevious) {
+            percentageOfDistanceFromTheClosestNote = -100;
+        } else {
+            percentageOfDistanceFromTheClosestNote =
+                    ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
+        }
+    } else {
+        qreal freq = notesController->getNoteFrequencies()[i];
+        qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
+        qreal freqNext = notesController->getNoteFrequencies()[i + 1];
+
+        if (currentFrequency <= freqPrevious) {
+            percentageOfDistanceFromTheClosestNote = -100;
+        } else if (currentFrequency >= freqNext) {
+            percentageOfDistanceFromTheClosestNote = 100;
+        } else if (currentFrequency >= freq){
+            percentageOfDistanceFromTheClosestNote =
+                    ((currentFrequency - freq) / (freqNext - freq)) * 100;
+        } else {
+            percentageOfDistanceFromTheClosestNote =
+                    ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
+        }
+    }
+}
+
+qreal Configurator::analize(QString path) {
+    std::string pathOfFile = path.toUtf8().constData();
+
+    // set up the audio file using double vectors
+    AudioFile<float> recorded_sample;
+    recorded_sample.load(pathOfFile);
+
+    // get the data vector from the sample
+    std::vector<float> data_temp(recorded_sample.samples[0]);
+    int size = data_temp.size();
+    float *data = (float*) malloc(sizeof(float)*size);
+    for(int i = 0; i < size; i++)
+    {
+        data[i] = data_temp[i];
+    }
+
+    // init of a yin object
+    Yin yin;
+    Yin_init(&yin, size, 0.05);
+    return Yin_getPitch(&yin, data);
 }

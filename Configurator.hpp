@@ -71,6 +71,20 @@ public slots:
     void setCurrentFrequency();
 
 private:
+
+    /**
+     * @brief analize is a function that analise the a wave file and finds the current frequency
+     * @param path is the path of the wav file
+     * @return the current frequency
+     */
+    qreal analize(QString path);
+
+    /**
+     * @brief setTheVariables is a function that sets percentageOfDistanceFromTheClosestNote
+     * @param i is the pointer of the closest note
+     */
+    void setPercentageOfDistanceFromTheClosestNote(quint16 i);
+
     //  we use this recorder to record the test input file
     Recorder *recorder;
 
