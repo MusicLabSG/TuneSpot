@@ -41,7 +41,6 @@ Recorder::Recorder() {
     // one channel only, change is if you want for fft
     settings.setChannelCount(1);
     settings.setQuality(QMultimedia::HighQuality);
-    audioRecorder->setEncodingSettings(settings);
 
     // we set define the path of the output location and the name of the test file
     //  QDir folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
@@ -50,6 +49,9 @@ Recorder::Recorder() {
     outputFilePath = path.currentPath();
     outputFilePath.append(QString("/test.wav"));
     audioRecorder->setOutputLocation(QUrl::fromLocalFile(outputFilePath));
+    audioRecorder->setContainerFormat("audio/x-wav");
+
+    audioRecorder->setEncodingSettings(settings);
 }
 
 Recorder::~Recorder() {
