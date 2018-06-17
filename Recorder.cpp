@@ -42,11 +42,13 @@ Recorder::~Recorder() {
 }
 
 void Recorder::recordTestFile() {
-    QThread* somethread = new QThread();
+    QThread* somethread = new QThread(this);
     QTimer *timer = new QTimer(this->thread());
 
     record();
     connect(timer, SIGNAL(timeout()), this, SLOT(stop()));
+
+    timer->moveToThread(somethread);
 
     timer->start(400); //time specified in ms
 }

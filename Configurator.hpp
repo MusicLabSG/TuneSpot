@@ -20,6 +20,10 @@ public:
 
     ~Configurator();
 
+    //  we use this recorder to record the test input file
+    Recorder *recorder;
+
+
 signals:
     void results();
 
@@ -85,9 +89,6 @@ private:
      * @param i is the pointer of the closest note
      */
     void setPercentageOfDistanceFromTheClosestNote(quint16 i);
-
-    //  we use this recorder to record the test input file
-    Recorder *recorder;
 
     //  we use this notes' controller to handle the notes as name and frequencies and their base frequency
     NotesController *notesController;

@@ -4,7 +4,7 @@ Core::Core(QObject *parent) : QObject(parent)
 {
     w = new Worker(std::ref(configurator));
 
-    connect(&configurator, SIGNAL(Configurator::results()), this, SLOT(analisysResults()));
+    connect(configurator.recorder, SIGNAL(recoredSignal()), this, SLOT(analisysResults()));
 }
 
 void Core::setInstrument(QString instrument)
@@ -41,8 +41,8 @@ QString Core::getClosestNote()
 
 void Core::start()
 {
-//    w->start();
-    configurator.recordSample();
+    w->start();
+//    configurator.recordSample();
 //    configurator.analizeSample();
 }
 
