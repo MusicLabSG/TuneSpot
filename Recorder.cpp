@@ -60,67 +60,65 @@ void Recorder::record() {
     audio->start(&output);
 }
 
-int rawToWav(const char *rawfn, const char *wavfn, long frequency) {
-    long chunkSize = 0x10;
+void rawToWav(QString filename, QAudioFormat &settings) {
+    typedef struct {
+        char chunk_id[4];        // RIFF string
+        unsigned int chunk_size;         // overall size of file in bytes (36 + data_size)
+        char sub_chunk1_id[8];   // WAVEfmt string with trailing null char
+        unsigned int sub_chunk1_size;    // 16 for PCM.  This is the size of the rest of the Subchunk which follows this number.
+        unsigned short audio_format;       // format type. 1-PCM, 3- IEEE float, 6 - 8bit A law, 7 - 8bit mu law
+        unsigned short num_channels;       // Mono = 1, Stereo = 2
+        unsigned int sample_rate;        // 8000, 16000, 44100, etc. (blocks per second)
+        unsigned int byte_rate;          // SampleRate * NumChannels * BitsPerSample/8
+        unsigned short block_align;        // NumChannels * BitsPerSample/8
+        unsigned short bits_per_sample;    // bits per sample, 8- 8bits, 16- 16 bits etc
+        char sub_chunk2_id[4];   // Contains the letters "data"
+        unsigned int sub_chunk2_size;    // NumSamples * NumChannels * BitsPerSample/8 - size of the next chunk that will be read
+    } wav_header_t;
 
-    struct {
-        unsigned short wFormatTag;
-        unsigned short wChannels;
-        unsigned long dwSamplesPerSec;
-        unsigned long dwAvgBytesPerSec;
-        unsigned short wBlockAlign;
-        unsigned short wBitsPerSample;
-    } fmt;
+    int rawSize = 0;
+    wav_header_t waveHeader;
+    memset(&waveHeader, '\0', sizeof(wav_header_t));
 
-    FILE *raw = fopen(rawfn, "rb");
-    if (!raw) {
-        return -2;
-    }
+    char *pcm_buf;
+    FILE *wavFile;
 
-    fseek(raw, 0, SEEK_END);
-    long bytes = ftell(raw);
-    fseek(raw, 0, SEEK_SET);
+    wavFile = fopen(filename.toStdString().c_str(), "rb+");
 
-    long sampleCount = bytes / 2;
-    long riffSize = sampleCount * 2 + 0x24;
-    long dataSize = sampleCount * 2;
+    // obtain file size:
+    fseek(wavFile, 0, SEEK_END);
+    rawSize = ftell(wavFile);
+    rewind(wavFile);
 
-    FILE *wav = fopen(wavfn, "wb");
-    if (!wav) {
-        fclose(raw);
-        return -3;
-    }
+    // allocate memory to contain the whole file:
+    pcm_buf = (char *) malloc(sizeof(char) * rawSize);
 
-    fwrite("RIFF", 1, 4, wav);
-    fwrite(&riffSize, 4, 1, wav);
-    fwrite("WAVEfmt ", 1, 8, wav);
-    fwrite(&chunkSize, 4, 1, wav);
 
-    fmt.wFormatTag = 1;      // PCM
-    fmt.wChannels = 1;      // MONO
-    fmt.dwSamplesPerSec = frequency * 1;
-    fmt.dwAvgBytesPerSec = frequency * 1 * 2; // 16 bit
-    fmt.wBlockAlign = 2;
-    fmt.wBitsPerSample = 16;
+    // copy the file into the pcm_buf:
+    fread(pcm_buf, 1, rawSize, wavFile);
+    rewind(wavFile);
 
-    fwrite(&fmt, sizeof(fmt), 1, wav);
-    fwrite("data", 1, 4, wav);
-    fwrite(&dataSize, 4, 1, wav);
-    short buff[1024];
-    while (!feof(raw)) {
-        int cnt = fread(buff, 2, 1024, raw);
-        if (cnt == 0) {
-            break;
-        }
-        fwrite(buff, 2, cnt, wav);
-    }
-    fclose(raw);
-    QFile file(rawfn);
-    file.remove();
-    fclose(wav);
+    // RIFF chunk
+    strcpy(waveHeader.chunk_id, "RIFF");
+    waveHeader.chunk_size = 36 + rawSize;
 
-    rename(wavfn, rawfn);
-    return 0;
+    // fmt sub-chunk (to be optimized)
+    strncpy(waveHeader.sub_chunk1_id, "WAVEfmt ", strlen("WAVEfmt "));
+    waveHeader.sub_chunk1_size = 16;
+    waveHeader.audio_format = 1;
+    waveHeader.num_channels = settings.channelCount();
+    waveHeader.sample_rate = settings.sampleRate();
+    waveHeader.bits_per_sample = settings.sampleSize();
+    waveHeader.block_align = waveHeader.num_channels * waveHeader.bits_per_sample / 8;
+    waveHeader.byte_rate = waveHeader.sample_rate * waveHeader.num_channels * waveHeader.bits_per_sample / 8;
+
+    // data sub-chunk
+    strncpy(waveHeader.sub_chunk2_id, "data", strlen("data"));
+    waveHeader.sub_chunk2_size = rawSize;
+
+    fwrite(&waveHeader, 1, sizeof(waveHeader), wavFile);
+    fwrite(pcm_buf, 1, rawSize, wavFile);
+    fclose(wavFile);
 }
 
 void Recorder::stop() {
@@ -128,6 +126,5 @@ void Recorder::stop() {
     output.close();
 
     QString newOutputFilePath = outputFolder;
-    newOutputFilePath.append(QString("/test1.wav"));
-    rawToWav(outputFilePath.toStdString().c_str(), newOutputFilePath.toStdString().c_str(), settings.sampleRate());
+    rawToWav(outputFilePath, settings);
 }
