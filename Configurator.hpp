@@ -69,12 +69,12 @@ public slots:
     /**
      * @brief setCurrentFrequency is a function that sets the current frenquency that has been recognized from the test input file
      */
-    void setCurrentFrequency();
+    void recordSample();
 
     /**
      * @brief analize is a function that analise the a wave file and finds the current frequency
      */
-    void analize();
+    void analizeSample();
 
 private:
     /**

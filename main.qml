@@ -71,6 +71,6 @@ Window {
     }
 
     Component.onCompleted: {
-        core.emitResults();
+        core.start();
     }
 }

@@ -108,7 +108,7 @@ qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
     return percentageOfDistanceFromTheClosestNote;
 }
 
-void Configurator::setCurrentFrequency() {
+void Configurator::recordSample() {
     recorder->recordTestFile();
 }
 
@@ -149,7 +149,7 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
     }
 }
 
-void Configurator::analize() {
+void Configurator::analizeSample() {
     std::string pathOfFile = recorder->getOutputFilePath().toStdString();
 
     // set up the audio file using double vectors

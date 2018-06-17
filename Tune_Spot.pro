@@ -22,7 +22,8 @@ HEADERS = \
     Recorder.hpp \
     core.h \
     AudioFile.h \
-    yin.h
+    yin.h \
+    worker.h
 
 SOURCES += \
     main.cpp \
@@ -31,7 +32,8 @@ SOURCES += \
     NotesController.cpp \
     core.cpp \
     AudioFile.cpp \
-    yin.cpp
+    yin.cpp \
+    worker.cpp
 
 RESOURCES += qml.qrc
 

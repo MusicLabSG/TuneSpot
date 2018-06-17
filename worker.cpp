@@ -7,5 +7,10 @@ Worker::Worker(Configurator &rec) : configurator(rec)
 
 void Worker::run()
 {
-    configurator.setCurrentFrequency();
+    while (true)
+    {
+        configurator.recordSample();
+        configurator.analizeSample();
+        qInfo() << configurator.getClosestNote() << " " << configurator.getPercentageOfDistanceFromTheClosestNote();
+    }
 }
