@@ -57,9 +57,6 @@ private:
     //  the outputFile
     QFile output;
 
-    //  the output folder path
-    QString outputFolder;
-
     //  the output file path
     QString outputFilePath;
 };

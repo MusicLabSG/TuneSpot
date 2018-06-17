@@ -11,17 +11,17 @@
  * This is the Yin algorithms tweak on autocorellation. Read http://audition.ens.fr/adc/pdf/2002_JASA_YIN.pdf
  * for more details on what is in here and why it's done this way.
  */
-void Yin_difference(Yin *yin, float* buffer){
+void Yin_difference(Yin *yin, float *buffer) {
     int i;
     int tau;
     float delta;
 
     /* Calculate the difference for difference shift values (tau) for the half of the samples */
-    for(tau = 0 ; tau < yin->halfBufferSize; tau++){
+    for (tau = 0; tau < yin->halfBufferSize; tau++) {
 
         /* Take the difference of the signal with a shifted version of itself, then square it.
          * (This is the Yin algorithm's tweak on autocorellation) */
-        for(i = 0; i < yin->halfBufferSize; i++){
+        for (i = 0; i < yin->halfBufferSize; i++) {
             delta = buffer[i] - buffer[i + tau];
             yin->yinBuffer[tau] += delta * delta;
         }
@@ -36,7 +36,7 @@ void Yin_difference(Yin *yin, float* buffer){
  * This goes through the Yin autocorellation values and finds out roughly where shift is which
  * produced the smallest difference
  */
-void Yin_cumulativeMeanNormalizedDifference(Yin *yin){
+void Yin_cumulativeMeanNormalizedDifference(Yin *yin) {
     int tau;
     float runningSum = 0;
     yin->yinBuffer[0] = 1;
@@ -53,12 +53,12 @@ void Yin_cumulativeMeanNormalizedDifference(Yin *yin){
  * Step 3: Search through the normalised cumulative mean array and find values that are over the threshold
  * @return Shift (tau) which caused the best approximate autocorellation. -1 if no suitable value is found over the threshold.
  */
-int Yin_absoluteThreshold(Yin *yin){
+int Yin_absoluteThreshold(Yin *yin) {
     int tau;
 
     /* Search through the array of cumulative mean values, and look for ones that are over the threshold
      * The first two positions in yinBuffer are always so start at the third (index 2) */
-    for (tau = 2; tau < yin->halfBufferSize ; tau++) {
+    for (tau = 2; tau < yin->halfBufferSize; tau++) {
         if (yin->yinBuffer[tau] < yin->threshold) {
             while (tau + 1 < yin->halfBufferSize && yin->yinBuffer[tau + 1] < yin->yinBuffer[tau]) {
                 tau++;
@@ -104,16 +104,14 @@ float Yin_parabolicInterpolation(Yin *yin, int tauEstimate) {
     /* Calculate the first polynomial coeffcient based on the current estimate of tau */
     if (tauEstimate < 1) {
         x0 = tauEstimate;
-    }
-    else {
+    } else {
         x0 = tauEstimate - 1;
     }
 
     /* Calculate the second polynomial coeffcient based on the current estimate of tau */
     if (tauEstimate + 1 < yin->halfBufferSize) {
         x2 = tauEstimate + 1;
-    }
-    else {
+    } else {
         x2 = tauEstimate;
     }
 
@@ -121,20 +119,16 @@ float Yin_parabolicInterpolation(Yin *yin, int tauEstimate) {
     if (x0 == tauEstimate) {
         if (yin->yinBuffer[tauEstimate] <= yin->yinBuffer[x2]) {
             betterTau = tauEstimate;
-        }
-        else {
+        } else {
             betterTau = x2;
         }
-    }
-    else if (x2 == tauEstimate) {
+    } else if (x2 == tauEstimate) {
         if (yin->yinBuffer[tauEstimate] <= yin->yinBuffer[x0]) {
             betterTau = tauEstimate;
-        }
-        else {
+        } else {
             betterTau = x0;
         }
-    }
-    else {
+    } else {
         float s0, s1, s2;
         s0 = yin->yinBuffer[x0];
         s1 = yin->yinBuffer[tauEstimate];
@@ -164,7 +158,7 @@ float Yin_parabolicInterpolation(Yin *yin, int tauEstimate) {
  * @param bufferSize Length of the audio buffer to analyse
  * @param threshold  Allowed uncertainty (e.g 0.05 will return a pitch with ~95% probability)
  */
-void Yin_init(Yin *yin, int bufferSize, float threshold){
+void Yin_init(Yin *yin, int bufferSize, float threshold) {
     /* Initialise the fields of the Yin structure passed in */
     yin->bufferSize = bufferSize;
     yin->halfBufferSize = bufferSize / 2;
@@ -172,10 +166,10 @@ void Yin_init(Yin *yin, int bufferSize, float threshold){
     yin->threshold = threshold;
 
     /* Allocate the autocorellation buffer and initialise it to zero */
-    yin->yinBuffer = (float *) malloc(sizeof(float)* yin->halfBufferSize);
+    yin->yinBuffer = (float *) malloc(sizeof(float) * yin->halfBufferSize);
 
     int i;
-    for(i = 0; i < yin->halfBufferSize; i++){
+    for (i = 0; i < yin->halfBufferSize; i++) {
         yin->yinBuffer[i] = 0;
     }
 }
@@ -186,7 +180,7 @@ void Yin_init(Yin *yin, int bufferSize, float threshold){
  * @param  buffer Buffer of samples to analyse
  * @return        Fundamental frequency of the signal in Hz. Returns -1 if pitch can't be found
  */
-float Yin_getPitch(Yin *yin, float* buffer){
+float Yin_getPitch(Yin *yin, float *buffer) {
     int tauEstimate = -1;
     float pitchInHertz = -1;
 
@@ -200,7 +194,7 @@ float Yin_getPitch(Yin *yin, float* buffer){
     tauEstimate = Yin_absoluteThreshold(yin);
 
     /* Step 5: Interpolate the shift value (tau) to improve the pitch estimate. */
-    if(tauEstimate != -1){
+    if (tauEstimate != -1) {
         pitchInHertz = YIN_SAMPLING_RATE / Yin_parabolicInterpolation(yin, tauEstimate);
     }
 
@@ -212,6 +206,6 @@ float Yin_getPitch(Yin *yin, float* buffer){
  * @param  yin Yin object that has been run over a buffer
  * @return     Returns the certainty of the note found as a decimal (i.e 0.3 is 30%)
  */
-float Yin_getProbability(Yin *yin){
+float Yin_getProbability(Yin *yin) {
     return yin->probability;
 }

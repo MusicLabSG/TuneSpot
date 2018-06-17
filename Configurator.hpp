@@ -8,10 +8,10 @@
 #ifndef CONFIGURATOR_H
 #define CONFIGURATOR_H
 
-#include <QObject>
 #include "NotesController.hpp"
 #include "Recorder.hpp"
 #include <QDebug>
+#include <QObject>
 
 class Configurator : public QObject {
     Q_OBJECT
