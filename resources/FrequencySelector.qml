@@ -1,12 +1,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
-import com.github.tune_spot.configurator 1.0
+import com.github.tune_spot.core 1.0
 
 import "../scripts/FrequencySelectorContext.js" as Context
 import "colors.js" as Color
 
 Item {
-    property Configurator configurator;
+    property Core core;
     id: root
 
     Rectangle {
@@ -26,7 +26,7 @@ Item {
     }
 
     Text {
-        property int frequency: parent.configurator.getBaseFrequency();
+        property int frequency: parent.core.getBaseFrequency();
 
         anchors.centerIn: container
         color: "#FFFFFF"
@@ -113,7 +113,7 @@ Item {
             container.height = Context.prefHeight;
 
             // Sent the result to the backend
-            root.configurator.changeBaseFrequency(Context.currentFreq)
+            root.core.setBaseFrequency(Context.currentFreq)
         }
 
         onDoubleClicked: helper.visible = true

@@ -12,14 +12,14 @@ var numberOfLines = 19;
 var note_holder_obj
 var string_holder_obj;
 var lines_container_obj;
-var configurator_obj;
+var core_obj;
 
-function onCreate(note_holder, string_holder, lines_container, configurator) {
+function onCreate(note_holder, string_holder, lines_container, core) {
     Observable.addObserver(this)
     note_holder_obj = note_holder;
     string_holder_obj = string_holder;
     lines_container_obj = lines_container;
-    configurator_obj = configurator;
+    core_obj = core;
     createLines(lines_container);
     createCircles();
 }
@@ -115,13 +115,14 @@ function tune() {
         return;
 
     if(Shared.currentSelectedInstrument === "Guitar"){
-        configurator_obj.setGuitarXString(current_string + 1);
+        //core_obj.setGuitarXString(current_string + 1);
     } else if(Shared.currentSelectedInstrument === "Cello"){
-        configurator_obj.setCelloXString(current_string + 1);
+        //core_obj.setCelloXString(current_string + 1);
     }
 
 
-    var tunePercentage = configurator_obj.getPercentageOfDistanceFromTheClosestNote();
+    //var tunePercentage = core_obj.getPercentageOfDistanceFromTheClosestNote();
+    var tunePercentage = 100;
     print("Got percentage: " + tunePercentage);
     if (tunePercentage > 0) {
         showTuningAccuracy("Left", (100 - tunePercentage) / 100);
@@ -132,10 +133,10 @@ function tune() {
     }
 
     // Change the displayed note
-    var note = configurator_obj.getClosestNote().charAt(0);
+    var note = core_obj.getClosestNote().charAt(0);
     note_holder_obj.text = note;
-    //console.log(configurator_obj.getPercentageOfDistanceFromTheClosestNote());
-    //console.log(configurator_obj.getClosestNote());
+    //console.log(core_obj.getPercentageOfDistanceFromTheClosestNote());
+    //console.log(core_obj.getClosestNote());
 }
 
 // Resets all variables and recalculates them

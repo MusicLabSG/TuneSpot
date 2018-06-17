@@ -1,11 +1,11 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
-import com.github.tune_spot.configurator 1.0
+import com.github.tune_spot.core 1.0
 
 import "../scripts/TunerContext.js" as Context
 
 Item {
-    property Configurator configurator;
+    property Core core;
 
     RowLayout {
         id: lines_container
@@ -38,7 +38,7 @@ Item {
     }
 
     Component.onCompleted: {
-        Context.onCreate(notes_holder, string_holder, lines_container, configurator);
+        Context.onCreate(notes_holder, string_holder, lines_container, core);
 
     }
 }
