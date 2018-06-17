@@ -10,6 +10,7 @@
 
 #include <QAudioInput>
 #include <QFile>
+#include <QThread>
 
 class Recorder : public QObject {
     Q_OBJECT

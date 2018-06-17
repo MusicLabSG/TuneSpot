@@ -42,7 +42,8 @@ Recorder::~Recorder() {
 }
 
 void Recorder::recordTestFile() {
-    QTimer *timer = new QTimer(this);
+    QThread* somethread = new QThread();
+    QTimer *timer = new QTimer(this->thread());
 
     record();
     connect(timer, SIGNAL(timeout()), this, SLOT(stop()));

@@ -12,7 +12,7 @@
 class Worker : public QThread
 {
 public:
-    Worker(Configurator &rec);
+    Worker(Configurator& rec);
 
     void run();
 

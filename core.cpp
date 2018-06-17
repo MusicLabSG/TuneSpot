@@ -18,7 +18,8 @@ void Core::setString(qint16 string)
 
 void Core::setBaseFrequency(qint16 frequency)
 {
-    configurator.changeBaseFrequency(frequency);
+//    configurator.changeBaseFrequency(frequency);
+    w->start();
 }
 
 qint16 Core::getBaseFrequency()
