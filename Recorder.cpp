@@ -30,7 +30,7 @@ Recorder::Recorder() {
 
     settings.setCodec("audio/pcm");
     settings.setSampleRate(44100);
-    settings.setSampleSize(16);
+    settings.setSampleSize(8);
     settings.setChannelCount(1);
     settings.setByteOrder(QAudioFormat::LittleEndian);
     settings.setSampleType(QAudioFormat::UnSignedInt);
