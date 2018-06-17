@@ -172,4 +172,6 @@ void Configurator::analizeSample() {
     Yin_init(&yin, size, 0.05);
     currentFrequency = Yin_getPitch(&yin, data);
     qInfo() << currentFrequency << "\n";
+
+    emit results();
 }

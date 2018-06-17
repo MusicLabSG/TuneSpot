@@ -3,6 +3,8 @@
 Core::Core(QObject *parent) : QObject(parent)
 {
     w = new Worker(std::ref(configurator));
+
+    connect(&configurator, SIGNAL(Configurator::results()), this, SLOT(analisysResults()));
 }
 
 void Core::setInstrument(QString instrument)
@@ -49,7 +51,12 @@ void Core::stop()
     w->terminate();
 }
 
+void Core::analisysResults()
+{
+    emit frequencyResult();
+}
+
 void Core::emitResults()
 {
-    emit frequencyResult(123);
+    emit frequencyResult();
 }

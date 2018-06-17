@@ -20,6 +20,9 @@ public:
 
     ~Configurator();
 
+signals:
+    void results();
+
 public slots:
     /**
      * @brief setCello1String is a function that sets the variables for the x string

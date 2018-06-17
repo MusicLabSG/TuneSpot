@@ -26,8 +26,9 @@ public:
     Q_INVOKABLE void start();
     Q_INVOKABLE void stop();
 signals:
-    void frequencyResult(qint16 frequency);
+    void frequencyResult();
 public slots:
+    void analisysResults();
 
 private:
     QString instrument;
