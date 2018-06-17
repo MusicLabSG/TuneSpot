@@ -24,6 +24,9 @@ public:
      */
     ~Recorder();
 
+signals:
+    void recoredSignal();
+
 public slots:
     /**
      * @brief recordTestFile is a function that records sound for the test sound file that we need to analise

@@ -21,6 +21,8 @@ Configurator::Configurator() {
     closestNote = "";
     recorder = new Recorder();
     notesController = new NotesController();
+
+    connect(recorder, SIGNAL(recoredSignal()), this, SLOT(analizeSample()));
 }
 
 Configurator::~Configurator() {

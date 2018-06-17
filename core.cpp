@@ -38,7 +38,9 @@ QString Core::getClosestNote()
 
 void Core::start()
 {
-    w->start();
+//    w->start();
+    configurator.recordSample();
+//    configurator.analizeSample();
 }
 
 void Core::stop()

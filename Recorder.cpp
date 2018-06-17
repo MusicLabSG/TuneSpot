@@ -125,4 +125,6 @@ void Recorder::stop() {
     audio->stop();
     output.close();
     rawToWav(outputFilePath, settings);
+
+    emit recoredSignal();
 }
