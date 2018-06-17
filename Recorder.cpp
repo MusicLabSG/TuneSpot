@@ -24,8 +24,7 @@ Recorder::Recorder() {
 
 
     QDir path;
-    outputFolder = path.currentPath();
-    outputFilePath = outputFolder;
+    outputFilePath = path.currentPath();
     outputFilePath.append(QString("/test.wav"));
 
     settings.setCodec("audio/pcm");
@@ -47,7 +46,8 @@ void Recorder::recordTestFile() {
 
     record();
     connect(timer, SIGNAL(timeout()), this, SLOT(stop()));
-    timer->start(2000); //time specified in ms
+
+    timer->start(400); //time specified in ms
 }
 
 QString Recorder::getOutputFilePath() {
@@ -124,7 +124,5 @@ void rawToWav(QString filename, QAudioFormat &settings) {
 void Recorder::stop() {
     audio->stop();
     output.close();
-
-    QString newOutputFilePath = outputFolder;
     rawToWav(outputFilePath, settings);
 }

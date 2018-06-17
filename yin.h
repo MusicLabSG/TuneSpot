@@ -12,11 +12,11 @@
  * @breif	Object to encapsulate the parameters for the Yin pitch detection algorithm
  */
 typedef struct _Yin {
-    int bufferSize;			/**< Size of the audio buffer to be analysed */
-    int halfBufferSize;		/**< Half the buffer length */
-    float* yinBuffer;		/**< Buffer that stores the results of the intermediate processing steps of the algorithm */
-    float probability;		/**< Probability that the pitch found is correct as a decimal (i.e 0.85 is 85%) */
-    float threshold;		/**< Allowed uncertainty in the result as a decimal (i.e 0.15 is 15%) */
+    int bufferSize;            /**< Size of the audio buffer to be analysed */
+    int halfBufferSize;        /**< Half the buffer length */
+    float *yinBuffer;        /**< Buffer that stores the results of the intermediate processing steps of the algorithm */
+    float probability;        /**< Probability that the pitch found is correct as a decimal (i.e 0.85 is 85%) */
+    float threshold;        /**< Allowed uncertainty in the result as a decimal (i.e 0.15 is 15%) */
 } Yin;
 
 /**
@@ -33,7 +33,7 @@ void Yin_init(Yin *yin, int bufferSize, float threshold);
  * @param  buffer Buffer of samples to analyse
  * @return        Fundamental frequency of the signal in Hz. Returns -1 if pitch can't be found
  */
-float Yin_getPitch(Yin *yin, float* buffer);
+float Yin_getPitch(Yin *yin, float *buffer);
 
 /**
  * Certainty of the pitch found
