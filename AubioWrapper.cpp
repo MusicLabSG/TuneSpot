@@ -2,17 +2,8 @@
 
 AubioWrapper::AubioWrapper() {
 	reloadAubio();
-    bufSize = BUF_SIZE;
-
-    hopSize = HOP_SIZE;
-
     aubioIn = new_fvec(hopSize);
-
 	aubioOut = new_fvec(1);
-
-    algorithm = "default";
-
-    sampleRate = 48000;
 }
 
 AubioWrapper::~AubioWrapper() {

@@ -30,13 +30,13 @@ private:
 
     std::unique_ptr<aubio_pitch_t, AubioPitchDeleter> aubioPitch;
 
-    QString algorithm;
+    QString algorithm = "default";
 
-    uint_t bufSize;
+    uint_t bufSize = BUF_SIZE;
 
-    uint_t hopSize;
+    uint_t hopSize = HOP_SIZE;
 
-    uint_t sampleRate;
+    uint_t sampleRate = 48000;
 };
 
 #endif // AUBIOWRAPPER_H
