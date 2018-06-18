@@ -1,7 +1,7 @@
 ![alt tag](https://i.imgur.com/M9HlvZR.png)
 
 
-Tune Spot requires:
+# Build Requirements
 
 * A C++ compiler with C++14 support
 * make
@@ -15,5 +15,5 @@ Tune Spot requires:
 	- Qt Multimedia (qt5-multimedia)
 * Aubio 
 
-# Acknowledgements
-- Tune Spot uses [aubio](https://github.com/aubio/aubio) for audio processing
+# Acknowledgements & Credits
+- [aubio](https://github.com/aubio/aubio) for audio processing
