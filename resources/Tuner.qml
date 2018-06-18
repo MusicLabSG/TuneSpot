@@ -5,12 +5,15 @@ import Configurator 1.0
 import "../scripts/TunerContext.js" as Context
 
 Item {
-    property Configurator core;
+    signal percentage_changed(string note_name, string percentage)
+
+    onPercentage_changed: Context.tune(note_name, percentage)
 
     RowLayout {
         id: lines_container
         anchors.centerIn: parent
         spacing: 15.5
+
     }
 
 
@@ -39,7 +42,6 @@ Item {
     }
 
     Component.onCompleted: {
-        Context.onCreate(notes_holder, string_holder, lines_container, core);
-
+        Context.onCreate(notes_holder, string_holder, lines_container);
     }
 }

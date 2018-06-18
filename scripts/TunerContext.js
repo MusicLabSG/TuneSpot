@@ -53,11 +53,14 @@ function showTuningAccuracy(position, value) {
         lines[i].color = "white"
     }
 
-    print("Shows tuning for value: " + value);
+
 
     if(position === "Right")
         value = numberOfLines/2 + value;
 
+    //print("Shows tuning for value: " + value % (numberOfLines - 1));
+
+    value = Math.floor(value % (numberOfLines - 1));
     if(position === "Center"){
         print(numberOfLines);
         lines[9].color = "green";
@@ -105,14 +108,15 @@ function onStringClicked(id) {
     object.height = 25;
     object.x -= 6;
     object.y -= 6;
-
-    tune(); //Debug only
 }
 
 // Takes the current info from the backend and shows them in the UI
-function tune() {
-    if (current_string < 0)
-        return;
+function tune(note, tunePercentage) {
+   // print("in tune")
+    //if (current_string < 0)
+      //  return;
+
+    //print(note)
 
     if(Shared.currentSelectedInstrument === "Guitar"){
         //core_obj.setGuitarXString(current_string + 1);
@@ -122,19 +126,27 @@ function tune() {
 
 
     //var tunePercentage = core_obj.getPercentageOfDistanceFromTheClosestNote();
-    var tunePercentage = 100;
-    print("Got percentage: " + tunePercentage);
+    tunePercentage = Math.floor(tunePercentage);
+    //print("Got percentage: " + tunePercentage);
+
     if (tunePercentage > 0) {
-        showTuningAccuracy("Left", (100 - tunePercentage) / 100);
+//        if (tunePercentage > 10) {
+//            tunePercentage = (100 - tunePercentage) / 10;
+//        }
+
+        showTuningAccuracy("Left", tunePercentage);
     } else if(tunePercentage === 0 ) {
         showTuningAccuracy("Center", 0);
     } else {
-        showTuningAccuracy("Right", (100 + tunePercentage) / 100);
+//        if (Math.abs(tunePercentage) > 10) {
+//            tunePercentage = (100 - tunePercentage) / 10;
+//        }
+
+        showTuningAccuracy("Right", Math.abs(tunePercentage));
     }
 
     // Change the displayed note
-    var note = core_obj.getClosestNote().charAt(0);
-    note_holder_obj.text = note;
+    note_holder_obj.text = note.charAt(0);
     //console.log(core_obj.getPercentageOfDistanceFromTheClosestNote());
     //console.log(core_obj.getClosestNote());
 }

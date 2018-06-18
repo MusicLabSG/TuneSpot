@@ -18,15 +18,11 @@ Window {
     title: qsTr("Tune Spot")
     visible: true
 
-    Component.onCompleted: {
-        print("Tuner initialized");
-        print(configurator.closestNote);
-    }
-
     // This is the backend btw
     Configurator {
         id: configurator
         active: true
+        onPercentageChanged: tuner.percentage_changed(note, configurator.percentage)
     }
 
     FrequencySelector {
@@ -40,14 +36,12 @@ Window {
 
     Tuner {
         anchors.bottom: list.top
-        //core: core
         height: parent.height * 0.7; width: parent.width
         id: tuner
     }
 
     Instruments_list {
         width: parent.width
-
         anchors.bottom: parent.bottom
         //core: core
         id: list
