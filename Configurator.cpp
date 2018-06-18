@@ -142,6 +142,10 @@ qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
     return percentageOfDistanceFromTheClosestNote;
 }
 
+qreal Configurator::getCurrentFrequency() {
+    return currentFrequency;
+}
+
 void Configurator::applyFormat() {
     formatSettings.setCodec("audio/pcm");
     formatSettings.setChannelCount(1);

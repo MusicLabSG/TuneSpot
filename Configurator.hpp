@@ -19,9 +19,9 @@ class Configurator : public QObject {
 
     Q_OBJECT
     Q_PROPERTY(bool active MEMBER activeTuner WRITE setActive NOTIFY activeChanged)
-    Q_PROPERTY(QString note MEMBER closestNote NOTIFY samplesAnalyzed())
-    Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote NOTIFY samplesAnalyzed())
-    Q_PROPERTY(qreal frequency MEMBER currentFrequency NOTIFY samplesAnalyzed())
+    Q_PROPERTY(QString note MEMBER closestNote READ getClosestNote() NOTIFY samplesAnalyzed())
+    Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote READ getPercentageOfDistanceFromTheClosestNote() NOTIFY samplesAnalyzed())
+    Q_PROPERTY(qreal frequency MEMBER currentFrequency READ getCurrentFrequency() NOTIFY samplesAnalyzed())
     Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged)
     Q_PROPERTY(QString setterName MEMBER setterIdentifier WRITE setOrganSetter NOTIFY setterChanged)
 
@@ -92,6 +92,12 @@ public:
      * @return the percentage of distance from the closest note
      */
     qreal getPercentageOfDistanceFromTheClosestNote();
+
+    /**
+     * @brief getCurrentFrequency this function returns the current frequency
+     * @return the current frequency
+     */
+    qreal getCurrentFrequency();
 
 signals:
 	void samplesAnalyzed();
