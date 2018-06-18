@@ -18,8 +18,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # aubio
 INCLUDEPATH += $$PWD/./aubio/src
 
-QMAKE_CFLAGS += "-include $$_PRO_FILE_PWD_/Compilerfix.hpp"
-QMAKE_CXXFLAGS += "-include $$_PRO_FILE_PWD_/Compilerfix.hpp"
+QMAKE_CFLAGS += "-include $$_PRO_FILE_PWD_/CompilerFix.hpp"
+QMAKE_CXXFLAGS += "-include $$_PRO_FILE_PWD_/CompilerFix.hpp"
 SOURCES += ./aubio/src/pitch/pitch.c \
         ./aubio/src/fvec.c \
         ./aubio/src/utils/log.c \
