@@ -16,4 +16,4 @@ Tune Spot requires:
 * Aubio 
 
 # Acknowledgements
-- QuickPitch uses [aubio](https://github.com/aubio/aubio) for audio processing
+- Tune Spot uses [aubio](https://github.com/aubio/aubio) for audio processing
