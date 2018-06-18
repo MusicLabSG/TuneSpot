@@ -11,11 +11,10 @@
 #include <QObject>
 #include <QVector>
 
-class NotesController : public QObject
-{
+class NotesController : public QObject  {
     Q_OBJECT
 public:
-    explicit NotesController();
+    explicit NotesController(QObject *parent = nullptr);
 
 public slots:
     /**
@@ -50,13 +49,16 @@ private slots:
 
 private:
     //  is the base frequency
-    qreal baseFrequency;
+    quint16 baseFrequency;
 
     //  are the names of the notes
     QVector<QString> noteNames;
 
     //  are the frequencies of the notes
     QVector<qreal> noteFrequencies;
+
+    //  the path for the folder of Tunespot in documents
+    QString path;
 };
 
 #endif // NOTESCONTROLLER_HPP

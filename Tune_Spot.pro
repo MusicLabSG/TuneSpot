@@ -1,9 +1,8 @@
-CONFIG += c++11
-QT += quick
-QT += widgets
-QT += multimedia
-QT += core
+QT += quick widgets multimedia core
 android : QT += androidextras
+CONFIG += c++14
+QMAKE_CXXFLAGS += -std=c++11
+
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -16,24 +15,43 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+# aubio
+INCLUDEPATH += $$PWD/./aubio/src
+
+QMAKE_CFLAGS += "-include $$_PRO_FILE_PWD_/Compilerfix.hpp"
+QMAKE_CXXFLAGS += "-include $$_PRO_FILE_PWD_/Compilerfix.hpp"
+SOURCES += ./aubio/src/pitch/pitch.c \
+        ./aubio/src/fvec.c \
+        ./aubio/src/utils/log.c \
+        ./aubio/src/pitch/pitchyin.c \
+        ./aubio/src/spectral/phasevoc.c \
+        ./aubio/src/cvec.c \
+        ./aubio/src/pitch/pitchmcomb.c \
+        ./aubio/src/temporal/c_weighting.c \
+        ./aubio/src/pitch/pitchfcomb.c \
+        ./aubio/src/pitch/pitchschmitt.c \
+        ./aubio/src/pitch/pitchspecacf.c \
+        ./aubio/src/pitch/pitchyinfft.c \
+        ./aubio/src/temporal/filter.c \
+        ./aubio/src/mathutils.c \
+        ./aubio/src/spectral/fft.c \
+        ./aubio/src/lvec.c \
+        ./aubio/src/spectral/ooura_fft8g.c
+
 HEADERS = \
     NotesController.hpp \
+    PitchBuffer.hpp \
     Configurator.hpp \
-    Recorder.hpp \
-    core.h \
-    AudioFile.h \
-    yin.h \
-    worker.h
+    AubioWrapper.hpp \
+    CompilerFix.hpp
 
 SOURCES += \
     main.cpp \
-    Recorder.cpp \
-    Configurator.cpp \
     NotesController.cpp \
-    core.cpp \
-    AudioFile.cpp \
-    yin.cpp \
-    worker.cpp
+    PitchBuffer.cpp \
+    Configurator.cpp \
+    AubioWrapper.cpp
+
 
 RESOURCES += qml.qrc
 

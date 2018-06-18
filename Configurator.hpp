@@ -1,33 +1,53 @@
 /*
- * File:    Configurator.cpp
+ * File:    Configurator.hpp
  * Author:  Spiros
  *
  * Created on Jun 10, 2018, 5:28 PM
  */
 
-#ifndef CONFIGURATOR_H
-#define CONFIGURATOR_H
+#ifndef Configurator_HPP
+#define Configurator_HPP
 
-#include "NotesController.hpp"
-#include "Recorder.hpp"
-#include <QDebug>
 #include <QObject>
+#include <QUrl>
+#include <memory>
+#include <AubioWrapper.hpp>
+#include <NotesController.hpp>
+#include <PitchBuffer.hpp>
 
 class Configurator : public QObject {
+
     Q_OBJECT
+    Q_PROPERTY(bool active MEMBER activeTuner WRITE setActive NOTIFY activeChanged)
+    Q_PROPERTY(QString note MEMBER closestNote NOTIFY samplesAnalyzed())
+    Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote NOTIFY samplesAnalyzed())
+    Q_PROPERTY(qreal frequency MEMBER currentFrequency NOTIFY samplesAnalyzed())
+    Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged)
+    Q_PROPERTY(QString setterName MEMBER setterIdentifier WRITE setOrganSetter NOTIFY setterChanged)
+
 public:
-    explicit Configurator();
+    explicit Configurator(QObject *parent = nullptr);
 
-    ~Configurator();
+    /**
+     * @brief setActive this function activates and deactivates the tuner
+     * @param active is a variable indicates if the tuner is gonna be active or not
+     */
+    void setActive(bool active);
 
-    //  we use this recorder to record the test input file
-    Recorder *recorder;
+    /**
+     * @brief setOrganSetter is a function that sets the organ setter that is gonna be used
+     * @param setterIdentifier is the setterIdentifier that defines the setter
+     * freeMode
+     * celloX where x {1-4} check below what every number means e.g. cello1
+     * guitarX where x {1-6] check below what every number means e.g. guitar6
+     */
+    void setOrganSetter(QString setterIdentifier);
 
+    /**
+     * @brief setCloseNoteAndPercentageAccordingToSetterID this functions sets variable that the front need according to setted id
+     */
+    void setCloseNoteAndPercentageAccordingToSetterID();
 
-signals:
-    void results();
-
-public slots:
     /**
      * @brief setCello1String is a function that sets the variables for the x string
      * 1 is the string with the highest pitch and 4 is the string with the lowest pitch
@@ -56,10 +76,10 @@ public slots:
     quint16 getBaseFrequency();
 
     /**
-     * @brief changeBaseFrequency is a function that changes the base frequency
+     * @brief setBaseFrequency is a function that changes the base frequency
      * @param frequency is the base frequency value that we want to set
      */
-    void changeBaseFrequency(quint16 frequency);
+    void setBaseFrequency(quint16 frequency);
 
     /**
      * @brief getClosestNote is a function that returns the closest note
@@ -73,22 +93,35 @@ public slots:
      */
     qreal getPercentageOfDistanceFromTheClosestNote();
 
-    /**
-     * @brief setCurrentFrequency is a function that sets the current frenquency that has been recognized from the test input file
-     */
-    void recordSample();
+signals:
+	void samplesAnalyzed();
 
-    /**
-     * @brief analize is a function that analise the a wave file and finds the current frequency
-     */
-    void analizeSample();
+    void baseFrequencyChanged();
+
+    void setterChanged();
+
+    void activeChanged();
 
 private:
+    /**
+     * @brief applyFormat is a functions that sets the format settings of the audioinput
+     */
+    void applyFormat();
+
     /**
      * @brief setTheVariables is a function that sets percentageOfDistanceFromTheClosestNote
      * @param i is the pointer of the closest note
      */
     void setPercentageOfDistanceFromTheClosestNote(quint16 i);
+
+    //  the audioinput device
+    std::unique_ptr<QAudioInput> recorder;
+
+    //  the format settings of the qiodevice
+    QAudioFormat formatSettings;
+
+    //  the buffer that includes the audio input
+    PitchBuffer pitchBuffer;
 
     //  we use this notes' controller to handle the notes as name and frequencies and their base frequency
     NotesController *notesController;
@@ -96,11 +129,23 @@ private:
     //  this variable stores the currunt frequency that has recognized from the test input file
     qreal currentFrequency;
 
+    //  this varibles is the setter id
+    QString setterIdentifier;
+
     //  this variable is used for graphical reasons and it's range is -100 to 100
     qreal percentageOfDistanceFromTheClosestNote;
 
     //  this variable is used for graphical reasons
     QString closestNote;
+
+    //  this variable indicates if the tuner is active or not
+    bool activeTuner;
+
+    //  the aubio object
+    AubioWrapper aubio;
+
+private slots:
+	void analyzeSamples();
 };
 
-#endif // CONFIGURATOR_H
+#endif // Configurator_HPP

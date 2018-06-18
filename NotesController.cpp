@@ -5,7 +5,7 @@
  * Created on Jun 10, 2018, 5:28 PM
  */
 
-#include "NotesController.hpp"
+#include <NotesController.hpp>
 
 #include <QDir>
 #include <QFileInfo>
@@ -13,15 +13,20 @@
 #include <QTextStream>
 #include <QtMath>
 #include <QDebug>
+#include <QStandardPaths>
+
 #ifdef Q_OS_ANDROID
     #include <QtAndroidExtras/QtAndroid>
 #endif
 
 
-NotesController::NotesController() {
+NotesController::NotesController(QObject *parent) : QObject(parent) {
 #ifdef Q_OS_ANDROID
     QtAndroid::requestPermissionsSync( QStringList() << "android.permission.WRITE_EXTERNAL_STORAGE" );
 #endif
+    QDir folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    path = folder.path();
+    path.append("/TuneSpot");
     readNotes();
 }
 
@@ -29,7 +34,6 @@ void NotesController::changeBaseFrequency(quint32 newBaseFrequency) {
     baseFrequency = newBaseFrequency;
     noteFrequencies.clear();
 
-    QString path = QDir::currentPath();
     path.append("/frequenciesOfNotes.txt");
     QFile fileForNoteFrequencies(path);
     if (!fileForNoteFrequencies.open(QIODevice::WriteOnly)) {
@@ -75,7 +79,6 @@ void NotesController::readNotes() {
     }
 
     // reading or creating for the first time the frequencies
-    QString path = QDir::currentPath();
     path.append("/frequenciesOfNotes.txt");
     QFileInfo check_file(path);
 

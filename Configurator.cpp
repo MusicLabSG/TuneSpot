@@ -2,35 +2,67 @@
  * File:    Configurator.cpp
  * Author:  Spiros
  *
- * Created on Jun 10, 2018, 5:28 PM
+ * Created on Jun 16, 2018, 5:28 PM
  */
 
-#include "Configurator.hpp"
-#include "Recorder.hpp"
-#include <QDir>
-#include <QFile>
-#include <QTimer>
-#include <QtMath>
+#include <Configurator.hpp>
 #include <QDebug>
-#include "AudioFile.h"
-#include "yin.h"
+#include <QtMath>
 
-Configurator::Configurator() {
+Configurator::Configurator(QObject *parent) : QObject(parent) {
+    applyFormat();
+    recorder = std::make_unique<QAudioInput>(formatSettings);
+
     currentFrequency = 0;
     percentageOfDistanceFromTheClosestNote = 0;
     closestNote = "";
-    recorder = new Recorder();
+    setterIdentifier = "freeMode";
     notesController = new NotesController();
 
-    connect(recorder, SIGNAL(recoredSignal()), this, SLOT(analizeSample()));
+    connect(&pitchBuffer, SIGNAL(samplesReady()), this, SLOT(analyzeSamples()));
 }
 
-Configurator::~Configurator() {
-    currentFrequency = 0;
-    percentageOfDistanceFromTheClosestNote = 0;
-    closestNote = "";
-    delete recorder;
-    delete notesController;
+void Configurator::setActive(bool active)
+{
+    if (active) {
+        if (!pitchBuffer.open(QIODevice::WriteOnly)) {
+            qDebug() << "Something went wrong while opening the device";
+        }
+        recorder->start(&pitchBuffer);
+    } else {
+        recorder->stop();
+    }
+    activeTuner = active;
+}
+
+void Configurator::setOrganSetter(QString setterIdentifier) {
+    this->setterIdentifier = setterIdentifier;
+}
+
+void Configurator::setCloseNoteAndPercentageAccordingToSetterID() {
+    if(setterIdentifier == "freeMode") {
+        setFreeMode();
+    } else if (setterIdentifier == "cello1") {
+        setCelloXString(1);
+    } else if (setterIdentifier == "cello2") {
+        setCelloXString(2);
+    } else if (setterIdentifier == "cello3") {
+        setCelloXString(3);
+    } else if (setterIdentifier == "cello4") {
+        setCelloXString(4);
+    } else if (setterIdentifier == "guitar1") {
+        setGuitarXString(1);
+    } else if (setterIdentifier == "guitar2") {
+        setGuitarXString(2);
+    } else if (setterIdentifier == "guitar3") {
+        setGuitarXString(3);
+    } else if (setterIdentifier == "guitar4") {
+        setGuitarXString(4);
+    } else if (setterIdentifier == "guitar5") {
+        setGuitarXString(5);
+    } else if (setterIdentifier == "guitar6") {
+        setGuitarXString(6);
+    }
 }
 
 void Configurator::setCelloXString(quint16 x) {
@@ -98,7 +130,7 @@ quint16 Configurator::getBaseFrequency() {
     return notesController->getBaseFrequency();
 }
 
-void Configurator::changeBaseFrequency(quint16 newBaseFrequency) {
+void Configurator::setBaseFrequency(quint16 newBaseFrequency) {
     notesController->changeBaseFrequency(newBaseFrequency);
 }
 
@@ -110,8 +142,20 @@ qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
     return percentageOfDistanceFromTheClosestNote;
 }
 
-void Configurator::recordSample() {
-    recorder->recordTestFile();
+void Configurator::applyFormat() {
+    formatSettings.setCodec("audio/pcm");
+    formatSettings.setChannelCount(1);
+    formatSettings.setSampleRate(48000);
+    formatSettings.setSampleType(QAudioFormat::SampleType::Float);
+    formatSettings.setSampleSize(sizeof(float) * 8);
+
+    // test if the format is supported
+    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
+    if (!info.isFormatSupported(formatSettings)) {
+        qWarning() << "Default format not supported, trying to use 16bit signed integer samples";
+        formatSettings = info.nearestFormat(formatSettings);
+    }
+    pitchBuffer.setSampleType(formatSettings.sampleType(), formatSettings.sampleSize() / 8);
 }
 
 void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
@@ -151,27 +195,16 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
     }
 }
 
-void Configurator::analizeSample() {
-    std::string pathOfFile = recorder->getOutputFilePath().toStdString();
+void Configurator::analyzeSamples() {
+    // while new samples are available
+    while (pitchBuffer.getSamples(aubio.aubioIn)) {
+        aubio_pitch_do(aubio.getAubioPitch(), aubio.aubioIn, aubio.aubioOut);
+        currentFrequency = aubio.aubioOut->data[0];
 
-    // set up the audio file using double vectors
-    AudioFile<float> recorded_sample;
-    recorded_sample.load(pathOfFile);
+        //  float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
 
-    // get the data vector from the sample
-    float *data = &recorded_sample.samples[0][0];
-    int size = recorded_sample.samples[0].size();
+        setCloseNoteAndPercentageAccordingToSetterID();
 
-    // filtering the first bip
-    for (int i = 0; i < 1500; i++) {
-        data[i] = 0;
+        emit samplesAnalyzed();
     }
-
-    // init of a yin object
-    Yin yin;
-    Yin_init(&yin, size, 0.05);
-    currentFrequency = Yin_getPitch(&yin, data);
-    qInfo() << currentFrequency << "\n";
-
-    emit results();
 }
