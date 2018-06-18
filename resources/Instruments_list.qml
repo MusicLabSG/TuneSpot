@@ -1,14 +1,14 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.3
-import com.github.tune_spot.core 1.0
+import Configurator 1.0
 
 import "../scripts/InstrumentsContext.js" as Context
 import "shared.js" as Shared
 import "colors.js" as Color
 
 Item {
-    property Core core;
+    property Configurator core;
 
     height: parent.height * 0.13
     id: main

@@ -1,17 +1,18 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.3
-import com.github.tune_spot.core 1.0
+import Configurator 1.0
 
 import "../scripts/TunerContext.js" as Context
 
 Item {
-    property Core core;
+    property Configurator core;
 
     RowLayout {
         id: lines_container
         anchors.centerIn: parent
         spacing: 15.5
     }
+
 
     FontLoader {
         id: localFont

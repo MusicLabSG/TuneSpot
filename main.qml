@@ -1,8 +1,9 @@
-import QtQuick 2.9
+import QtQuick 2.10
 import QtQuick.Window 2.2
 import QtQuick.Layouts 1.2
 import QtQuick.Controls 2.3
-import com.github.tune_spot.core 1.0
+
+import Configurator 1.0
 
 import "./resources"
 import "./resources/colors.js" as Color
@@ -17,10 +18,15 @@ Window {
     title: qsTr("Tune Spot")
     visible: true
 
+    Component.onCompleted: {
+        print("Tuner initialized");
+        print(configurator.closestNote);
+    }
+
     // This is the backend btw
-    Core {
-        id: core
-        onFrequencyResult: print(frequency)
+    Configurator {
+        id: configurator
+        active: true
     }
 
     FrequencySelector {
@@ -29,12 +35,12 @@ Window {
         anchors.leftMargin: 20;
         anchors.bottomMargin: 55;
 
-        core: core
+        //core: core
     }
 
     Tuner {
         anchors.bottom: list.top
-        core: core
+        //core: core
         height: parent.height * 0.7; width: parent.width
         id: tuner
     }
@@ -43,7 +49,7 @@ Window {
         width: parent.width
 
         anchors.bottom: parent.bottom
-        core: core
+        //core: core
         id: list
 
     }
@@ -65,7 +71,4 @@ Window {
         //}
     }
 
-    Component.onCompleted: {
-        //core.start();
-    }
 }

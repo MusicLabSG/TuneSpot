@@ -1,12 +1,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.3
-import com.github.tune_spot.core 1.0
+import Configurator 1.0
 
 import "../scripts/FrequencySelectorContext.js" as Context
 import "colors.js" as Color
 
 Item {
-    property Core core;
+    property Configurator core;
     id: root
 
     Rectangle {
@@ -26,7 +26,7 @@ Item {
     }
 
     Text {
-        property int frequency: parent.core.getBaseFrequency();
+        property int frequency: 0//parent.core.getBaseFrequency();
 
         anchors.centerIn: container
         color: "#FFFFFF"
