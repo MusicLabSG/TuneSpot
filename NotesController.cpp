@@ -26,7 +26,6 @@ NotesController::NotesController(QObject *parent) : QObject(parent) {
 #endif
     QDir folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
     path = folder.path();
-    path.append("/TuneSpot");
     readNotes();
 }
 
