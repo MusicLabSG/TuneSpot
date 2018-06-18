@@ -6,7 +6,7 @@ import "../scripts/FrequencySelectorContext.js" as Context
 import "colors.js" as Color
 
 Item {
-    property Configurator core;
+    property Configurator configurator;
     id: root
 
     Rectangle {
@@ -26,7 +26,7 @@ Item {
     }
 
     Text {
-        property int frequency: 0//parent.core.getBaseFrequency();
+        property int frequency: parent.configurator.baseFreq;
 
         anchors.centerIn: container
         color: "#FFFFFF"
@@ -113,7 +113,7 @@ Item {
             container.height = Context.prefHeight;
 
             // Sent the result to the backend
-            root.core.setBaseFrequency(Context.currentFreq)
+            root.configurator.baseFreq = Context.currentFreq;
         }
 
         onDoubleClicked: helper.visible = true

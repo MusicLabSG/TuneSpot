@@ -31,7 +31,7 @@ Window {
         anchors.leftMargin: 20;
         anchors.bottomMargin: 55;
 
-        //core: core
+        configurator: configurator;
     }
 
     Tuner {

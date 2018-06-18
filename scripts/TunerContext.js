@@ -130,25 +130,18 @@ function tune(note, tunePercentage) {
     //print("Got percentage: " + tunePercentage);
 
     if (tunePercentage > 0) {
-//        if (tunePercentage > 10) {
-//            tunePercentage = (100 - tunePercentage) / 10;
-//        }
-
         showTuningAccuracy("Left", tunePercentage);
     } else if(tunePercentage === 0 ) {
         showTuningAccuracy("Center", 0);
     } else {
-//        if (Math.abs(tunePercentage) > 10) {
-//            tunePercentage = (100 - tunePercentage) / 10;
-//        }
-
         showTuningAccuracy("Right", Math.abs(tunePercentage));
     }
 
     // Change the displayed note
-    note_holder_obj.text = note.charAt(0);
-    //console.log(core_obj.getPercentageOfDistanceFromTheClosestNote());
-    //console.log(core_obj.getClosestNote());
+    if (note.charAt(1) === "#")
+        note_holder_obj.text = note.substring(0,2);
+    else
+        note_holder_obj.text = note.charAt(0);
 }
 
 // Resets all variables and recalculates them
