@@ -10,7 +10,7 @@ Tune Spot requires:
 	- Qt Core 
 	- Qt Quick (qt5-declarative)
 	- Qt QML
-	- Qt widgets
+	- Qt Widgets
 	- Qt Quick Controls 2 (qt5-quickcontrols2)
 	- Qt Multimedia (qt5-multimedia)
 * Aubio 
