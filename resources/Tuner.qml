@@ -12,7 +12,7 @@ Item {
     RowLayout {
         id: lines_container
         anchors.centerIn: parent
-        spacing: 15
+        spacing: 15.5
 
     }
 

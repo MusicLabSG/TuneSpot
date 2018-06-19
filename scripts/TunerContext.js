@@ -7,7 +7,7 @@
 var lines = [];
 var circles = [];
 var current_string = -1;
-var numberOfLines = 21;
+var numberOfLines = 19;
 
 var note_holder_obj
 var string_holder_obj;
@@ -45,6 +45,7 @@ function createLines(id) {
 
 // Colors the specified line.
 // position -> Left || Right || Center: perfect tune
+// value -> 0: no tune, 9:almost good tune
 function showTuningAccuracy(position, value) {
 
     // Make all lines default color
@@ -52,15 +53,15 @@ function showTuningAccuracy(position, value) {
         lines[i].color = "white"
     }
 
-    if(position === "Right") {
-        value = Math.floor(numberOfLines / 2) + Math.floor(value / Math.floor(numberOfLines / 2));
-        lines[value].color = "red";
-    } else if (position === "Center"){
-        lines[Math.floor(numberOfLines / 2)].color = "green";
-    } else {
-        value = Math.floor(numberOfLines / 2) - Math.floor(value / Math.floor(numberOfLines / 2));
-        lines[value].color = "red";
+    if(position === "Right")
+        value = numberOfLines/2 + value;
+
+    value = Math.floor(value % (numberOfLines - 1));
+    if(position === "Center"){
+        lines[9].color = "green";
     }
+    else
+        lines[value].color = "red";
 }
 
 // Creates the circles, acting as the selected string
@@ -106,11 +107,6 @@ function onStringClicked(id) {
 
 // Takes the current info from the backend and shows them in the UI
 function tune(note, tunePercentage) {
-   // print("in tune")
-    //if (current_string < 0)
-      //  return;
-
-    //print(note)
 
     if(Shared.currentSelectedInstrument === "Guitar"){
         //core_obj.setGuitarXString(current_string + 1);
@@ -118,10 +114,7 @@ function tune(note, tunePercentage) {
         //core_obj.setCelloXString(current_string + 1);
     }
 
-
-    //var tunePercentage = core_obj.getPercentageOfDistanceFromTheClosestNote();
     tunePercentage = Math.floor(tunePercentage);
-    //print("Got percentage: " + tunePercentage);
 
     if (tunePercentage > 0) {
         showTuningAccuracy("Right", tunePercentage);
