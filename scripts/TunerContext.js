@@ -7,7 +7,7 @@
 var lines = [];
 var circles = [];
 var current_string = -1;
-var numberOfLines = 19;
+var numberOfLines = 21;
 
 var note_holder_obj
 var string_holder_obj;
@@ -45,7 +45,6 @@ function createLines(id) {
 
 // Colors the specified line.
 // position -> Left || Right || Center: perfect tune
-// value -> 0: no tune, 9:almost good tune
 function showTuningAccuracy(position, value) {
 
     // Make all lines default color
@@ -53,20 +52,15 @@ function showTuningAccuracy(position, value) {
         lines[i].color = "white"
     }
 
-
-
-    if(position === "Right")
-        value = numberOfLines/2 + value;
-
-    //print("Shows tuning for value: " + value % (numberOfLines - 1));
-
-    value = Math.floor(value % (numberOfLines - 1));
-    if(position === "Center"){
-        print(numberOfLines);
-        lines[9].color = "green";
-    }
-    else
+    if(position === "Right") {
+        value = Math.floor(numberOfLines / 2) + Math.floor(value / Math.floor(numberOfLines / 2));
         lines[value].color = "red";
+    } else if (position === "Center"){
+        lines[Math.floor(numberOfLines / 2)].color = "green";
+    } else {
+        value = Math.floor(numberOfLines / 2) - Math.floor(value / Math.floor(numberOfLines / 2));
+        lines[value].color = "red";
+    }
 }
 
 // Creates the circles, acting as the selected string
@@ -130,11 +124,11 @@ function tune(note, tunePercentage) {
     //print("Got percentage: " + tunePercentage);
 
     if (tunePercentage > 0) {
-        showTuningAccuracy("Left", tunePercentage);
+        showTuningAccuracy("Right", tunePercentage);
     } else if(tunePercentage === 0 ) {
         showTuningAccuracy("Center", 0);
     } else {
-        showTuningAccuracy("Right", Math.abs(tunePercentage));
+        showTuningAccuracy("Left", Math.abs(tunePercentage));
     }
 
     // Change the displayed note

@@ -17,11 +17,6 @@ public:
 	AubioWrapper();
 
 	~AubioWrapper();
-	
-    /**
-     * @brief reloadAubio is a function that reloads the settings of the aubio library
-     */
-	void reloadAubio();
 
     /**
      * @brief setSampleRate is a function that sets the sample rate
@@ -47,6 +42,11 @@ private:
             del_aubio_pitch(a);
         }
 	};
+
+    /**
+     * @brief reloadAubio is a function that reloads the settings of the aubio library
+     */
+    void reloadAubio();
 
     /**
      * @brief constructAubioPitch is a function that defines the settings of the aubio library

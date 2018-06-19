@@ -18,12 +18,12 @@
 class Configurator : public QObject {
 
     Q_OBJECT
-    Q_PROPERTY(bool active MEMBER activeTuner WRITE setActive NOTIFY activeChanged)
+    Q_PROPERTY(bool active MEMBER activeTuner WRITE setActive NOTIFY activeChanged())
     Q_PROPERTY(QString note MEMBER closestNote READ getClosestNote() NOTIFY samplesAnalyzed())
     Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote READ getPercentageOfDistanceFromTheClosestNote() NOTIFY samplesAnalyzed())
     Q_PROPERTY(qreal frequency MEMBER lastConfidentFrequency READ getFrequency() NOTIFY samplesAnalyzed())
-    Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency)
-    Q_PROPERTY(QString setterName MEMBER setterIdentifier WRITE setOrganSetter)
+    Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged())
+    Q_PROPERTY(QString setterName MEMBER setterIdentifier WRITE setOrganSetter() NOTIFY organSetterChanged())
 
 public:
     explicit Configurator(QObject *parent = nullptr);
@@ -78,6 +78,10 @@ signals:
 
     void activeChanged();
 
+    void baseFrequencyChanged();
+
+    void organSetterChanged();
+
 private:
     /**
      * @brief applyFormat is a functions that sets the format settings of the audioinput
@@ -127,7 +131,7 @@ private:
     PitchBuffer pitchBuffer;
 
     //  we use this notes' controller to handle the notes as name and frequencies and their base frequency
-    NotesController *notesController;
+    NotesController notesController;
 
     //  the aubio object
     AubioWrapper aubio;
@@ -151,7 +155,7 @@ private:
     qreal currentFrequency;
 
     //  this variable stores the threads hold of the confidence
-    float confidenceThresHold = .95;
+    float confidenceThresHold = .92;
 
 private slots:
 	void analyzeSamples();

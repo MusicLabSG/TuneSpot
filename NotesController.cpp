@@ -33,7 +33,6 @@ void NotesController::changeBaseFrequency(quint32 newBaseFrequency) {
     baseFrequency = newBaseFrequency;
     noteFrequencies.clear();
 
-    path.append("/frequenciesOfNotes.txt");
     QFile fileForNoteFrequencies(path);
     if (!fileForNoteFrequencies.open(QIODevice::WriteOnly)) {
         QMessageBox::information(0, "error", fileForNoteFrequencies.errorString());
