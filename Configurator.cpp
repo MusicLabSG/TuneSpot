@@ -9,7 +9,15 @@
 #include <QDebug>
 #include <QtMath>
 
+#ifdef Q_OS_ANDROID
+    #include <QtAndroidExtras/QtAndroid>
+#endif
+
 Configurator::Configurator(QObject *parent) : QObject(parent) {
+#ifdef Q_OS_ANDROID
+    QtAndroid::requestPermissionsSync( QStringList() << "android.permission.RECORD_AUDIO" );
+#endif
+
     applyFormat();
     recorder = std::make_unique<QAudioInput>(formatSettings);
 

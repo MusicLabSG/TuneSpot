@@ -155,7 +155,7 @@ private:
     qreal currentFrequency;
 
     //  this variable stores the threads hold of the confidence
-    float confidenceThresHold = .92;
+    float confidenceThresHold = .75;
 
 private slots:
 	void analyzeSamples();
