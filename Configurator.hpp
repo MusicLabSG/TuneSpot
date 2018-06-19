@@ -21,7 +21,7 @@ class Configurator : public QObject {
     Q_PROPERTY(bool active MEMBER activeTuner WRITE setActive NOTIFY activeChanged())
     Q_PROPERTY(QString note MEMBER closestNote READ getClosestNote() NOTIFY samplesAnalyzed())
     Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote READ getPercentageOfDistanceFromTheClosestNote() NOTIFY samplesAnalyzed())
-    Q_PROPERTY(qreal frequency MEMBER lastConfidentFrequency READ getFrequency() NOTIFY samplesAnalyzed())
+    Q_PROPERTY(qreal frequency MEMBER confidentFrequency READ getFrequency() NOTIFY samplesAnalyzed())
     Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged())
     Q_PROPERTY(QString setterName MEMBER organSetter READ getOrganSetter() WRITE setOrganSetter NOTIFY organSetterChanged())
 
@@ -155,10 +155,7 @@ private:
     QString closestNote;
 
     //  this variable stores the last confident current frequency that has recognized
-    qreal lastConfidentFrequency;
-
-    //  this variable stores the current frequency that has been recognized
-    qreal currentFrequency;
+    qreal confidentFrequency;
 
     //  this variable stores the threads hold of the confidence
     float confidenceThresHold = .92;

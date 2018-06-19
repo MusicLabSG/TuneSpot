@@ -21,8 +21,7 @@ Configurator::Configurator(QObject *parent) : QObject(parent) {
     applyFormat();
     recorder = std::make_unique<QAudioInput>(formatSettings);
 
-    currentFrequency = 0;
-    lastConfidentFrequency = 0;
+    confidentFrequency = 0;
     percentageOfDistanceFromTheClosestNote = 0;
     closestNote = "";
     organSetter = "freeMode";
@@ -72,7 +71,7 @@ qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
 }
 
 qreal Configurator::getFrequency() {
-    return lastConfidentFrequency;
+    return confidentFrequency;
 }
 
 void Configurator::applyFormat() {
@@ -174,7 +173,7 @@ void Configurator::setFreeMode() {
     quint16 minI = -1;
     qreal minDistance = 10000, test;
     for (quint16 i = 0; i < 88; i++) {
-        test = qFabs(lastConfidentFrequency - notesController.getNoteFrequencies()[i]);
+        test = qFabs(confidentFrequency - notesController.getNoteFrequencies()[i]);
         if (minDistance > test) {
             minDistance = test;
             minI = i;
@@ -189,35 +188,35 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
     if (i == 0) {
         qreal freq = notesController.getNoteFrequencies()[i];
         qreal freqNext = notesController.getNoteFrequencies()[i + 1];
-        if (lastConfidentFrequency >= freqNext) {
+        if (confidentFrequency >= freqNext) {
             percentageOfDistanceFromTheClosestNote = 100;
-        } else if (lastConfidentFrequency >= freq) {
+        } else if (confidentFrequency >= freq) {
             percentageOfDistanceFromTheClosestNote =
-                    ((lastConfidentFrequency - freq) / (freqNext - freq)) * 100;
+                    ((confidentFrequency - freq) / (freqNext - freq)) * 100;
         }
     } else if (i == 87) {
         qreal freq = notesController.getNoteFrequencies()[i];
         qreal freqPrevious = notesController.getNoteFrequencies()[i - 1];
-        if (lastConfidentFrequency <= freqPrevious) {
+        if (confidentFrequency <= freqPrevious) {
             percentageOfDistanceFromTheClosestNote = -100;
         } else {
             percentageOfDistanceFromTheClosestNote =
-                    ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
+                    ((confidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     } else {
         qreal freq = notesController.getNoteFrequencies()[i];
         qreal freqPrevious = notesController.getNoteFrequencies()[i - 1];
         qreal freqNext = notesController.getNoteFrequencies()[i + 1];
 
-        if (lastConfidentFrequency <= freqPrevious) {
+        if (confidentFrequency <= freqPrevious) {
             percentageOfDistanceFromTheClosestNote = -100;
-        } else if (lastConfidentFrequency >= freqNext) {
+        } else if (confidentFrequency >= freqNext) {
             percentageOfDistanceFromTheClosestNote = 100;
-        } else if (lastConfidentFrequency >= freq) {
+        } else if (confidentFrequency >= freq) {
             percentageOfDistanceFromTheClosestNote =
-                    ((lastConfidentFrequency - freq) / (freqNext - freq)) * 100;
+                    ((confidentFrequency - freq) / (freqNext - freq)) * 100;
         } else {
-            percentageOfDistanceFromTheClosestNote = ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
+            percentageOfDistanceFromTheClosestNote = ((confidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     }
 
@@ -237,12 +236,12 @@ void Configurator::analyzeSamples() {
         //  recognize the pitch
         aubio_pitch_do(aubio.getAubioPitch(), aubio.aubioIn, aubio.aubioOut);
 
-        currentFrequency = aubio.aubioOut->data[0];
+        qreal currentFrequency = aubio.aubioOut->data[0];
         float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
 
         if (confidence >= confidenceThresHold) {
-            lastConfidentFrequency = currentFrequency;
-            qDebug() << lastConfidentFrequency << "\n";
+            confidentFrequency = currentFrequency;
+            qDebug() << confidentFrequency << "\n";
         }
 
         setCloseNoteAndPercentageAccordingToSetterID();
