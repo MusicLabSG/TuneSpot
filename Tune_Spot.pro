@@ -4,7 +4,6 @@ QMAKE_CXXFLAGS += -std=c++11
 
 #android
 android : QT += androidextras
-ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -79,4 +78,3 @@ DISTFILES += \
     data/fonts/OpenSans-SemiBold.ttf \
     data/fonts/OpenSans-SemiBoldItalic.ttf\
     data/notes/namesOfNotes.txt \
-    android-sources/AndroidManifest.xml

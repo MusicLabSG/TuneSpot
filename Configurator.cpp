@@ -92,12 +92,6 @@ void Configurator::applyFormat() {
         if (!info.isFormatSupported(formatSettings)) {
             qDebug() << "No support for 16bit signed integer samples. Trying nearest format, the program will probably not work.";
             formatSettings = info.nearestFormat(formatSettings);
-            qDebug() << formatSettings.codec() << "\n";
-            qDebug() << formatSettings.channelCount() << "\n";
-            qDebug() << formatSettings.sampleRate() << "\n";
-            qDebug() << formatSettings.sampleType() << "\n";
-            qDebug() << formatSettings.sampleSize() << "\n";
-            qDebug() << formatSettings.byteOrder() << "\n";
         }
     }
     pitchBuffer.setSampleType(formatSettings.sampleType(), formatSettings.sampleSize() / 8);

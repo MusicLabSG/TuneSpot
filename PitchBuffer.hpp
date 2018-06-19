@@ -35,7 +35,7 @@ public:
     /**
      * @brief setSampleType is a function sets SampleType and and the sample size
      * @param type is the sample type
-     * @param size is the sample size
+     * @param size is the sample size in bytes
      */
 	void setSampleType(QAudioFormat::SampleType type, int size);
 signals:
