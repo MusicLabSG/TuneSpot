@@ -226,6 +226,7 @@ void Configurator::analyzeSamples() {
         aubio_pitch_do(aubio.getAubioPitch(), aubio.aubioIn, aubio.aubioOut);
 
         currentFrequency = aubio.aubioOut->data[0];
+        qDebug() << currentFrequency << "\n";
 
         float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
 
