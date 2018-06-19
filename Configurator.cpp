@@ -58,9 +58,7 @@ quint16 Configurator::getBaseFrequency() {
 }
 
 void Configurator::setBaseFrequency(quint16 newBaseFrequency) {
-    //setActive(false);
     notesController.changeBaseFrequency(newBaseFrequency);
-    //setActive(true);
 
     emit baseFrequencyChanged();
 }
@@ -216,12 +214,14 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
             percentageOfDistanceFromTheClosestNote = ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     }
-    percentageOfDistanceFromTheClosestNote *= 2;
+
 
     if (percentageOfDistanceFromTheClosestNote > 50 ) {
         percentageOfDistanceFromTheClosestNote = 100;
     } else if (percentageOfDistanceFromTheClosestNote < -50) {
         percentageOfDistanceFromTheClosestNote = -100;
+    } else {
+       percentageOfDistanceFromTheClosestNote *= 2;
     }
 }
 
@@ -232,15 +232,15 @@ void Configurator::analyzeSamples() {
         aubio_pitch_do(aubio.getAubioPitch(), aubio.aubioIn, aubio.aubioOut);
 
         currentFrequency = aubio.aubioOut->data[0];
-        qDebug() << currentFrequency << "\n";
-
         float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
 
         if (confidence >= confidenceThresHold) {
             lastConfidentFrequency = currentFrequency;
+            qDebug() << lastConfidentFrequency << "\n";
         }
 
         setCloseNoteAndPercentageAccordingToSetterID();
+
         emit samplesAnalyzed();
     }
 }
