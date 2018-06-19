@@ -42,6 +42,6 @@ Item {
     }
 
     Component.onCompleted: {
-        Context.onCreate(notes_holder, string_holder, lines_container);
+        Context.onCreate(notes_holder, string_holder, lines_container, configurator);
     }
 }

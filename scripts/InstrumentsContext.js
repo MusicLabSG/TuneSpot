@@ -8,21 +8,23 @@ var instruments_selector_obj;
 var instruments_list_obj;
 var selected_instrument_obj;
 var dragger_obj;
+var configurator_obj;
 
 var maxHeight;
 var minHeight;
 
 var selectedInstrument = "Free mode";
 
-function onCreate(parent, main, instruments_indicator, instruments_selector, dragger) {
+function onCreate(parent, main, instruments_indicator, instruments_selector, configurator) {
     parent_obj = parent;
     main_obj = main;
     instruments_indicator_obj = instruments_indicator;
     instruments_selector_obj = instruments_selector;
-    dragger_obj = dragger;
+    configurator_obj = configurator;
+    configurator.setterName = "freeMode";
     loadIndicator();
-
 }
+
 
 function populateList(id) {
     if (instruments_list_obj === undefined)
@@ -54,6 +56,15 @@ function onInstrumentClicked(name) {
     Shared.getInstrument();
     loadIndicator();
     minimize();
+
+    // Notify the backend for the change
+    if (name === "Guitar")
+        configurator.setterName = "guitar6";
+    else if (name === "Cello")
+        configurator.setterName = "cello4";
+    else
+        configurator.setterName = "freeMode";
+
 
     Observable.notifyAll();
 }

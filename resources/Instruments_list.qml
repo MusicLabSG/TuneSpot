@@ -12,7 +12,9 @@ Item {
 
     height: parent.height * 0.13
     id: main
-    Component.onCompleted: Context.onCreate(parent, main, instruments_indicator, instruments_selector, configurator)
+    Component.onCompleted:{
+        Context.onCreate(parent, main, instruments_indicator, instruments_selector, configurator)
+    }
 
     // Minimazed
     Rectangle {
@@ -132,7 +134,7 @@ Item {
                 anchors.fill: parent
 
                 onClicked:{
-                    Context.onInstrumentClicked(name)
+                    Context.onInstrumentClicked(name);
                 }
             }
         }

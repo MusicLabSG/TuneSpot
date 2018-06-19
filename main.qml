@@ -18,15 +18,15 @@ Window {
     title: qsTr("Tune Spot")
     visible: true
 
-    Component.onCompleted: {
-        configurator.setOrganSetter("HI")
-    }
-
     // This is the backend btw
     Configurator {
         id: configurator
         active: true
-        onPercentageChanged: tuner.percentage_changed(note, configurator.percentage)
+        onPercentageChanged: {
+            print("incoming percentage: "+configurator.percentage)
+            print("For note: "+note)
+            tuner.percentage_changed(note, configurator.percentage)
+        }
     }
 
     FrequencySelector {

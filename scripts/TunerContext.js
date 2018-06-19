@@ -12,14 +12,14 @@ var numberOfLines = 19;
 var note_holder_obj
 var string_holder_obj;
 var lines_container_obj;
-var core_obj;
+var configurator_obj;
 
-function onCreate(note_holder, string_holder, lines_container, core) {
+function onCreate(note_holder, string_holder, lines_container, configurator) {
     Observable.addObserver(this)
     note_holder_obj = note_holder;
     string_holder_obj = string_holder;
     lines_container_obj = lines_container;
-    core_obj = core;
+    configurator_obj = configurator;
     createLines(lines_container);
     createCircles();
 }
@@ -45,7 +45,7 @@ function createLines(id) {
 
 // Colors the specified line.
 // position -> Left || Right || Center: perfect tune
-// value -> 0: no tune, 9:almost good tune
+// value -> 100: no tune, 0:almost good tune
 function showTuningAccuracy(position, value) {
 
     // Make all lines default color
@@ -53,10 +53,13 @@ function showTuningAccuracy(position, value) {
         lines[i].color = "white"
     }
 
-    if(position === "Right")
-        value = numberOfLines/2 + value;
+    value = Math.ceil((value / 100) * 9);
 
-    value = Math.floor(value % (numberOfLines - 1));
+    if(position === "Right")
+        value = Math.floor(numberOfLines/2) + value;
+    if(position === "Left")
+        value = Math.floor(numberOfLines/2) - value
+
     if(position === "Center"){
         lines[9].color = "green";
     }
@@ -103,16 +106,20 @@ function onStringClicked(id) {
     object.height = 25;
     object.x -= 6;
     object.y -= 6;
+
+
+    // Notify the backend for the change
+
+    if(Shared.currentSelectedInstrument === "Guitar"){
+        configurator.setterName = "guitar"+(current_string + 1);
+    } else if(Shared.currentSelectedInstrument === "Cello"){
+        configurator.setterName = "cello"+(current_string + 1);
+    }
 }
 
 // Takes the current info from the backend and shows them in the UI
 function tune(note, tunePercentage) {
 
-    if(Shared.currentSelectedInstrument === "Guitar"){
-        //core_obj.setGuitarXString(current_string + 1);
-    } else if(Shared.currentSelectedInstrument === "Cello"){
-        //core_obj.setCelloXString(current_string + 1);
-    }
 
     tunePercentage = Math.floor(tunePercentage);
 
