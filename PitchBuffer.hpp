@@ -62,10 +62,10 @@ private:
 	std::queue<float> m_buf;
 
     //  is the sample type of the audioformat
-	QAudioFormat::SampleType m_sampleType = QAudioFormat::SampleType::Float;
+    QAudioFormat::SampleType sampleType = QAudioFormat::SampleType::Float;
 
     // is the size of the sample size
-	int m_sampleSize = sizeof(float);
+    int sampleSize = sizeof(float);
 };
 
 #endif // PITCHBUFFER_H

@@ -81,12 +81,18 @@ void Configurator::applyFormat() {
     formatSettings.setSampleRate(48000);
     formatSettings.setSampleType(QAudioFormat::SampleType::Float);
     formatSettings.setSampleSize(sizeof(float) * 8);
+    //formatSettings.setByteOrder(QAudioFormat::LittleEndian);
 
     // test if the format is supported
     QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
     if (!info.isFormatSupported(formatSettings)) {
-        qWarning() << "Default format not supported, trying to use 16bit signed integer samples";
-        formatSettings = info.nearestFormat(formatSettings);
+        qDebug() << "Default format not supported, trying to use 16bit signed integer samples";
+        formatSettings.setSampleType(QAudioFormat::SampleType::SignedInt);
+        formatSettings.setSampleSize(sizeof(int16_t) * 8);
+        if (!info.isFormatSupported(formatSettings)) {
+            qDebug() << "No support for 16bit signed integer samples. Trying nearest format, the program will probably not work.";
+            formatSettings = info.nearestFormat(formatSettings);
+        }
     }
     pitchBuffer.setSampleType(formatSettings.sampleType(), formatSettings.sampleSize() / 8);
 }
