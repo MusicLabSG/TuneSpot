@@ -27,7 +27,7 @@ NotesController::NotesController(QObject *parent) : QObject(parent) {
 #ifdef Q_OS_ANDROID
     QtAndroid::requestPermissionsSync( QStringList() << "android.permission.WRITE_EXTERNAL_STORAGE" );
 #endif
-    QDir folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    QDir folder = QStandardPaths::writableLocation(QStandardPaths::GenericCacheLocation);
     path = folder.path();
     readNotes();
 }
