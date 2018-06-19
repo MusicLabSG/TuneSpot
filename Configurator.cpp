@@ -198,6 +198,13 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
             percentageOfDistanceFromTheClosestNote = ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     }
+    percentageOfDistanceFromTheClosestNote *= 2;
+
+    if (percentageOfDistanceFromTheClosestNote > 50 ) {
+        percentageOfDistanceFromTheClosestNote = 100;
+    } else if (percentageOfDistanceFromTheClosestNote < -50) {
+        percentageOfDistanceFromTheClosestNote = -100;
+    }
 }
 
 void Configurator::analyzeSamples() {
