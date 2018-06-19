@@ -53,16 +53,11 @@ function showTuningAccuracy(position, value) {
         lines[i].color = "white"
     }
 
-
-
     if(position === "Right")
         value = numberOfLines/2 + value;
 
-    //print("Shows tuning for value: " + value % (numberOfLines - 1));
-
     value = Math.floor(value % (numberOfLines - 1));
     if(position === "Center"){
-        print(numberOfLines);
         lines[9].color = "green";
     }
     else
@@ -112,11 +107,6 @@ function onStringClicked(id) {
 
 // Takes the current info from the backend and shows them in the UI
 function tune(note, tunePercentage) {
-   // print("in tune")
-    //if (current_string < 0)
-      //  return;
-
-    //print(note)
 
     if(Shared.currentSelectedInstrument === "Guitar"){
         //core_obj.setGuitarXString(current_string + 1);
@@ -124,10 +114,7 @@ function tune(note, tunePercentage) {
         //core_obj.setCelloXString(current_string + 1);
     }
 
-
-    //var tunePercentage = core_obj.getPercentageOfDistanceFromTheClosestNote();
     tunePercentage = Math.floor(tunePercentage);
-    //print("Got percentage: " + tunePercentage);
 
     if (tunePercentage > 0) {
         showTuningAccuracy("Left", tunePercentage);
