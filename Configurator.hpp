@@ -23,7 +23,7 @@ class Configurator : public QObject {
     Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote READ getPercentageOfDistanceFromTheClosestNote() NOTIFY samplesAnalyzed())
     Q_PROPERTY(qreal frequency MEMBER lastConfidentFrequency READ getFrequency() NOTIFY samplesAnalyzed())
     Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged())
-    Q_PROPERTY(QString setterName READ getOrganSetter() WRITE setOrganSetter NOTIFY organSetterChanged())
+    Q_PROPERTY(QString setterName MEMBER organSetter READ getOrganSetter() WRITE setOrganSetter NOTIFY organSetterChanged())
 
 public:
     explicit Configurator(QObject *parent = nullptr);
