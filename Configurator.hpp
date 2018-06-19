@@ -18,12 +18,12 @@
 class Configurator : public QObject {
 
     Q_OBJECT
-    Q_PROPERTY(bool active MEMBER activeTuner WRITE setActive NOTIFY activeChanged)
+    Q_PROPERTY(bool active MEMBER activeTuner WRITE setActive NOTIFY activeChanged())
     Q_PROPERTY(QString note MEMBER closestNote READ getClosestNote() NOTIFY samplesAnalyzed())
     Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote READ getPercentageOfDistanceFromTheClosestNote() NOTIFY samplesAnalyzed())
-    Q_PROPERTY(qreal frequency MEMBER currentFrequency READ getCurrentFrequency() NOTIFY samplesAnalyzed())
-    Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged)
-    Q_PROPERTY(QString setterName MEMBER setterIdentifier WRITE setOrganSetter NOTIFY setterChanged)
+    Q_PROPERTY(qreal frequency MEMBER lastConfidentFrequency READ getFrequency() NOTIFY samplesAnalyzed())
+    Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged())
+    Q_PROPERTY(QString setterName MEMBER setterIdentifier WRITE setOrganSetter() NOTIFY organSetterChanged())
 
 public:
     explicit Configurator(QObject *parent = nullptr);
@@ -42,6 +42,51 @@ public:
      * guitarX where x {1-6] check below what every number means e.g. guitar6
      */
     void setOrganSetter(QString setterIdentifier);
+
+    /**
+     * @brief getBaseFrequency is a function that returns the base frequency
+     * @return the base frequency
+     */
+    quint16 getBaseFrequency();
+
+    /**
+     * @brief setBaseFrequency is a function that changes the base frequency
+     * @param frequency is the base frequency value that we want to set
+     */
+    void setBaseFrequency(quint16 frequency);
+
+    /**
+     * @brief getClosestNote is a function that returns the closest note
+     * @return the closest note
+     */
+    QString getClosestNote();
+
+    /**
+     * @brief getPercentageOfDistanceFromTheClosestNote is a function that returns the percentage of distance from the closest note
+     * @return the percentage of distance from the closest note
+     */
+    qreal getPercentageOfDistanceFromTheClosestNote();
+
+    /**
+     * @brief getFrequency this function returns the frequency
+     * @return the frequency
+     */
+    qreal getFrequency();
+
+signals:
+	void samplesAnalyzed();
+
+    void activeChanged();
+
+    void baseFrequencyChanged();
+
+    void organSetterChanged();
+
+private:
+    /**
+     * @brief applyFormat is a functions that sets the format settings of the audioinput
+     */
+    void applyFormat();
 
     /**
      * @brief setCloseNoteAndPercentageAccordingToSetterID this functions sets variable that the front need according to setted id
@@ -69,50 +114,6 @@ public:
      */
     void setFreeMode();
 
-    /**
-     * @brief getBaseFrequency is a function that returns the base frequency
-     * @return the base frequency
-     */
-    quint16 getBaseFrequency();
-
-    /**
-     * @brief setBaseFrequency is a function that changes the base frequency
-     * @param frequency is the base frequency value that we want to set
-     */
-    void setBaseFrequency(quint16 frequency);
-
-    /**
-     * @brief getClosestNote is a function that returns the closest note
-     * @return the closest note
-     */
-    QString getClosestNote();
-
-    /**
-     * @brief getPercentageOfDistanceFromTheClosestNote is a function that returns the percentage of distance from the closest note
-     * @return the percentage of distance from the closest note
-     */
-    qreal getPercentageOfDistanceFromTheClosestNote();
-
-    /**
-     * @brief getCurrentFrequency this function returns the current frequency
-     * @return the current frequency
-     */
-    qreal getCurrentFrequency();
-
-signals:
-	void samplesAnalyzed();
-
-    void baseFrequencyChanged();
-
-    void setterChanged();
-
-    void activeChanged();
-
-private:
-    /**
-     * @brief applyFormat is a functions that sets the format settings of the audioinput
-     */
-    void applyFormat();
 
     /**
      * @brief setTheVariables is a function that sets percentageOfDistanceFromTheClosestNote
@@ -130,10 +131,13 @@ private:
     PitchBuffer pitchBuffer;
 
     //  we use this notes' controller to handle the notes as name and frequencies and their base frequency
-    NotesController *notesController;
+    NotesController notesController;
 
-    //  this variable stores the currunt frequency that has recognized from the test input file
-    qreal currentFrequency;
+    //  the aubio object
+    AubioWrapper aubio;
+
+    //  this variable indicates if the tuner is active or not
+    bool activeTuner;
 
     //  this varibles is the setter id
     QString setterIdentifier;
@@ -144,11 +148,14 @@ private:
     //  this variable is used for graphical reasons
     QString closestNote;
 
-    //  this variable indicates if the tuner is active or not
-    bool activeTuner;
+    //  this variable stores the last confident current frequency that has recognized
+    qreal lastConfidentFrequency;
 
-    //  the aubio object
-    AubioWrapper aubio;
+    //  this variable stores the current frequency that has been recognized
+    qreal currentFrequency;
+
+    //  this variable stores the threads hold of the confidence
+    float confidenceThresHold = .92;
 
 private slots:
 	void analyzeSamples();

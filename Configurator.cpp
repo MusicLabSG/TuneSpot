@@ -9,21 +9,28 @@
 #include <QDebug>
 #include <QtMath>
 
+#ifdef Q_OS_ANDROID
+    #include <QtAndroidExtras/QtAndroid>
+#endif
+
 Configurator::Configurator(QObject *parent) : QObject(parent) {
+#ifdef Q_OS_ANDROID
+    QtAndroid::requestPermissionsSync( QStringList() << "android.permission.RECORD_AUDIO" );
+#endif
+
     applyFormat();
     recorder = std::make_unique<QAudioInput>(formatSettings);
 
     currentFrequency = 0;
+    lastConfidentFrequency = 0;
     percentageOfDistanceFromTheClosestNote = 0;
     closestNote = "";
     setterIdentifier = "freeMode";
-    notesController = new NotesController();
 
     connect(&pitchBuffer, SIGNAL(samplesReady()), this, SLOT(analyzeSamples()));
 }
 
-void Configurator::setActive(bool active)
-{
+void Configurator::setActive(bool active) {
     if (active) {
         if (!pitchBuffer.open(QIODevice::WriteOnly)) {
             qDebug() << "Something went wrong while opening the device";
@@ -36,8 +43,50 @@ void Configurator::setActive(bool active)
 }
 
 void Configurator::setOrganSetter(QString setterIdentifier) {
+    setActive(false);
     this->setterIdentifier = setterIdentifier;
+    setActive(true);
 }
+
+
+quint16 Configurator::getBaseFrequency() {
+    return notesController.getBaseFrequency();
+}
+
+void Configurator::setBaseFrequency(quint16 newBaseFrequency) {
+    setActive(false);
+    notesController.changeBaseFrequency(newBaseFrequency);
+    setActive(true);
+}
+
+QString Configurator::getClosestNote() {
+    return closestNote;
+}
+
+qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
+    return percentageOfDistanceFromTheClosestNote;
+}
+
+qreal Configurator::getFrequency() {
+    return lastConfidentFrequency;
+}
+
+void Configurator::applyFormat() {
+    formatSettings.setCodec("audio/pcm");
+    formatSettings.setChannelCount(1);
+    formatSettings.setSampleRate(48000);
+    formatSettings.setSampleType(QAudioFormat::SampleType::Float);
+    formatSettings.setSampleSize(sizeof(float) * 8);
+
+    // test if the format is supported
+    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
+    if (!info.isFormatSupported(formatSettings)) {
+        qWarning() << "Default format not supported, trying to use 16bit signed integer samples";
+        formatSettings = info.nearestFormat(formatSettings);
+    }
+    pitchBuffer.setSampleType(formatSettings.sampleType(), formatSettings.sampleSize() / 8);
+}
+
 
 void Configurator::setCloseNoteAndPercentageAccordingToSetterID() {
     if(setterIdentifier == "freeMode") {
@@ -78,7 +127,7 @@ void Configurator::setCelloXString(quint16 x) {
 
     quint16 i;
     for (i = 0; i < 88; i++) {
-        if (notesController->getNoteNames()[i] == closestNote) {
+        if (notesController.getNoteNames()[i] == closestNote) {
             break;
         }
     }
@@ -103,7 +152,7 @@ void Configurator::setGuitarXString(quint16 x) {
 
     quint16 i;
     for (i = 0; i < 88; i++) {
-        if (notesController->getNoteNames()[i] == closestNote) {
+        if (notesController.getNoteNames()[i] == closestNote) {
             break;
         }
     }
@@ -115,97 +164,74 @@ void Configurator::setFreeMode() {
     quint16 minI = -1;
     qreal minDistance = 10000, test;
     for (quint16 i = 0; i < 88; i++) {
-        test = qFabs(currentFrequency - notesController->getNoteFrequencies()[i]);
+        test = qFabs(lastConfidentFrequency - notesController.getNoteFrequencies()[i]);
         if (minDistance > test) {
             minDistance = test;
             minI = i;
         }
     }
 
-    closestNote = notesController->getNoteNames()[minI];
+    closestNote = notesController.getNoteNames()[minI];
     setPercentageOfDistanceFromTheClosestNote(minI);
-}
-
-quint16 Configurator::getBaseFrequency() {
-    return notesController->getBaseFrequency();
-}
-
-void Configurator::setBaseFrequency(quint16 newBaseFrequency) {
-    notesController->changeBaseFrequency(newBaseFrequency);
-}
-
-QString Configurator::getClosestNote() {
-    return closestNote;
-}
-
-qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
-    return percentageOfDistanceFromTheClosestNote;
-}
-
-qreal Configurator::getCurrentFrequency() {
-    return currentFrequency;
-}
-
-void Configurator::applyFormat() {
-    formatSettings.setCodec("audio/pcm");
-    formatSettings.setChannelCount(1);
-    formatSettings.setSampleRate(48000);
-    formatSettings.setSampleType(QAudioFormat::SampleType::Float);
-    formatSettings.setSampleSize(sizeof(float) * 8);
-
-    // test if the format is supported
-    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
-    if (!info.isFormatSupported(formatSettings)) {
-        qWarning() << "Default format not supported, trying to use 16bit signed integer samples";
-        formatSettings = info.nearestFormat(formatSettings);
-    }
-    pitchBuffer.setSampleType(formatSettings.sampleType(), formatSettings.sampleSize() / 8);
 }
 
 void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
     if (i == 0) {
-        qreal freq = notesController->getNoteFrequencies()[i];
-        qreal freqNext = notesController->getNoteFrequencies()[i + 1];
-        if (currentFrequency >= freqNext) {
+        qreal freq = notesController.getNoteFrequencies()[i];
+        qreal freqNext = notesController.getNoteFrequencies()[i + 1];
+        if (lastConfidentFrequency >= freqNext) {
             percentageOfDistanceFromTheClosestNote = 100;
-        } else if (currentFrequency >= freq) {
+        } else if (lastConfidentFrequency >= freq) {
             percentageOfDistanceFromTheClosestNote =
-                    ((currentFrequency - freq) / (freqNext - freq)) * 100;
+                    ((lastConfidentFrequency - freq) / (freqNext - freq)) * 100;
         }
     } else if (i == 87) {
-        qreal freq = notesController->getNoteFrequencies()[i];
-        qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
-        if (currentFrequency <= freqPrevious) {
+        qreal freq = notesController.getNoteFrequencies()[i];
+        qreal freqPrevious = notesController.getNoteFrequencies()[i - 1];
+        if (lastConfidentFrequency <= freqPrevious) {
             percentageOfDistanceFromTheClosestNote = -100;
         } else {
             percentageOfDistanceFromTheClosestNote =
-                    ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
+                    ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     } else {
-        qreal freq = notesController->getNoteFrequencies()[i];
-        qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
-        qreal freqNext = notesController->getNoteFrequencies()[i + 1];
+        qreal freq = notesController.getNoteFrequencies()[i];
+        qreal freqPrevious = notesController.getNoteFrequencies()[i - 1];
+        qreal freqNext = notesController.getNoteFrequencies()[i + 1];
 
-        if (currentFrequency <= freqPrevious) {
+        if (lastConfidentFrequency <= freqPrevious) {
             percentageOfDistanceFromTheClosestNote = -100;
-        } else if (currentFrequency >= freqNext) {
+        } else if (lastConfidentFrequency >= freqNext) {
             percentageOfDistanceFromTheClosestNote = 100;
-        } else if (currentFrequency >= freq) {
+        } else if (lastConfidentFrequency >= freq) {
             percentageOfDistanceFromTheClosestNote =
-                    ((currentFrequency - freq) / (freqNext - freq)) * 100;
+                    ((lastConfidentFrequency - freq) / (freqNext - freq)) * 100;
         } else {
-            percentageOfDistanceFromTheClosestNote = ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
+            percentageOfDistanceFromTheClosestNote = ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
+    }
+    percentageOfDistanceFromTheClosestNote *= 2;
+
+    if (percentageOfDistanceFromTheClosestNote > 50 ) {
+        percentageOfDistanceFromTheClosestNote = 100;
+    } else if (percentageOfDistanceFromTheClosestNote < -50) {
+        percentageOfDistanceFromTheClosestNote = -100;
     }
 }
 
 void Configurator::analyzeSamples() {
     // while new samples are available
-    while (pitchBuffer.getSamples(aubio.aubioIn)) {
+    while (pitchBuffer.getSamples(aubio.aubioIn) && activeTuner == true) {
+        //  recognize the pitch
         aubio_pitch_do(aubio.getAubioPitch(), aubio.aubioIn, aubio.aubioOut);
+
         currentFrequency = aubio.aubioOut->data[0];
 
-        //  float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
+        float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
+
+        if (confidence >= confidenceThresHold) {
+            lastConfidentFrequency = currentFrequency;
+        }
 
         setCloseNoteAndPercentageAccordingToSetterID();
 

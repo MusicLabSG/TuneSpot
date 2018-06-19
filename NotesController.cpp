@@ -22,6 +22,9 @@
 
 NotesController::NotesController(QObject *parent) : QObject(parent) {
 #ifdef Q_OS_ANDROID
+    QtAndroid::requestPermissionsSync( QStringList() << "android.permission.READ_EXTERNAL_STORAGE" );
+#endif
+#ifdef Q_OS_ANDROID
     QtAndroid::requestPermissionsSync( QStringList() << "android.permission.WRITE_EXTERNAL_STORAGE" );
 #endif
     QDir folder = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
@@ -33,7 +36,6 @@ void NotesController::changeBaseFrequency(quint32 newBaseFrequency) {
     baseFrequency = newBaseFrequency;
     noteFrequencies.clear();
 
-    path.append("/frequenciesOfNotes.txt");
     QFile fileForNoteFrequencies(path);
     if (!fileForNoteFrequencies.open(QIODevice::WriteOnly)) {
         QMessageBox::information(0, "error", fileForNoteFrequencies.errorString());
@@ -67,7 +69,7 @@ void NotesController::readNotes() {
     //  opening the file with the name of notes
     QFile fileForNoteNames(":/data/notes/namesOfNotes.txt");
     if(!fileForNoteNames.open(QIODevice::ReadOnly)) {
-        QMessageBox::information(0, "error", fileForNoteNames.errorString());
+        QMessageBox::information(0, "error not finding namesOfNotes.txt", fileForNoteNames.errorString());
     } else {
         QTextStream in(&fileForNoteNames);
 
@@ -85,8 +87,8 @@ void NotesController::readNotes() {
     if (check_file.exists()) {
         //  opening the file with the frequencies
         QFile fileForNoteFrequencies(path);
-        if(!fileForNoteFrequencies.open(QIODevice::ReadOnly)) {
-            QMessageBox::information(0, "error", fileForNoteFrequencies.errorString());
+        if(!fileForNoteFrequencies.open(QIODevice::ReadWrite)) {
+            QMessageBox::information(0, "error not finding frequenciesOfNotes.txt", fileForNoteFrequencies.errorString());
         } else {
             QTextStream in(&fileForNoteFrequencies);
 
@@ -101,8 +103,8 @@ void NotesController::readNotes() {
 
         //  creating a file with the frequencies
         QFile fileForNoteFrequencies(path);
-        if (!fileForNoteFrequencies.open(QIODevice::WriteOnly)) {
-            QMessageBox::information(0, "error", fileForNoteFrequencies.errorString());
+        if (!fileForNoteFrequencies.open(QIODevice::ReadWrite)) {
+            QMessageBox::information(0, "error not finding frequenciesOfNotes.txt", fileForNoteFrequencies.errorString());
         } else {
             QTextStream stream( &fileForNoteFrequencies );
 

@@ -46,6 +46,7 @@ signals:
 protected:
     //  implementations of read data function of qiodevice
     qint64 readData(char *data, qint64 maxlen);
+
     //  implementations of write data function of qiodevice
 	qint64 writeData(const char *data, qint64 len);
 private:

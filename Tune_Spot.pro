@@ -3,6 +3,7 @@ android : QT += androidextras
 CONFIG += c++14
 QMAKE_CXXFLAGS += -std=c++11
 
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android-sources
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which as been marked deprecated (the exact warnings
@@ -42,8 +43,7 @@ HEADERS = \
     NotesController.hpp \
     PitchBuffer.hpp \
     Configurator.hpp \
-    AubioWrapper.hpp \
-    CompilerFix.hpp
+    AubioWrapper.hpp
 
 SOURCES += \
     main.cpp \
@@ -77,4 +77,5 @@ DISTFILES += \
     data/fonts/OpenSans-Regular.ttf \
     data/fonts/OpenSans-SemiBold.ttf \
     data/fonts/OpenSans-SemiBoldItalic.ttf\
-    data/notes/namesOfNotes.txt
+    data/notes/namesOfNotes.txt \
+    android-sources/AndroidManifest.xml
