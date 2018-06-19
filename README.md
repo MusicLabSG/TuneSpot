@@ -17,3 +17,4 @@
 
 # Acknowledgements & Credits
 - [aubio](https://github.com/aubio/aubio) for audio processing
+- [aubio](https://github.com/magnus-gross/quickpitch) for wrapping aubio library and creating a buffer for writing
