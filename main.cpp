@@ -10,7 +10,14 @@ int main(int argc, char *argv[]) {
 
     QApplication app(argc, argv);
 
-    QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
+    QAudioDeviceInfo info;
+
+    qDebug() << "available devices\n";
+    for(auto codec: QAudioDeviceInfo::availableDevices(QAudio::AudioInput)) {
+        qDebug() << codec.deviceName() << "\n";
+    }
+
+    info = QAudioDeviceInfo::defaultInputDevice();
 
     qDebug() << "ByteOrders\n";
     for (auto codec: info.supportedByteOrders()) {

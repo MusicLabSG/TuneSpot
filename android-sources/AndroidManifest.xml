@@ -84,4 +84,6 @@
     <uses-feature android:name="android.hardware.microphone" android:required="false"/>
     <uses-feature android:glEsVersion="0x00020000" android:required="true"/>
 
+<!-- %%INSERT_PERMISSIONS -->
+    <!-- %%INSERT_FEATURES -->
 </manifest>
