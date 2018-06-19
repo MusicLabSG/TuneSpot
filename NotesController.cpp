@@ -104,7 +104,7 @@ void NotesController::readNotes() {
         //  creating a file with the frequencies
         QFile fileForNoteFrequencies(path);
         if (!fileForNoteFrequencies.open(QIODevice::ReadWrite)) {
-            QMessageBox::information(0, "error not finding frequenciesOfNotes.txt", fileForNoteFrequencies.errorString());
+            QMessageBox::information(0, "error can not create frequenciesOfNotes.txt", fileForNoteFrequencies.errorString());
         } else {
             QTextStream stream( &fileForNoteFrequencies );
 
