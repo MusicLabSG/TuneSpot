@@ -18,3 +18,4 @@
 # Acknowledgements & Credits
 - [aubio](https://github.com/aubio/aubio) for audio processing
 - [QuickPitch](https://github.com/magnus-gross/quickpitch) for wrapping aubio library and creating a buffer for writing
+- [Icon suite](https://www.flaticon.com/packs/music-festival) some icons are take from here, thanks!
