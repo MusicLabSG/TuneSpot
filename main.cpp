@@ -12,8 +12,6 @@ int main(int argc, char *argv[]) {
 
     QAudioDeviceInfo info = QAudioDeviceInfo::defaultInputDevice();
 
-    qDebug() << "size of int16_t = " << sizeof(int16_t) * 8 << "\n";
-
     qDebug() << "ByteOrders\n";
     for (auto codec: info.supportedByteOrders()) {
         qDebug() << codec << "\n";
