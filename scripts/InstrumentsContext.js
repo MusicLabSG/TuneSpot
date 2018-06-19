@@ -12,7 +12,7 @@ var dragger_obj;
 var maxHeight;
 var minHeight;
 
-var selectedInstrument = "Guitar";
+var selectedInstrument = "Free mode";
 
 function onCreate(parent, main, instruments_indicator, instruments_selector, dragger) {
     parent_obj = parent;
@@ -48,7 +48,7 @@ function isSelected(name) {
 }
 
 function onInstrumentClicked(name) {
-    selectedInstrument = name || "Guitar";
+    selectedInstrument = name || "Free mode";
     Shared.setInstrument(name);
     selected_instrument_obj.destroy();
     Shared.getInstrument();

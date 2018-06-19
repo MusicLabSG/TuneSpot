@@ -7,7 +7,7 @@ var StringCello = 4
 
 // ----
 
-var currentSelectedInstrument = "Guitar";
+var currentSelectedInstrument = "Free mode";
 
 function setInstrument(name) {
     currentSelectedInstrument = name;

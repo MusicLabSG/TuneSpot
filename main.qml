@@ -18,6 +18,10 @@ Window {
     title: qsTr("Tune Spot")
     visible: true
 
+    Component.onCompleted: {
+        configurator.setOrganSetter("HI")
+    }
+
     // This is the backend btw
     Configurator {
         id: configurator
@@ -43,7 +47,7 @@ Window {
     Instruments_list {
         width: parent.width
         anchors.bottom: parent.bottom
-        //core: core
+        configurator: configurator
         id: list
 
     }

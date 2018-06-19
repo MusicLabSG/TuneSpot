@@ -8,11 +8,11 @@ import "shared.js" as Shared
 import "colors.js" as Color
 
 Item {
-    property Configurator core;
+    property Configurator configurator;
 
     height: parent.height * 0.13
     id: main
-    Component.onCompleted: Context.onCreate(parent, main, instruments_indicator, instruments_selector)
+    Component.onCompleted: Context.onCreate(parent, main, instruments_indicator, instruments_selector, configurator)
 
     // Minimazed
     Rectangle {
@@ -133,10 +133,6 @@ Item {
 
                 onClicked:{
                     Context.onInstrumentClicked(name)
-
-                    if (name === "Free Mode"){
-                        configurator.setFreeMode()
-                    }
                 }
             }
         }
