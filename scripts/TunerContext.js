@@ -1,170 +1,1000 @@
-.pragma library
-.import "../resources/shared.js" as Shared
-.import "./Observable.js" as Observable
-
-// Implements observer
-
-var lines = [];
-var circles = [];
-var current_string = -1;
-var numberOfLines = 19;
-
-var note_holder_obj
-var string_holder_obj;
-var lines_container_obj;
-var core_obj;
-
-function onCreate(note_holder, string_holder, lines_container, core) {
-    Observable.addObserver(this)
-    note_holder_obj = note_holder;
-    string_holder_obj = string_holder;
-    lines_container_obj = lines_container;
-    core_obj = core;
-    createLines(lines_container);
-    createCircles();
-}
-
-function createLines(id) {
-    // Create the graphical content
-
-    var height;
-
-    var counter = 0;
-    for (var i=0; i < numberOfLines; i++) {
-        // Create 1 small line and 1 big
-
-        height = (i % 2 == 0)? 270 : 220;
-
-        var object = Qt.createQmlObject("import QtQuick 2.2; Rectangle{width:2; height:"+
-                                        height+"; opacity: 0.9}", id);
-        lines[counter] = object;
-        counter++;
-    }
-}
-
-
-// Colors the specified line.
-// position -> Left || Right || Center: perfect tune
-// value -> 0: no tune, 9:almost good tune
-function showTuningAccuracy(position, value) {
-
-    // Make all lines default color
-    for (var i = 0; i < numberOfLines; i++){
-        lines[i].color = "white"
-    }
-
-
-
-    if(position === "Right")
-        value = numberOfLines/2 + value;
-
-    //print("Shows tuning for value: " + value % (numberOfLines - 1));
-
-    value = Math.floor(value % (numberOfLines - 1));
-    if(position === "Center"){
-        print(numberOfLines);
-        lines[9].color = "green";
-    }
-    else
-        lines[value].color = "red";
-}
-
-// Creates the circles, acting as the selected string
-function createCircles() {
-
-    var counter = 0;
-    for (var i=0; i < Shared.getStringNumberOfSelectedInstrument(); i++) {
-
-        var component = Qt.createComponent("../resources/StringCircle.qml");
-        var object = component.createObject(string_holder_obj);;
-        object.id = "String"+ (counter+1)
-        circles[counter] = object;
-        counter++;
-    }
-}
-
-function onStringClicked(id) {
-    // Reset selection
-    for (var i = 0; i < circles.length; i++) {
-        var obj = circles[i];
-        obj.width  = 15;
-        obj.height = 15;
-
-        if ( i === current_string){
-            obj.x += 6;
-            obj.y += 6;
-        }
-
-    }
-
-    // Get the string no
-    var stringNo = id.substr(id.length - 1);
-    stringNo -= 1;
-
-    // Make selection visible
-    current_string = stringNo;
-    var object = circles[stringNo];
-    object.width = 25;
-    object.height = 25;
-    object.x -= 6;
-    object.y -= 6;
-}
-
-// Takes the current info from the backend and shows them in the UI
-function tune(note, tunePercentage) {
-   // print("in tune")
-    //if (current_string < 0)
-      //  return;
-
-    //print(note)
-
-    if(Shared.currentSelectedInstrument === "Guitar"){
-        //core_obj.setGuitarXString(current_string + 1);
-    } else if(Shared.currentSelectedInstrument === "Cello"){
-        //core_obj.setCelloXString(current_string + 1);
-    }
-
-
-    //var tunePercentage = core_obj.getPercentageOfDistanceFromTheClosestNote();
-    tunePercentage = Math.floor(tunePercentage);
-    //print("Got percentage: " + tunePercentage);
-
-    if (tunePercentage > 0) {
-        showTuningAccuracy("Left", tunePercentage);
-    } else if(tunePercentage === 0 ) {
-        showTuningAccuracy("Center", 0);
-    } else {
-        showTuningAccuracy("Right", Math.abs(tunePercentage));
-    }
-
-    // Change the displayed note
-    if (note.charAt(1) === "#")
-        note_holder_obj.text = note.substring(0,2);
-    else
-        note_holder_obj.text = note.charAt(0);
-}
-
-// Resets all variables and recalculates them
-function reconfigure() {
-
-    // Delete all string circles
-    if (circles.length > 0){
-        for (var i = circles.length - 1; i >= 0 ; i--) {
-            circles[i].destroy();
-            circles.splice(i,1);
-        }
-    }
-
-    // Create the new
-    createCircles();
-
-    // Make all lines default color
-    for (i = 0; i < numberOfLines; i++){
-        lines[i].color = "white";
-    }
-    current_string = -1;
-}
-
-function update() {
-    reconfigure();
-}
+748
+555
+332
+589
+482
+834
+966
+108
+210
+999
+893
+316
+794
+474
+444
+536
+226
+448
+934
+998
+994
+723
+137
+379
+343
+39
+325
+481
+930
+387
+995
+266
+617
+824
+705
+276
+422
+308
+796
+284
+49
+395
+419
+460
+476
+298
+925
+180
+407
+40
+683
+277
+831
+454
+840
+280
+468
+684
+522
+817
+837
+784
+158
+154
+714
+656
+643
+764
+267
+247
+609
+224
+304
+61
+804
+539
+440
+134
+823
+307
+171
+489
+772
+117
+447
+779
+587
+257
+854
+215
+502
+970
+192
+991
+488
+322
+338
+495
+345
+572
+826
+780
+894
+351
+309
+436
+404
+847
+221
+36
+615
+175
+786
+356
+324
+940
+45
+707
+63
+403
+357
+569
+544
+251
+967
+852
+483
+987
+642
+493
+530
+982
+38
+965
+638
+292
+526
+515
+758
+969
+16
+832
+632
+537
+431
+711
+712
+648
+97
+610
+288
+861
+989
+621
+504
+694
+729
+649
+230
+19
+630
+123
+722
+843
+291
+787
+90
+601
+808
+706
+749
+631
+397
+46
+976
+928
+73
+819
+56
+354
+800
+37
+797
+720
+67
+156
+315
+151
+177
+449
+194
+11
+144
+948
+626
+856
+771
+910
+963
+62
+929
+734
+411
+510
+922
+602
+669
+128
+887
+566
+152
+76
+538
+219
+565
+693
+524
+417
+260
+453
+820
+968
+197
+264
+30
+225
+742
+646
+109
+983
+639
+597
+167
+977
+721
+478
+77
+104
+557
+906
+828
+429
+390
+100
+513
+25
+130
+658
+741
+70
+208
+416
+82
+113
+202
+733
+490
+383
+559
+426
+821
+282
+641
+594
+254
+385
+369
+18
+42
+859
+306
+406
+176
+471
+523
+518
+978
+127
+339
+830
+568
+469
+439
+57
+23
+582
+475
+841
+200
+201
+873
+603
+205
+311
+285
+766
+747
+126
+802
+336
+540
+389
+133
+486
+415
+145
+239
+96
+499
+8
+79
+69
+663
+114
+425
+825
+364
+984
+313
+886
+227
+579
+296
+611
+959
+155
+497
+952
+519
+892
+698
+735
+363
+533
+881
+600
+924
+467
+946
+673
+979
+136
+793
+865
+333
+795
+556
+182
+604
+491
+563
+898
+956
+680
+212
+689
+204
+651
+252
+740
+71
+412
+674
+232
+193
+635
+785
+330
+423
+434
+80
+186
+410
+782
+92
+98
+405
+778
+358
+756
+496
+388
+245
+622
+335
+327
+529
+443
+456
+301
+271
+755
+770
+10
+396
+520
+535
+833
+964
+139
+591
+913
+157
+84
+923
+323
+882
+435
+310
+571
+259
+319
+278
+692
+996
+507
+148
+378
+244
+809
+294
+739
+234
+52
+457
+501
+74
+287
+48
+380
+675
+428
+88
+620
+184
+803
+50
+827
+509
+190
+272
+400
+438
+870
+575
+274
+262
+170
+135
+183
+209
+466
+933
+359
+376
+605
+612
+679
+561
+753
+845
+22
+2
+902
+954
+352
+408
+937
+86
+625
+992
+853
+596
+543
+290
+384
+851
+31
+118
+616
+58
+915
+525
+505
+89
+876
+553
+138
+791
+24
+312
+815
+608
+724
+249
+862
+261
+986
+256
+159
+300
+702
+32
+662
+141
+988
+149
+228
+857
+619
+812
+146
+697
+590
+33
+768
+281
+717
+199
+142
+877
+153
+901
+279
+696
+577
+394
+799
+949
+392
+686
+945
+217
+909
+836
+754
+347
+664
+169
+168
+83
+855
+44
+685
+172
+719
+592
+72
+111
+842
+818
+652
+912
+43
+452
+981
+650
+81
+936
+645
+340
+87
+942
+341
+305
+421
+386
+527
+941
+814
+920
+879
+980
+687
+473
+418
+1000
+581
+872
+283
+792
+4
+188
+944
+633
+761
+344
+769
+432
+914
+463
+623
+503
+382
+654
+437
+47
+362
+760
+835
+218
+178
+112
+246
+810
+816
+672
+243
+302
+932
+353
+846
+242
+896
+586
+64
+286
+229
+593
+907
+107
+629
+462
+41
+588
+883
+399
+331
+647
+487
+953
+905
+346
+268
+889
+320
+132
+585
+598
+85
+458
+17
+102
+480
+614
+552
+868
+334
+106
+962
+985
+957
+829
+666
+368
+143
+424
+297
+580
+269
+618
+110
+688
+849
+161
+916
+531
+512
+636
+668
+9
+238
+427
+657
+628
+997
+567
+93
+574
+871
+867
+68
+511
+528
+880
+595
+695
+101
+53
+131
+198
+29
+765
+763
+838
+875
+15
+728
+27
+337
+805
+972
+91
+811
+783
+506
+420
+484
+682
+174
+573
+116
+564
+725
+12
+678
+790
+781
+34
+371
+165
+926
+974
+213
+806
+160
+704
+398
+710
+736
+233
+750
+472
+162
+120
+938
+921
+655
+891
+644
+860
+681
+955
+119
+864
+381
+660
+237
+365
+554
+299
+961
+1
+726
+848
+14
+241
+220
+433
+485
+492
+121
+850
+166
+129
+993
+677
+547
+947
+858
+372
+105
+414
+222
+607
+373
+314
+59
+329
+917
+773
+759
+788
+377
+918
+464
+187
+560
+147
+124
+713
+5
+900
+545
+671
+691
+866
+746
+78
+223
+927
+21
+943
+911
+450
+634
+265
+240
+402
+659
+203
+542
+442
+248
+465
+908
+874
+7
+743
+762
+498
+737
+578
+548
+185
+700
+885
+958
+95
+235
+919
+951
+767
+293
+231
+551
+445
+931
+441
+904
+303
+939
+391
+757
+366
+558
+6
+676
+75
+534
+798
+514
+66
+295
+125
+94
+375
+115
+701
+122
+813
+708
+884
+897
+839
+479
+374
+413
+350
+584
+899
+878
+216
+950
+690
+844
+263
+20
+150
+521
+326
+446
+451
+532
+361
+253
+613
+863
+173
+35
+189
+181
+26
+461
+890
+196
+732
+275
+508
+699
+191
+250
+393
+206
+317
+606
+13
+236
+163
+328
+546
+455
+516
+973
+665
+211
+3
+801
+744
+869
+270
+775
+550
+517
+318
+470
+653
+273
+570
+640
+494
+670
+370
+789
+54
+730
+477
+430
+51
+624
+342
+727
+55
+709
+562
+718
+738
+179
+990
+715
+348
+409
+703
+500
+667
+541
+661
+549
+716
+207
+255
+99
+888
+164
+258
+971
+583
+975
+627
+960
+214
+895
+321
+289
+195
+28
+349
+360
+459
+752
+751
+745
+355
+935
+401
+731
+777
+903
+65
+774
+637
+140
+807
+103
+822
+599
+60
+367
+576
+776
