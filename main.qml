@@ -23,8 +23,6 @@ Window {
         id: configurator
         active: true
         onPercentageChanged: {
-            print("incoming percentage: "+configurator.percentage)
-            print("For note: "+note)
             tuner.percentage_changed(note, configurator.percentage)
         }
     }

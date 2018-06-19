@@ -60,7 +60,7 @@ function showTuningAccuracy(position, value) {
     if(position === "Left")
         value = Math.floor(numberOfLines/2) - value
 
-    if(position === "Center"){
+    if(position === "Center" || value < 2){
         lines[9].color = "green";
     }
     else
