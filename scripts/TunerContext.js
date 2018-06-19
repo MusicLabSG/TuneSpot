@@ -117,11 +117,11 @@ function tune(note, tunePercentage) {
     tunePercentage = Math.floor(tunePercentage);
 
     if (tunePercentage > 0) {
-        showTuningAccuracy("Right", tunePercentage);
+        showTuningAccuracy("Left", tunePercentage);
     } else if(tunePercentage === 0 ) {
         showTuningAccuracy("Center", 0);
     } else {
-        showTuningAccuracy("Left", Math.abs(tunePercentage));
+        showTuningAccuracy("Right", Math.abs(tunePercentage));
     }
 
     // Change the displayed note
