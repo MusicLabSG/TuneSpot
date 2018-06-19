@@ -1,3 +1,10 @@
+/*
+ * File:    AubioWrapper.cpp
+ * Author:  Theodor
+ *
+ * Created on Jun 14, 2018, 5:29 PM
+ */
+
 #include <AubioWrapper.hpp>
 
 AubioWrapper::AubioWrapper() {

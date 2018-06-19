@@ -14,6 +14,7 @@ Configurator::Configurator(QObject *parent) : QObject(parent) {
     recorder = std::make_unique<QAudioInput>(formatSettings);
 
     currentFrequency = 0;
+    lastConfidentFrequency = 0;
     percentageOfDistanceFromTheClosestNote = 0;
     closestNote = "";
     setterIdentifier = "freeMode";
@@ -115,7 +116,7 @@ void Configurator::setFreeMode() {
     quint16 minI = -1;
     qreal minDistance = 10000, test;
     for (quint16 i = 0; i < 88; i++) {
-        test = qFabs(currentFrequency - notesController->getNoteFrequencies()[i]);
+        test = qFabs(lastConfidentFrequency - notesController->getNoteFrequencies()[i]);
         if (minDistance > test) {
             minDistance = test;
             minI = i;
@@ -142,8 +143,8 @@ qreal Configurator::getPercentageOfDistanceFromTheClosestNote() {
     return percentageOfDistanceFromTheClosestNote;
 }
 
-qreal Configurator::getCurrentFrequency() {
-    return currentFrequency;
+qreal Configurator::getFrequency() {
+    return lastConfidentFrequency;
 }
 
 void Configurator::applyFormat() {
@@ -166,35 +167,35 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
     if (i == 0) {
         qreal freq = notesController->getNoteFrequencies()[i];
         qreal freqNext = notesController->getNoteFrequencies()[i + 1];
-        if (currentFrequency >= freqNext) {
+        if (lastConfidentFrequency >= freqNext) {
             percentageOfDistanceFromTheClosestNote = 100;
-        } else if (currentFrequency >= freq) {
+        } else if (lastConfidentFrequency >= freq) {
             percentageOfDistanceFromTheClosestNote =
-                    ((currentFrequency - freq) / (freqNext - freq)) * 100;
+                    ((lastConfidentFrequency - freq) / (freqNext - freq)) * 100;
         }
     } else if (i == 87) {
         qreal freq = notesController->getNoteFrequencies()[i];
         qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
-        if (currentFrequency <= freqPrevious) {
+        if (lastConfidentFrequency <= freqPrevious) {
             percentageOfDistanceFromTheClosestNote = -100;
         } else {
             percentageOfDistanceFromTheClosestNote =
-                    ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
+                    ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     } else {
         qreal freq = notesController->getNoteFrequencies()[i];
         qreal freqPrevious = notesController->getNoteFrequencies()[i - 1];
         qreal freqNext = notesController->getNoteFrequencies()[i + 1];
 
-        if (currentFrequency <= freqPrevious) {
+        if (lastConfidentFrequency <= freqPrevious) {
             percentageOfDistanceFromTheClosestNote = -100;
-        } else if (currentFrequency >= freqNext) {
+        } else if (lastConfidentFrequency >= freqNext) {
             percentageOfDistanceFromTheClosestNote = 100;
-        } else if (currentFrequency >= freq) {
+        } else if (lastConfidentFrequency >= freq) {
             percentageOfDistanceFromTheClosestNote =
-                    ((currentFrequency - freq) / (freqNext - freq)) * 100;
+                    ((lastConfidentFrequency - freq) / (freqNext - freq)) * 100;
         } else {
-            percentageOfDistanceFromTheClosestNote = ((currentFrequency - freq) / (freq - freqPrevious)) * 100;
+            percentageOfDistanceFromTheClosestNote = ((lastConfidentFrequency - freq) / (freq - freqPrevious)) * 100;
         }
     }
 }
@@ -202,10 +203,16 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
 void Configurator::analyzeSamples() {
     // while new samples are available
     while (pitchBuffer.getSamples(aubio.aubioIn)) {
+        //  recognize the pitch
         aubio_pitch_do(aubio.getAubioPitch(), aubio.aubioIn, aubio.aubioOut);
+
         currentFrequency = aubio.aubioOut->data[0];
 
-        //  float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
+        float confidence = aubio_pitch_get_confidence(aubio.getAubioPitch());
+
+        if (confidence >= confidenceThresHold) {
+            lastConfidentFrequency = currentFrequency;
+        }
 
         setCloseNoteAndPercentageAccordingToSetterID();
 

@@ -42,8 +42,7 @@ HEADERS = \
     NotesController.hpp \
     PitchBuffer.hpp \
     Configurator.hpp \
-    AubioWrapper.hpp \
-    CompilerFix.hpp
+    AubioWrapper.hpp
 
 SOURCES += \
     main.cpp \
