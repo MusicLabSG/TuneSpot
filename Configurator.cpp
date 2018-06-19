@@ -43,9 +43,9 @@ void Configurator::setActive(bool active) {
 }
 
 void Configurator::setOrganSetter(QString setter) {
-    setActive(false);
     organSetter = setter;
-    setActive(true);
+
+    emit organSetterChanged();
 }
 
 QString Configurator::getOrganSetter() {
@@ -58,9 +58,11 @@ quint16 Configurator::getBaseFrequency() {
 }
 
 void Configurator::setBaseFrequency(quint16 newBaseFrequency) {
-    setActive(false);
+    //setActive(false);
     notesController.changeBaseFrequency(newBaseFrequency);
-    setActive(true);
+    //setActive(true);
+
+    emit baseFrequencyChanged();
 }
 
 QString Configurator::getClosestNote() {
@@ -225,7 +227,7 @@ void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
 
 void Configurator::analyzeSamples() {
     // while new samples are available
-    while (pitchBuffer.getSamples(aubio.aubioIn) && activeTuner == true) {
+    while (pitchBuffer.getSamples(aubio.aubioIn)) {
         //  recognize the pitch
         aubio_pitch_do(aubio.getAubioPitch(), aubio.aubioIn, aubio.aubioOut);
 
@@ -239,7 +241,6 @@ void Configurator::analyzeSamples() {
         }
 
         setCloseNoteAndPercentageAccordingToSetterID();
-
         emit samplesAnalyzed();
     }
 }
