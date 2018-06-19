@@ -111,9 +111,9 @@ function onStringClicked(id) {
     // Notify the backend for the change
 
     if(Shared.currentSelectedInstrument === "Guitar"){
-        configurator.setterName = "guitar"+(current_string + 1);
+        configurator_obj.setterName = "guitar"+(current_string + 1);
     } else if(Shared.currentSelectedInstrument === "Cello"){
-        configurator.setterName = "cello"+(current_string + 1);
+        configurator_obj.setterName = "cello"+(current_string + 1);
     }
 }
 
