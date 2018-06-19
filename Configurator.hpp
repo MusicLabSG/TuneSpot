@@ -23,7 +23,7 @@ class Configurator : public QObject {
     Q_PROPERTY(qreal percentage MEMBER percentageOfDistanceFromTheClosestNote READ getPercentageOfDistanceFromTheClosestNote() NOTIFY samplesAnalyzed())
     Q_PROPERTY(qreal frequency MEMBER lastConfidentFrequency READ getFrequency() NOTIFY samplesAnalyzed())
     Q_PROPERTY(quint16 baseFreq READ getBaseFrequency() WRITE setBaseFrequency NOTIFY baseFrequencyChanged())
-    Q_PROPERTY(QString setterName MEMBER setterIdentifier WRITE setOrganSetter() NOTIFY organSetterChanged())
+    Q_PROPERTY(QString setterName READ getOrganSetter() WRITE setOrganSetter NOTIFY organSetterChanged())
 
 public:
     explicit Configurator(QObject *parent = nullptr);
@@ -36,12 +36,18 @@ public:
 
     /**
      * @brief setOrganSetter is a function that sets the organ setter that is gonna be used
-     * @param setterIdentifier is the setterIdentifier that defines the setter
+     * @param setter is the setter that defines the organSetter
      * freeMode
      * celloX where x {1-4} check below what every number means e.g. cello1
      * guitarX where x {1-6] check below what every number means e.g. guitar6
      */
-    void setOrganSetter(QString setterIdentifier);
+    void setOrganSetter(QString setter);
+
+    /**
+     * @brief getOrganSetter is a function that returns the organ setter
+     * @return the organ setter
+     */
+    QString getOrganSetter();
 
     /**
      * @brief getBaseFrequency is a function that returns the base frequency
@@ -140,7 +146,7 @@ private:
     bool activeTuner;
 
     //  this varibles is the setter id
-    QString setterIdentifier;
+    QString organSetter;
 
     //  this variable is used for graphical reasons and it's range is -100 to 100
     qreal percentageOfDistanceFromTheClosestNote;

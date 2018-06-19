@@ -25,7 +25,7 @@ Configurator::Configurator(QObject *parent) : QObject(parent) {
     lastConfidentFrequency = 0;
     percentageOfDistanceFromTheClosestNote = 0;
     closestNote = "";
-    setterIdentifier = "freeMode";
+    organSetter = "freeMode";
 
     connect(&pitchBuffer, SIGNAL(samplesReady()), this, SLOT(analyzeSamples()));
 }
@@ -42,10 +42,14 @@ void Configurator::setActive(bool active) {
     activeTuner = active;
 }
 
-void Configurator::setOrganSetter(QString setterIdentifier) {
+void Configurator::setOrganSetter(QString setter) {
     setActive(false);
-    this->setterIdentifier = setterIdentifier;
+    organSetter = setter;
     setActive(true);
+}
+
+QString Configurator::getOrganSetter() {
+    return organSetter;
 }
 
 
@@ -89,27 +93,27 @@ void Configurator::applyFormat() {
 
 
 void Configurator::setCloseNoteAndPercentageAccordingToSetterID() {
-    if(setterIdentifier == "freeMode") {
+    if(organSetter == "freeMode") {
         setFreeMode();
-    } else if (setterIdentifier == "cello1") {
+    } else if (organSetter == "cello1") {
         setCelloXString(1);
-    } else if (setterIdentifier == "cello2") {
+    } else if (organSetter == "cello2") {
         setCelloXString(2);
-    } else if (setterIdentifier == "cello3") {
+    } else if (organSetter == "cello3") {
         setCelloXString(3);
-    } else if (setterIdentifier == "cello4") {
+    } else if (organSetter == "cello4") {
         setCelloXString(4);
-    } else if (setterIdentifier == "guitar1") {
+    } else if (organSetter == "guitar1") {
         setGuitarXString(1);
-    } else if (setterIdentifier == "guitar2") {
+    } else if (organSetter == "guitar2") {
         setGuitarXString(2);
-    } else if (setterIdentifier == "guitar3") {
+    } else if (organSetter == "guitar3") {
         setGuitarXString(3);
-    } else if (setterIdentifier == "guitar4") {
+    } else if (organSetter == "guitar4") {
         setGuitarXString(4);
-    } else if (setterIdentifier == "guitar5") {
+    } else if (organSetter == "guitar5") {
         setGuitarXString(5);
-    } else if (setterIdentifier == "guitar6") {
+    } else if (organSetter == "guitar6") {
         setGuitarXString(6);
     }
 }
