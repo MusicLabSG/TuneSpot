@@ -13,7 +13,14 @@
 	- Qt Widgets
 	- Qt Quick Controls 2 (qt5-quickcontrols2)
 	- Qt Multimedia (qt5-multimedia)
-* Aubio 
+* Aubio
+
+# Platforms supported
+
+* Windows
+* Linux
+* Mac
+* Android 
 
 # Acknowledgements & Credits
 - [aubio](https://github.com/aubio/aubio) for audio processing
