@@ -25,6 +25,8 @@
 extern "C" {
 #endif
 
+#include "types.h"
+
 /** \file
 
   Vector of real-valued data

@@ -19,17 +19,28 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # aubio
 INCLUDEPATH += $$PWD/./aubio/src
 
-SOURCES += ./aubio/src/pitch/pitch.c \
+HEADERS += \
+        ./aubio/src/aubio_priv.h \
+        ./aubio/src/types.h \
+        ./aubio/src/fvec.h \
+        ./aubio/src/pitch/pitch.h \
+        ./aubio/src/utils/log.h \
+        ./aubio/src/spectral/phasevoc.h \
+        ./aubio/src/cvec.h \
+        ./aubio/src/temporal/c_weighting.h \
+        ./aubio/src/pitch/pitchyinfft.h \
+        ./aubio/src/temporal/filter.h \
+        ./aubio/src/mathutils.h \
+        ./aubio/src/spectral/fft.h \
+        ./aubio/src/lvec.h \
+
+SOURCES += \
         ./aubio/src/fvec.c \
+        ./aubio/src/pitch/pitch.c \
         ./aubio/src/utils/log.c \
-        ./aubio/src/pitch/pitchyin.c \
         ./aubio/src/spectral/phasevoc.c \
         ./aubio/src/cvec.c \
-        ./aubio/src/pitch/pitchmcomb.c \
         ./aubio/src/temporal/c_weighting.c \
-        ./aubio/src/pitch/pitchfcomb.c \
-        ./aubio/src/pitch/pitchschmitt.c \
-        ./aubio/src/pitch/pitchspecacf.c \
         ./aubio/src/pitch/pitchyinfft.c \
         ./aubio/src/temporal/filter.c \
         ./aubio/src/mathutils.c \
@@ -37,18 +48,22 @@ SOURCES += ./aubio/src/pitch/pitch.c \
         ./aubio/src/lvec.c \
         ./aubio/src/spectral/ooura_fft8g.c
 
-HEADERS = \
-    NotesController.hpp \
-    PitchBuffer.hpp \
-    Configurator.hpp \
-    AubioWrapper.hpp
+
+#Project's c++ code
+INCLUDEPATH += $$PWD/./include
+
+HEADERS += \
+        ./include/Configurator.hpp \
+        ./include/AubioWrapper.hpp \
+        ./include/NotesController.hpp \
+        ./include/PitchBuffer.hpp
 
 SOURCES += \
-    main.cpp \
-    NotesController.cpp \
-    PitchBuffer.cpp \
-    Configurator.cpp \
-    AubioWrapper.cpp
+        ./src/Configurator.cpp \
+        ./src/AubioWrapper.cpp \
+        ./src/NotesController.cpp \
+        ./src/PitchBuffer.cpp \
+        ./main.cpp
 
 
 RESOURCES += qml.qrc
