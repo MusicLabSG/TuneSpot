@@ -57,7 +57,7 @@ typedef struct _aubio_sink_sndfile_t aubio_sink_sndfile_t;
   been called.
 
 */
-aubio_sink_sndfile_t * new_aubio_sink_sndfile(const char_t * uri, uint_t samplerate);
+aubio_sink_sndfile_t *new_aubio_sink_sndfile(const char_t *uri, uint_t samplerate);
 
 /**
 
@@ -122,7 +122,7 @@ uint_t aubio_sink_sndfile_get_channels(const aubio_sink_sndfile_t *s);
   \param write number of frames to write
 
 */
-void aubio_sink_sndfile_do(aubio_sink_sndfile_t * s, fvec_t * write_data, uint_t write);
+void aubio_sink_sndfile_do(aubio_sink_sndfile_t *s, fvec_t *write_data, uint_t write);
 
 /**
 
@@ -133,7 +133,7 @@ void aubio_sink_sndfile_do(aubio_sink_sndfile_t * s, fvec_t * write_data, uint_t
   \param write number of frames to write
 
 */
-void aubio_sink_sndfile_do_multi(aubio_sink_sndfile_t * s, fmat_t * write_data, uint_t write);
+void aubio_sink_sndfile_do_multi(aubio_sink_sndfile_t *s, fmat_t *write_data, uint_t write);
 
 /**
 
@@ -144,7 +144,7 @@ void aubio_sink_sndfile_do_multi(aubio_sink_sndfile_t * s, fmat_t * write_data, 
   \return 0 on success, non-zero on failure
 
 */
-uint_t aubio_sink_sndfile_close(aubio_sink_sndfile_t * s);
+uint_t aubio_sink_sndfile_close(aubio_sink_sndfile_t *s);
 
 /**
 
@@ -153,7 +153,7 @@ uint_t aubio_sink_sndfile_close(aubio_sink_sndfile_t * s);
   \param s sink, created with ::new_aubio_sink_sndfile
 
 */
-void del_aubio_sink_sndfile(aubio_sink_sndfile_t * s);
+void del_aubio_sink_sndfile(aubio_sink_sndfile_t *s);
 
 #ifdef __cplusplus
 }

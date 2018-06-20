@@ -40,7 +40,7 @@ extern "C" {
 
  */
 uint_t aubio_io_validate_samplerate(const char_t *kind, const char_t *path,
-    uint_t samplerate);
+                                    uint_t samplerate);
 
 /** validate number of channels
 
@@ -51,7 +51,7 @@ uint_t aubio_io_validate_samplerate(const char_t *kind, const char_t *path,
 
  */
 uint_t aubio_io_validate_channels(const char_t *kind, const char_t *path,
-    uint_t channels);
+                                  uint_t channels);
 
 #ifdef __cplusplus
 }

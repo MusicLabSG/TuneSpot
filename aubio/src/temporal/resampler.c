@@ -76,25 +76,22 @@ aubio_resampler_do (aubio_resampler_t * s, const fvec_t * input, fvec_t * output
 }
 
 #else
-struct _aubio_resampler_t
-{
-  void *dummy;
+struct _aubio_resampler_t {
+    void *dummy;
 };
 
 aubio_resampler_t *
-new_aubio_resampler (smpl_t ratio UNUSED, uint_t type UNUSED)
-{
-  AUBIO_ERR ("aubio was not compiled with libsamplerate\n");
-  return NULL;
+new_aubio_resampler(smpl_t ratio UNUSED, uint_t type UNUSED) {
+    AUBIO_ERR("aubio was not compiled with libsamplerate\n");
+    return NULL;
 }
 
 void
-del_aubio_resampler (aubio_resampler_t * s UNUSED)
-{
+del_aubio_resampler(aubio_resampler_t *s UNUSED) {
 }
 
 void
-aubio_resampler_do (aubio_resampler_t * s UNUSED, const fvec_t * input UNUSED, fvec_t * output UNUSED)
-{
+aubio_resampler_do(aubio_resampler_t *s UNUSED, const fvec_t *input UNUSED, fvec_t *output UNUSED) {
 }
+
 #endif /* HAVE_SAMPLERATE */

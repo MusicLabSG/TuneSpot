@@ -25,30 +25,28 @@
 #include "temporal/biquad.h"
 
 uint_t
-aubio_filter_set_biquad (aubio_filter_t * f, lsmp_t b0, lsmp_t b1, lsmp_t b2,
-    lsmp_t a1, lsmp_t a2)
-{
-  uint_t order = aubio_filter_get_order (f);
-  lvec_t *bs = aubio_filter_get_feedforward (f);
-  lvec_t *as = aubio_filter_get_feedback (f);
+aubio_filter_set_biquad(aubio_filter_t *f, lsmp_t b0, lsmp_t b1, lsmp_t b2,
+                        lsmp_t a1, lsmp_t a2) {
+    uint_t order = aubio_filter_get_order(f);
+    lvec_t *bs = aubio_filter_get_feedforward(f);
+    lvec_t *as = aubio_filter_get_feedback(f);
 
-  if (order != 3) {
-    AUBIO_ERROR ("order of biquad filter must be 3, not %d\n", order);
-    return AUBIO_FAIL;
-  }
-  bs->data[0] = b0;
-  bs->data[1] = b1;
-  bs->data[2] = b2;
-  as->data[0] = 1.;
-  as->data[1] = a1;
-  as->data[2] = a2;
-  return AUBIO_OK;
+    if (order != 3) {
+        AUBIO_ERROR("order of biquad filter must be 3, not %d\n", order);
+        return AUBIO_FAIL;
+    }
+    bs->data[0] = b0;
+    bs->data[1] = b1;
+    bs->data[2] = b2;
+    as->data[0] = 1.;
+    as->data[1] = a1;
+    as->data[2] = a2;
+    return AUBIO_OK;
 }
 
 aubio_filter_t *
-new_aubio_filter_biquad (lsmp_t b0, lsmp_t b1, lsmp_t b2, lsmp_t a1, lsmp_t a2)
-{
-  aubio_filter_t *f = new_aubio_filter (3);
-  aubio_filter_set_biquad (f, b0, b1, b2, a1, a2);
-  return f;
+new_aubio_filter_biquad(lsmp_t b0, lsmp_t b1, lsmp_t b2, lsmp_t a1, lsmp_t a2) {
+    aubio_filter_t *f = new_aubio_filter(3);
+    aubio_filter_set_biquad(f, b0, b1, b2, a1, a2);
+    return f;
 }

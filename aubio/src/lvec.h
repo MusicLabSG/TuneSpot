@@ -41,8 +41,8 @@ extern "C" {
 
 /** Buffer for real data in double precision */
 typedef struct {
-  uint_t length; /**< length of buffer */
-  lsmp_t *data;  /**< data array of size [length] */
+    uint_t length; /**< length of buffer */
+    lsmp_t *data;  /**< data array of size [length] */
 } lvec_t;
 
 /** lvec_t buffer creation function
@@ -50,7 +50,8 @@ typedef struct {
   \param length the length of the buffer to create
 
 */
-lvec_t * new_lvec(uint_t length);
+lvec_t *new_lvec(uint_t length);
+
 /** lvec_t buffer deletion function
 
   \param s buffer to delete as returned by new_lvec()
@@ -73,14 +74,14 @@ lsmp_t lvec_get_sample(lvec_t *s, uint_t position);
   \param position sample position to write to
 
 */
-void  lvec_set_sample(lvec_t *s, lsmp_t data, uint_t position);
+void lvec_set_sample(lvec_t *s, lsmp_t data, uint_t position);
 
 /** read data from a buffer
 
   \param s vector to read from
 
 */
-lsmp_t * lvec_get_data(const lvec_t *s);
+lsmp_t *lvec_get_data(const lvec_t *s);
 
 /** print out lvec data
 

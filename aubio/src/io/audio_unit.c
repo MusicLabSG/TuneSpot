@@ -19,6 +19,7 @@
 */
 
 #include "aubio_priv.h"
+
 #ifdef HAVE_AUDIO_UNIT
 
 #include "fvec.h"

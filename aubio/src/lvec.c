@@ -20,61 +20,63 @@
 
 #include "aubio_priv.h"
 #include "lvec.h"
+#include "stdio.h"
 
-lvec_t * new_lvec(uint_t length) {
-  lvec_t * s;
-  if ((sint_t)length <= 0) {
-    return NULL;
-  }
-  s = AUBIO_NEW(lvec_t);
-  s->length = length;
-  s->data = AUBIO_ARRAY(lsmp_t, s->length);
-  return s;
+lvec_t *new_lvec(uint_t length) {
+    lvec_t *s;
+    if ((sint_t) length <= 0) {
+        return NULL;
+    }
+    s = AUBIO_NEW(lvec_t);
+    s->length = length;
+    s->data = AUBIO_ARRAY(lsmp_t, s->length);
+    return s;
 }
 
 void del_lvec(lvec_t *s) {
-  AUBIO_FREE(s->data);
-  AUBIO_FREE(s);
+    AUBIO_FREE(s->data);
+    AUBIO_FREE(s);
 }
 
 void lvec_set_sample(lvec_t *s, lsmp_t data, uint_t position) {
-  s->data[position] = data;
+    s->data[position] = data;
 }
 
 lsmp_t lvec_get_sample(lvec_t *s, uint_t position) {
-  return s->data[position];
+    return s->data[position];
 }
 
-lsmp_t * lvec_get_data(const lvec_t *s) {
-  return s->data;
+lsmp_t *lvec_get_data(const lvec_t *s) {
+    return s->data;
 }
 
 /* helper functions */
 
 void lvec_print(const lvec_t *s) {
-  uint_t j;
-  for (j=0; j< s->length; j++) {
-    AUBIO_MSG(AUBIO_LSMP_FMT " ", s->data[j]);
-  }
-  AUBIO_MSG("\n");
+    uint_t j;
+    for (j = 0; j < s->length; j++) {
+        AUBIO_MSG(AUBIO_LSMP_FMT
+                          " ", s->data[j]);
+    }
+    AUBIO_MSG("\n");
 }
 
-void lvec_set_all (lvec_t *s, smpl_t val) {
-  uint_t j;
-  for (j=0; j< s->length; j++) {
-    s->data[j] = val;
-  }
+void lvec_set_all(lvec_t *s, smpl_t val) {
+    uint_t j;
+    for (j = 0; j < s->length; j++) {
+        s->data[j] = val;
+    }
 }
 
 void lvec_zeros(lvec_t *s) {
 #if HAVE_MEMCPY_HACKS
-  memset(s->data, 0, s->length * sizeof(lsmp_t));
+    memset(s->data, 0, s->length * sizeof(lsmp_t));
 #else
-  lvec_set_all (s, 0.);
+    lvec_set_all(s, 0.);
 #endif
 }
 
 void lvec_ones(lvec_t *s) {
-  lvec_set_all (s, 1.);
+    lvec_set_all(s, 1.);
 }
 

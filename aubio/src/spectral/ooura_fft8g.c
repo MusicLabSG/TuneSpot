@@ -10,22 +10,39 @@
 #include "aubio_priv.h"
 
 void aubio_ooura_cdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w);
+
 void aubio_ooura_rdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w);
+
 void aubio_ooura_ddct(int n, int isgn, smpl_t *a, int *ip, smpl_t *w);
+
 void aubio_ooura_ddst(int n, int isgn, smpl_t *a, int *ip, smpl_t *w);
+
 void aubio_ooura_dfct(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w);
+
 void aubio_ooura_dfst(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w);
+
 static void makewt(int nw, int *ip, smpl_t *w);
+
 static void makect(int nc, int *ip, smpl_t *c);
+
 static void bitrv2(int n, int *ip, smpl_t *a);
+
 static void bitrv2conj(int n, int *ip, smpl_t *a);
+
 static void cftfsub(int n, smpl_t *a, smpl_t *w);
+
 static void cftbsub(int n, smpl_t *a, smpl_t *w);
+
 static void cft1st(int n, smpl_t *a, smpl_t *w);
+
 static void cftmdl(int n, int l, smpl_t *a, smpl_t *w);
+
 static void rftfsub(int n, smpl_t *a, int nc, smpl_t *c);
+
 static void rftbsub(int n, smpl_t *a, int nc, smpl_t *c);
+
 static void dctsub(int n, smpl_t *a, int nc, smpl_t *c);
+
 static void dstsub(int n, smpl_t *a, int nc, smpl_t *c);
 
 /*
@@ -305,14 +322,13 @@ Appendix :
 */
 
 
-void aubio_ooura_cdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
-{
+void aubio_ooura_cdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w) {
     void makewt(int nw, int *ip, smpl_t *w);
     void bitrv2(int n, int *ip, smpl_t *a);
     void bitrv2conj(int n, int *ip, smpl_t *a);
     void cftfsub(int n, smpl_t *a, smpl_t *w);
     void cftbsub(int n, smpl_t *a, smpl_t *w);
-    
+
     if (n > (ip[0] << 2)) {
         makewt(n >> 2, ip, w);
     }
@@ -330,8 +346,7 @@ void aubio_ooura_cdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
 }
 
 
-void aubio_ooura_rdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
-{
+void aubio_ooura_rdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w) {
     void makewt(int nw, int *ip, smpl_t *w);
     void makect(int nc, int *ip, smpl_t *c);
     void bitrv2(int n, int *ip, smpl_t *a);
@@ -341,7 +356,7 @@ void aubio_ooura_rdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
     void rftbsub(int n, smpl_t *a, int nc, smpl_t *c);
     int nw, nc;
     smpl_t xi;
-    
+
     nw = ip[0];
     if (n > (nw << 2)) {
         nw = n >> 2;
@@ -364,7 +379,7 @@ void aubio_ooura_rdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
         a[0] += a[1];
         a[1] = xi;
     } else {
-        a[1] = (smpl_t)0.5 * (a[0] - a[1]);
+        a[1] = (smpl_t) 0.5 * (a[0] - a[1]);
         a[0] -= a[1];
         if (n > 4) {
             rftbsub(n, a, nc, w + nw);
@@ -377,8 +392,7 @@ void aubio_ooura_rdft(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
 }
 
 
-void aubio_ooura_ddct(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
-{
+void aubio_ooura_ddct(int n, int isgn, smpl_t *a, int *ip, smpl_t *w) {
     void makewt(int nw, int *ip, smpl_t *w);
     void makect(int nc, int *ip, smpl_t *c);
     void bitrv2(int n, int *ip, smpl_t *a);
@@ -389,7 +403,7 @@ void aubio_ooura_ddct(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
     void dctsub(int n, smpl_t *a, int nc, smpl_t *c);
     int j, nw, nc;
     smpl_t xr;
-    
+
     nw = ip[0];
     if (n > (nw << 2)) {
         nw = n >> 2;
@@ -436,8 +450,7 @@ void aubio_ooura_ddct(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
 }
 
 
-void aubio_ooura_ddst(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
-{
+void aubio_ooura_ddst(int n, int isgn, smpl_t *a, int *ip, smpl_t *w) {
     void makewt(int nw, int *ip, smpl_t *w);
     void makect(int nc, int *ip, smpl_t *c);
     void bitrv2(int n, int *ip, smpl_t *a);
@@ -448,7 +461,7 @@ void aubio_ooura_ddst(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
     void dstsub(int n, smpl_t *a, int nc, smpl_t *c);
     int j, nw, nc;
     smpl_t xr;
-    
+
     nw = ip[0];
     if (n > (nw << 2)) {
         nw = n >> 2;
@@ -495,8 +508,7 @@ void aubio_ooura_ddst(int n, int isgn, smpl_t *a, int *ip, smpl_t *w)
 }
 
 
-void aubio_ooura_dfct(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w)
-{
+void aubio_ooura_dfct(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w) {
     void makewt(int nw, int *ip, smpl_t *w);
     void makect(int nc, int *ip, smpl_t *c);
     void bitrv2(int n, int *ip, smpl_t *a);
@@ -505,7 +517,7 @@ void aubio_ooura_dfct(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w)
     void dctsub(int n, smpl_t *a, int nc, smpl_t *c);
     int j, k, l, m, mh, nw, nc;
     smpl_t xr, xi, yr, yi;
-    
+
     nw = ip[0];
     if (n > (nw << 3)) {
         nw = n >> 3;
@@ -591,8 +603,7 @@ void aubio_ooura_dfct(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w)
 }
 
 
-void aubio_ooura_dfst(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w)
-{
+void aubio_ooura_dfst(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w) {
     void makewt(int nw, int *ip, smpl_t *w);
     void makect(int nc, int *ip, smpl_t *c);
     void bitrv2(int n, int *ip, smpl_t *a);
@@ -601,7 +612,7 @@ void aubio_ooura_dfst(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w)
     void dstsub(int n, smpl_t *a, int nc, smpl_t *c);
     int j, k, l, m, mh, nw, nc;
     smpl_t xr, xi, yr, yi;
-    
+
     nw = ip[0];
     if (n > (nw << 3)) {
         nw = n >> 3;
@@ -683,12 +694,11 @@ void aubio_ooura_dfst(int n, smpl_t *a, smpl_t *t, int *ip, smpl_t *w)
 
 #include <math.h>
 
-void makewt(int nw, int *ip, smpl_t *w)
-{
+void makewt(int nw, int *ip, smpl_t *w) {
     void bitrv2(int n, int *ip, smpl_t *a);
     int j, nwh;
     smpl_t delta, x, y;
-    
+
     ip[0] = nw;
     ip[1] = 1;
     if (nw > 2) {
@@ -719,20 +729,19 @@ void makewt(int nw, int *ip, smpl_t *w)
 }
 
 
-void makect(int nc, int *ip, smpl_t *c)
-{
+void makect(int nc, int *ip, smpl_t *c) {
     int j, nch;
     smpl_t delta;
-    
+
     ip[1] = nc;
     if (nc > 1) {
         nch = nc >> 1;
         delta = ATAN(1.0) / nch;
         c[0] = COS(delta * nch);
-        c[nch] = (smpl_t)0.5 * c[0];
+        c[nch] = (smpl_t) 0.5 * c[0];
         for (j = 1; j < nch; j++) {
-            c[j] = (smpl_t)0.5 * COS(delta * j);
-            c[nc - j] = (smpl_t)0.5 * SIN(delta * j);
+            c[j] = (smpl_t) 0.5 * COS(delta * j);
+            c[nc - j] = (smpl_t) 0.5 * SIN(delta * j);
         }
     }
 }
@@ -741,11 +750,10 @@ void makect(int nc, int *ip, smpl_t *c)
 /* -------- child routines -------- */
 
 
-void bitrv2(int n, int *ip, smpl_t *a)
-{
+void bitrv2(int n, int *ip, smpl_t *a) {
     int j, j1, k, k1, l, m, m2;
     smpl_t xr, xi, yr, yi;
-    
+
     ip[0] = 0;
     l = n;
     m = 1;
@@ -841,11 +849,10 @@ void bitrv2(int n, int *ip, smpl_t *a)
 }
 
 
-void bitrv2conj(int n, int *ip, smpl_t *a)
-{
+void bitrv2conj(int n, int *ip, smpl_t *a) {
     int j, j1, k, k1, l, m, m2;
     smpl_t xr, xi, yr, yi;
-    
+
     ip[0] = 0;
     l = n;
     m = 1;
@@ -950,13 +957,12 @@ void bitrv2conj(int n, int *ip, smpl_t *a)
 }
 
 
-void cftfsub(int n, smpl_t *a, smpl_t *w)
-{
+void cftfsub(int n, smpl_t *a, smpl_t *w) {
     void cft1st(int n, smpl_t *a, smpl_t *w);
     void cftmdl(int n, int l, smpl_t *a, smpl_t *w);
     int j, j1, j2, j3, l;
     smpl_t x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i;
-    
+
     l = 2;
     if (n >= 16) {
         cft1st(n, a, w);
@@ -1002,15 +1008,14 @@ void cftfsub(int n, smpl_t *a, smpl_t *w)
 }
 
 
-void cftbsub(int n, smpl_t *a, smpl_t *w)
-{
+void cftbsub(int n, smpl_t *a, smpl_t *w) {
     void cft1st(int n, smpl_t *a, smpl_t *w);
     void cftmdl(int n, int l, smpl_t *a, smpl_t *w);
     int j, j1, j2, j3, j4, j5, j6, j7, l;
-    smpl_t wn4r, x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i, 
-        y0r, y0i, y1r, y1i, y2r, y2i, y3r, y3i, 
-        y4r, y4i, y5r, y5i, y6r, y6i, y7r, y7i;
-    
+    smpl_t wn4r, x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i,
+            y0r, y0i, y1r, y1i, y2r, y2i, y3r, y3i,
+            y4r, y4i, y5r, y5i, y6r, y6i, y7r, y7i;
+
     l = 2;
     if (n > 16) {
         cft1st(n, a, w);
@@ -1119,15 +1124,14 @@ void cftbsub(int n, smpl_t *a, smpl_t *w)
 }
 
 
-void cft1st(int n, smpl_t *a, smpl_t *w)
-{
+void cft1st(int n, smpl_t *a, smpl_t *w) {
     int j, k1;
-    smpl_t wn4r, wtmp, wk1r, wk1i, wk2r, wk2i, wk3r, wk3i, 
-        wk4r, wk4i, wk5r, wk5i, wk6r, wk6i, wk7r, wk7i;
-    smpl_t x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i, 
-        y0r, y0i, y1r, y1i, y2r, y2i, y3r, y3i, 
-        y4r, y4i, y5r, y5i, y6r, y6i, y7r, y7i;
-    
+    smpl_t wn4r, wtmp, wk1r, wk1i, wk2r, wk2i, wk3r, wk3i,
+            wk4r, wk4i, wk5r, wk5i, wk6r, wk6i, wk7r, wk7i;
+    smpl_t x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i,
+            y0r, y0i, y1r, y1i, y2r, y2i, y3r, y3i,
+            y4r, y4i, y5r, y5i, y6r, y6i, y7r, y7i;
+
     wn4r = w[2];
     x0r = a[0] + a[2];
     x0i = a[1] + a[3];
@@ -1334,15 +1338,14 @@ void cft1st(int n, smpl_t *a, smpl_t *w)
 }
 
 
-void cftmdl(int n, int l, smpl_t *a, smpl_t *w)
-{
+void cftmdl(int n, int l, smpl_t *a, smpl_t *w) {
     int j, j1, j2, j3, j4, j5, j6, j7, k, k1, m;
-    smpl_t wn4r, wtmp, wk1r, wk1i, wk2r, wk2i, wk3r, wk3i, 
-        wk4r, wk4i, wk5r, wk5i, wk6r, wk6i, wk7r, wk7i;
-    smpl_t x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i, 
-        y0r, y0i, y1r, y1i, y2r, y2i, y3r, y3i, 
-        y4r, y4i, y5r, y5i, y6r, y6i, y7r, y7i;
-    
+    smpl_t wn4r, wtmp, wk1r, wk1i, wk2r, wk2i, wk3r, wk3i,
+            wk4r, wk4i, wk5r, wk5i, wk6r, wk6i, wk7r, wk7i;
+    smpl_t x0r, x0i, x1r, x1i, x2r, x2i, x3r, x3i,
+            y0r, y0i, y1r, y1i, y2r, y2i, y3r, y3i,
+            y4r, y4i, y5r, y5i, y6r, y6i, y7r, y7i;
+
     m = l << 3;
     wn4r = w[2];
     for (j = 0; j < l; j += 2) {
@@ -1577,18 +1580,17 @@ void cftmdl(int n, int l, smpl_t *a, smpl_t *w)
 }
 
 
-void rftfsub(int n, smpl_t *a, int nc, smpl_t *c)
-{
+void rftfsub(int n, smpl_t *a, int nc, smpl_t *c) {
     int j, k, kk, ks, m;
     smpl_t wkr, wki, xr, xi, yr, yi;
-    
+
     m = n >> 1;
     ks = 2 * nc / m;
     kk = 0;
     for (j = 2; j < m; j += 2) {
         k = n - j;
         kk += ks;
-        wkr = (smpl_t)0.5 - c[nc - kk];
+        wkr = (smpl_t) 0.5 - c[nc - kk];
         wki = c[kk];
         xr = a[j] - a[k];
         xi = a[j + 1] + a[k + 1];
@@ -1602,11 +1604,10 @@ void rftfsub(int n, smpl_t *a, int nc, smpl_t *c)
 }
 
 
-void rftbsub(int n, smpl_t *a, int nc, smpl_t *c)
-{
+void rftbsub(int n, smpl_t *a, int nc, smpl_t *c) {
     int j, k, kk, ks, m;
     smpl_t wkr, wki, xr, xi, yr, yi;
-    
+
     a[1] = -a[1];
     m = n >> 1;
     ks = 2 * nc / m;
@@ -1614,7 +1615,7 @@ void rftbsub(int n, smpl_t *a, int nc, smpl_t *c)
     for (j = 2; j < m; j += 2) {
         k = n - j;
         kk += ks;
-        wkr = (smpl_t)0.5 - c[nc - kk];
+        wkr = (smpl_t) 0.5 - c[nc - kk];
         wki = c[kk];
         xr = a[j] - a[k];
         xi = a[j + 1] + a[k + 1];
@@ -1629,11 +1630,10 @@ void rftbsub(int n, smpl_t *a, int nc, smpl_t *c)
 }
 
 
-void dctsub(int n, smpl_t *a, int nc, smpl_t *c)
-{
+void dctsub(int n, smpl_t *a, int nc, smpl_t *c) {
     int j, k, kk, ks, m;
     smpl_t wkr, wki, xr;
-    
+
     m = n >> 1;
     ks = nc / n;
     kk = 0;
@@ -1650,11 +1650,10 @@ void dctsub(int n, smpl_t *a, int nc, smpl_t *c)
 }
 
 
-void dstsub(int n, smpl_t *a, int nc, smpl_t *c)
-{
+void dstsub(int n, smpl_t *a, int nc, smpl_t *c) {
     int j, k, kk, ks, m;
     smpl_t wkr, wki, xr;
-    
+
     m = n >> 1;
     ks = nc / n;
     kk = 0;

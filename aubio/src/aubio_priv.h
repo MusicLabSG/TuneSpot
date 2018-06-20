@@ -141,26 +141,26 @@
 
 /* Memory management */
 #define AUBIO_MALLOC(_n)             malloc(_n)
-#define AUBIO_REALLOC(_p,_n)         realloc(_p,_n)
+#define AUBIO_REALLOC(_p, _n)         realloc(_p,_n)
 #define AUBIO_NEW(_t)                (_t*)calloc(sizeof(_t), 1)
-#define AUBIO_ARRAY(_t,_n)           (_t*)calloc((_n)*sizeof(_t), 1)
-#define AUBIO_MEMCPY(_dst,_src,_n)   memcpy(_dst,_src,_n)
-#define AUBIO_MEMSET(_dst,_src,_t)   memset(_dst,_src,_t)
+#define AUBIO_ARRAY(_t, _n)           (_t*)calloc((_n)*sizeof(_t), 1)
+#define AUBIO_MEMCPY(_dst, _src, _n)   memcpy(_dst,_src,_n)
+#define AUBIO_MEMSET(_dst, _src, _t)   memset(_dst,_src,_t)
 #define AUBIO_FREE(_p)               free(_p)
 
 
 /* file interface */
-#define AUBIO_FOPEN(_f,_m)           fopen(_f,_m)
+#define AUBIO_FOPEN(_f, _m)           fopen(_f,_m)
 #define AUBIO_FCLOSE(_f)             fclose(_f)
-#define AUBIO_FREAD(_p,_s,_n,_f)     fread(_p,_s,_n,_f)
-#define AUBIO_FSEEK(_f,_n,_set)      fseek(_f,_n,_set)
+#define AUBIO_FREAD(_p, _s, _n, _f)     fread(_p,_s,_n,_f)
+#define AUBIO_FSEEK(_f, _n, _set)      fseek(_f,_n,_set)
 
 /* strings */
 #define AUBIO_STRLEN(_s)             strlen(_s)
-#define AUBIO_STRCMP(_s,_t)          strcmp(_s,_t)
-#define AUBIO_STRNCMP(_s,_t,_n)      strncmp(_s,_t,_n)
-#define AUBIO_STRCPY(_dst,_src)      strcpy(_dst,_src)
-#define AUBIO_STRCHR(_s,_c)          strchr(_s,_c)
+#define AUBIO_STRCMP(_s, _t)          strcmp(_s,_t)
+#define AUBIO_STRNCMP(_s, _t, _n)      strncmp(_s,_t,_n)
+#define AUBIO_STRCPY(_dst, _src)      strcpy(_dst,_src)
+#define AUBIO_STRCHR(_s, _c)          strchr(_s,_c)
 #ifdef strdup
 #define AUBIO_STRDUP(s)              strdup(s)
 #else
@@ -170,8 +170,8 @@
 
 /* Error reporting */
 typedef enum {
-  AUBIO_OK = 0,
-  AUBIO_FAIL = 1
+    AUBIO_OK = 0,
+    AUBIO_FAIL = 1
 } aubio_status;
 
 /* Logging */
@@ -285,13 +285,13 @@ uint_t aubio_log(sint_t level, const char_t *fmt, ...);
 #define SQR(_a)   ((_a)*(_a))
 
 #ifndef MAX
-#define MAX(a,b)  (((a)>(b))?(a):(b))
+#define MAX(a, b)  (((a)>(b))?(a):(b))
 #endif /* MAX */
 #ifndef MIN
-#define MIN(a,b)  (((a)<(b))?(a):(b))
+#define MIN(a, b)  (((a)<(b))?(a):(b))
 #endif /* MIN */
 
-#define ELEM_SWAP(a,b) { register smpl_t t=(a);(a)=(b);(b)=t; }
+#define ELEM_SWAP(a, b) { register smpl_t t=(a);(a)=(b);(b)=t; }
 
 #define VERY_SMALL_NUMBER 2.e-42 //1.e-37
 

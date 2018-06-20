@@ -23,57 +23,56 @@
 #include "utils/scale.h"
 
 struct _aubio_scale_t {
-  smpl_t ilow;
-  smpl_t ihig;
-  smpl_t olow;
-  smpl_t ohig;
+    smpl_t ilow;
+    smpl_t ihig;
+    smpl_t olow;
+    smpl_t ohig;
 
-  smpl_t scaler;
-  smpl_t irange;
+    smpl_t scaler;
+    smpl_t irange;
 
-  /* not implemented yet : type in/out data
-     bool inint;
-     bool outint;
-     */
+    /* not implemented yet : type in/out data
+       bool inint;
+       bool outint;
+       */
 };
 
-aubio_scale_t * new_aubio_scale (smpl_t ilow, smpl_t ihig,
-    smpl_t olow, smpl_t ohig) {
-  aubio_scale_t * s = AUBIO_NEW(aubio_scale_t);
-  aubio_scale_set_limits (s, ilow, ihig, olow, ohig);
-  return s;
+aubio_scale_t *new_aubio_scale(smpl_t ilow, smpl_t ihig,
+                               smpl_t olow, smpl_t ohig) {
+    aubio_scale_t *s = AUBIO_NEW(aubio_scale_t);
+    aubio_scale_set_limits(s, ilow, ihig, olow, ohig);
+    return s;
 }
 
 void del_aubio_scale(aubio_scale_t *s) {
-  AUBIO_FREE(s);
+    AUBIO_FREE(s);
 }
 
-uint_t aubio_scale_set_limits (aubio_scale_t *s, smpl_t ilow, smpl_t ihig,
-    smpl_t olow, smpl_t ohig) {
-  smpl_t inputrange = ihig - ilow;
-  smpl_t outputrange= ohig - olow;
-  s->ilow = ilow;
-  s->ihig = ihig;
-  s->olow = olow;
-  s->ohig = ohig;
-  if (inputrange == 0) {
-    s->scaler = 0.0;
-  } else {
-    s->scaler = outputrange/inputrange;
-    if (inputrange < 0) {
-      inputrange = inputrange * -1.0f;
+uint_t aubio_scale_set_limits(aubio_scale_t *s, smpl_t ilow, smpl_t ihig,
+                              smpl_t olow, smpl_t ohig) {
+    smpl_t inputrange = ihig - ilow;
+    smpl_t outputrange = ohig - olow;
+    s->ilow = ilow;
+    s->ihig = ihig;
+    s->olow = olow;
+    s->ohig = ohig;
+    if (inputrange == 0) {
+        s->scaler = 0.0;
+    } else {
+        s->scaler = outputrange / inputrange;
+        if (inputrange < 0) {
+            inputrange = inputrange * -1.0f;
+        }
     }
-  }
-  return AUBIO_OK;
+    return AUBIO_OK;
 }
 
-void aubio_scale_do (aubio_scale_t *s, fvec_t *input) 
-{
-  uint_t j;
-  for (j=0;  j < input->length; j++){
-    input->data[j] -= s->ilow;
-    input->data[j] *= s->scaler;
-    input->data[j] += s->olow;
-  }
+void aubio_scale_do(aubio_scale_t *s, fvec_t *input) {
+    uint_t j;
+    for (j = 0; j < input->length; j++) {
+        input->data[j] -= s->ilow;
+        input->data[j] *= s->scaler;
+        input->data[j] += s->olow;
+    }
 }
 

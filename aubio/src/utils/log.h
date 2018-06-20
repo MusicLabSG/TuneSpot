@@ -44,12 +44,12 @@ extern "C" {
 
 /** list of logging levels */
 enum aubio_log_level {
-  AUBIO_LOG_ERR, /**< critical errors */
-  AUBIO_LOG_INF, /**< infos */
-  AUBIO_LOG_MSG, /**< general messages */
-  AUBIO_LOG_DBG, /**< debug messages */
-  AUBIO_LOG_WRN, /**< warnings */
-  AUBIO_LOG_LAST_LEVEL, /**< number of valid levels */
+    AUBIO_LOG_ERR, /**< critical errors */
+    AUBIO_LOG_INF, /**< infos */
+    AUBIO_LOG_MSG, /**< general messages */
+    AUBIO_LOG_DBG, /**< debug messages */
+    AUBIO_LOG_WRN, /**< warnings */
+    AUBIO_LOG_LAST_LEVEL, /**< number of valid levels */
 };
 
 /** Logging function prototype, to be passed to ::aubio_log_set_function
@@ -62,7 +62,7 @@ enum aubio_log_level {
 
  */
 typedef void (*aubio_log_function_t)(sint_t level, const char_t *message, void
-    *data);
+*data);
 
 /** Set logging function for all levels
 
@@ -71,7 +71,7 @@ typedef void (*aubio_log_function_t)(sint_t level, const char_t *message, void
   nothing to pass)
 
  */
-void aubio_log_set_function(aubio_log_function_t fun, void* data);
+void aubio_log_set_function(aubio_log_function_t fun, void *data);
 
 /** Set logging function for a given level
 
@@ -82,7 +82,7 @@ void aubio_log_set_function(aubio_log_function_t fun, void* data);
 
 */
 aubio_log_function_t aubio_log_set_level_function(sint_t level,
-    aubio_log_function_t fun, void* data);
+                                                  aubio_log_function_t fun, void *data);
 
 /** Reset all logging functions to the default one
 

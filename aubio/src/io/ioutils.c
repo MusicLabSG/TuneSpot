@@ -21,33 +21,31 @@
 #include "aubio_priv.h"
 
 uint_t
-aubio_io_validate_samplerate(const char_t *kind, const char_t *path, uint_t samplerate)
-{
-  if ((sint_t)(samplerate) <= 0) {
-    AUBIO_ERR("%s: failed creating %s, samplerate should be positive, not %d\n",
-        kind, path, samplerate);
-    return AUBIO_FAIL;
-  }
-  if ((sint_t)samplerate > AUBIO_MAX_SAMPLERATE) {
-    AUBIO_ERR("%s: failed creating %s, samplerate %dHz is too large\n",
-        kind, path, samplerate);
-    return AUBIO_FAIL;
-  }
-  return AUBIO_OK;
+aubio_io_validate_samplerate(const char_t *kind, const char_t *path, uint_t samplerate) {
+    if ((sint_t)(samplerate) <= 0) {
+        AUBIO_ERR("%s: failed creating %s, samplerate should be positive, not %d\n",
+                  kind, path, samplerate);
+        return AUBIO_FAIL;
+    }
+    if ((sint_t) samplerate > AUBIO_MAX_SAMPLERATE) {
+        AUBIO_ERR("%s: failed creating %s, samplerate %dHz is too large\n",
+                  kind, path, samplerate);
+        return AUBIO_FAIL;
+    }
+    return AUBIO_OK;
 }
 
 uint_t
-aubio_io_validate_channels(const char_t *kind, const char_t *path, uint_t channels)
-{
-  if ((sint_t)(channels) <= 0) {
-    AUBIO_ERR("sink_%s: failed creating %s, channels should be positive, not %d\n",
-        kind, path, channels);
-    return AUBIO_FAIL;
-  }
-  if (channels > AUBIO_MAX_CHANNELS) {
-    AUBIO_ERR("sink_%s: failed creating %s, too many channels (%d but %d available)\n",
-        kind, path, channels, AUBIO_MAX_CHANNELS);
-    return AUBIO_FAIL;
-  }
-  return AUBIO_OK;
+aubio_io_validate_channels(const char_t *kind, const char_t *path, uint_t channels) {
+    if ((sint_t)(channels) <= 0) {
+        AUBIO_ERR("sink_%s: failed creating %s, channels should be positive, not %d\n",
+                  kind, path, channels);
+        return AUBIO_FAIL;
+    }
+    if (channels > AUBIO_MAX_CHANNELS) {
+        AUBIO_ERR("sink_%s: failed creating %s, too many channels (%d but %d available)\n",
+                  kind, path, channels, AUBIO_MAX_CHANNELS);
+        return AUBIO_FAIL;
+    }
+    return AUBIO_OK;
 }

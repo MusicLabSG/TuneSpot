@@ -70,7 +70,7 @@ aubio_sink_sndfile_t * new_aubio_sink_sndfile(const char_t * path, uint_t sample
 
   // zero samplerate given. do not open yet
   if ((sint_t)samplerate == 0) {
-    return s;
+      return s;
   }
   // invalid samplerate given, abort
   if (aubio_io_validate_samplerate("sink_sndfile", s->path, samplerate)) {
