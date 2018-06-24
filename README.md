@@ -1,5 +1,5 @@
-![alt tag](https://i.imgur.com/M9HlvZR.png)
-
+# Tune Spot
+Hi! Tune spot is an open source chromatic tuner for all instruments, written in [QT Quick](https://www.qt.io/) :heart_eyes: 
 
 # Build Requirements
 
@@ -17,11 +17,8 @@
 
 # Platforms supported
 
-* Windows
-* Linux
-* Mac
-* Android 
+Basically anything that runs QT can execute this project.
 
 # Acknowledgements & Credits
 - [aubio](https://github.com/aubio/aubio) for audio processing
-- [Icon suite](https://www.flaticon.com/packs/music-festival) some icons are take from here, thanks!
+- [Icon suite](https://www.flaticon.com/packs/music-festival) some icons are taken from here, thanks!
