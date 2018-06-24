@@ -1,6 +1,8 @@
 # Tune Spot
 Hi! Tune spot is an open source chromatic tuner for all instruments, written in [QT Quick](https://www.qt.io/) :heart_eyes: 
 
+### We accept contributions! But fork this repository first :sweat_smile: and take a look on the [PR Template](./PULL_REQUEST_TEMPLATE.md) :kissing_closed_eyes:
+
 # Build Requirements
 
 * A C++ compiler with C++14 support
