@@ -1,6 +1,8 @@
 .pragma library
 .import "../resources/shared.js" as Shared
+.import "../resources/colors.js" as Color
 .import "./Observable.js" as Observable
+.import "./TuningCircleContext.js" as TuningCircle
 
 // Implements observer
 
@@ -12,14 +14,16 @@ var numberOfLines = 19;
 var note_holder_obj
 var string_holder_obj;
 var lines_container_obj;
+var tuning_circle_holder_obj;
 var configurator_obj;
 
-function onCreate(note_holder, string_holder, lines_container, configurator) {
+function onCreate(note_holder, string_holder, lines_container, tuning_circle_holder, configurator) {
     Observable.addObserver(this)
     note_holder_obj = note_holder;
     string_holder_obj = string_holder;
     lines_container_obj = lines_container;
     configurator_obj = configurator;
+    tuning_circle_holder_obj = tuning_circle_holder;
     createLines(lines_container);
     createCircles();
 }
@@ -36,35 +40,29 @@ function createLines(id) {
         height = (i % 2 == 0)? 270 : 220;
 
         var object = Qt.createQmlObject("import QtQuick 2.2; Rectangle{width:2; height:"+
-                                        height+"; opacity: 0.9}", id);
+                                        height+"; opacity: 0.4}", id);
         lines[counter] = object;
         counter++;
     }
+
+    TuningCircle.create(tuning_circle_holder_obj);
 }
 
 
 // Colors the specified line.
-// position -> Left || Right || Center: perfect tune
 // value -> 100: no tune, 0:almost good tune
-function showTuningAccuracy(position, value) {
+function showTuningAccuracy(value) {
 
-    // Make all lines default color
-    for (var i = 0; i < numberOfLines; i++){
-        lines[i].color = "white"
-    }
-
-    value = Math.ceil((value / 100) * 9);
-
-    if(position === "Right")
-        value = Math.floor(numberOfLines/2) + value;
-    if(position === "Left")
-        value = Math.floor(numberOfLines/2) - value
-
-    if(position === "Center" || value < 2){
-        lines[9].color = "green";
-    }
+    if ((value >= 0 && value < 7) || (value < 0 && value > -7))
+        TuningCircle.setColor(Color.green);
     else
-        lines[value].color = "red";
+        TuningCircle.setColor(Color.red);
+
+    // Make sure the circle stays inside the visible workspace
+    value = (value/100) * (string_holder_obj.width/2) - TuningCircle.getSize()/2
+
+    TuningCircle.setPosition(value, 0);
+
 }
 
 // Creates the circles, acting as the selected string
@@ -123,13 +121,7 @@ function tune(note, tunePercentage) {
 
     tunePercentage = Math.floor(tunePercentage);
 
-    if (tunePercentage > 0) {
-        showTuningAccuracy("Right", tunePercentage);
-    } else if(tunePercentage === 0 ) {
-        showTuningAccuracy("Center", 0);
-    } else {
-        showTuningAccuracy("Left", Math.abs(tunePercentage));
-    }
+    showTuningAccuracy(tunePercentage);
 
     // Change the displayed note
     if (note.charAt(1) === "#")

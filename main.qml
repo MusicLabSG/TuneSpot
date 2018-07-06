@@ -50,21 +50,4 @@ Window {
 
     }
 
-    MouseArea {
-        anchors.bottom: parent.bottom
-        height: parent.height * 0.6; width: parent.width;
-
-        propagateComposedEvents: true
-
-        // Detect swipe up
-        //onClicked: Context.onClick(mouseY);
-
-        //onReleased: {
-
-            //if (Context.isSwipe(mouseY)) {
-                //list.drawerVisible = true
-            //}
-        //}
-    }
-
 }
