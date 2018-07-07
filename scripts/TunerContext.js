@@ -59,7 +59,7 @@ function showTuningAccuracy(value) {
         TuningCircle.setColor(Color.red);
 
     // Make sure the circle stays inside the visible workspace
-    value = (value/100) * (string_holder_obj.width/2) - TuningCircle.getSize()/2
+    value = (value/100) * (tuning_circle_holder_obj.width/2) - TuningCircle.getSize()/2
 
     TuningCircle.setPosition(value, 0);
 

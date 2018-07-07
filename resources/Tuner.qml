@@ -30,14 +30,14 @@ Item {
     Item {
         //anchors.horizontalCenter: parent.horizontalCenter
         anchors.centerIn: parent
-        width: parent.width
+        //width: parent.width
         id: tuner_holder
 
         Item {
             //anchors.horizontalCenter: string_holder.horizontalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
+            //anchors.horizontalCenter: parent.horizontalCenter
             //anchors.centerIn: parent
-            width: parent.width
+            width: lines_container.width
             id: tuning_circle_holder
         }
 
@@ -45,7 +45,6 @@ Item {
             id: lines_container
             anchors.centerIn: parent
             spacing: 15.5
-
         }
     }
 
