@@ -18,7 +18,7 @@ Item {
     Text {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.top: tuner_holder.bottom
-        //anchors.bottomMargin: -40
+        anchors.topMargin: -40
         color: "#FFFFFF"
         font.family: localFont.name
         font.weight: Font.Light
@@ -30,27 +30,25 @@ Item {
     Item {
         //anchors.horizontalCenter: parent.horizontalCenter
         anchors.centerIn: parent
-        //width: parent.width
+        height: lines_container.height; width: lines_container.width
         id: tuner_holder
 
-        Item {
-            //anchors.horizontalCenter: string_holder.horizontalCenter
-            //anchors.horizontalCenter: parent.horizontalCenter
-            //anchors.centerIn: parent
-            width: lines_container.width
-            id: tuning_circle_holder
+        RowLayout {
+            anchors.centerIn: parent
+            id: lines_container
+            spacing: 15.5
         }
 
-        RowLayout {
-            id: lines_container
+        Item {
             anchors.centerIn: parent
-            spacing: 15.5
+            width: lines_container.width
+            id: tuning_circle_holder
         }
     }
 
     RowLayout {
-            anchors.horizontalCenter: parent.horizontalCenter;
-            anchors.top: notes_holder.bottom;
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.top: notes_holder.bottom
             id: string_holder
             spacing: 12
     }

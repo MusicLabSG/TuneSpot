@@ -10,6 +10,8 @@ var lines = [];
 var circles = [];
 var current_string = -1;
 var numberOfLines = 19;
+var timesCorrect = 0;
+var previousValue = 0;
 
 var note_holder_obj
 var string_holder_obj;
@@ -50,19 +52,27 @@ function createLines(id) {
 
 
 // Colors the specified line.
-// value -> 100: no tune, 0:almost good tune
+// value -> 100: no tune, 0: good tune
 function showTuningAccuracy(value) {
+    //Center the circle
+    var center =  tuning_circle_holder_obj.width/2 - TuningCircle.getWidth()/2;
+    value = (value/100) * (tuning_circle_holder_obj.width/2) + center;
 
-    if ((value >= 0 && value < 7) || (value < 0 && value > -7))
+    if ((value >= center && value < center + 7) || (value < center && value > center - 7)) {
+        timesCorrect++;
         TuningCircle.setColor(Color.green);
-    else
+        if (timesCorrect > 20)
+            TuningCircle.beginAnimation();
+    }
+    else {
         TuningCircle.setColor(Color.red);
+        timesCorrect = 0;
+        TuningCircle.revertAnimation();
+    }
 
-    // Make sure the circle stays inside the visible workspace
-    value = (value/100) * (tuning_circle_holder_obj.width/2) - TuningCircle.getSize()/2
 
-    TuningCircle.setPosition(value, 0);
-
+    TuningCircle.setPosition(value);
+    tuning_circle_holder_obj.height = TuningCircle.getHeight();
 }
 
 // Creates the circles, acting as the selected string
