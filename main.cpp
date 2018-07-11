@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlComponent>
 #include <Configurator.hpp>
 #include <NotesController.hpp>
 #include <QAudioDeviceInfo>
@@ -14,6 +15,7 @@ int main(int argc, char *argv[]) {
     qmlRegisterType<Configurator>("Configurator", 1, 0, "Configurator");
 
     QQmlApplicationEngine engine;
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
     if (engine.rootObjects().isEmpty()) {
         return -1;
