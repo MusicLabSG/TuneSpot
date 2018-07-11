@@ -53,16 +53,141 @@ void NotesController::changeBaseFrequency(quint32 newBaseFrequency) {
     }
 }
 
-QVector<QString> NotesController::getNoteNames() {
-    return noteNames;
-}
-
-QVector<qreal> NotesController::getNoteFrequencies() {
-    return noteFrequencies;
-}
-
 quint16 NotesController::getBaseFrequency() {
     return baseFrequency;
+}
+
+void NotesController::setCloseNoteAndPercentageAccordingToSetterID(QString &organSetter, qreal &confidentFrequency, QString &closestNote, qreal &percentageOfDistanceFromTheClosestNote) {
+    if(organSetter == "freeMode") {
+        setFreeMode(confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "cello1") {
+        setCelloXString(1, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "cello2") {
+        setCelloXString(2, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "cello3") {
+        setCelloXString(3, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "cello4") {
+        setCelloXString(4, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "guitar1") {
+        setGuitarXString(1, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "guitar2") {
+        setGuitarXString(2, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "guitar3") {
+        setGuitarXString(3, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "guitar4") {
+        setGuitarXString(4, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "guitar5") {
+        setGuitarXString(5, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    } else if (organSetter == "guitar6") {
+        setGuitarXString(6, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
+    }
+}
+
+void NotesController::setCelloXString(quint16 x, qreal &confidentFrequency, QString &closestNote, qreal &percentageOfDistanceFromTheClosestNote) {
+    if (x == 1) {
+        closestNote = "A3";
+    } else if (x == 2) {
+        closestNote = "D3";
+    } else if (x == 3) {
+        closestNote = "G2";
+    } else if (x == 4) {
+        closestNote = "C2";
+    }
+
+    quint16 i;
+    for (i = 0; i < 88; i++) {
+        if (noteNames[i] == closestNote) {
+            break;
+        }
+    }
+
+    setPercentageOfDistanceFromTheClosestNote(i, confidentFrequency, percentageOfDistanceFromTheClosestNote);
+}
+
+void NotesController::setGuitarXString(quint16 x, qreal &confidentFrequency, QString &closestNote, qreal &percentageOfDistanceFromTheClosestNote) {
+    if (x == 1) {
+        closestNote = "E4";
+    } else if (x == 2) {
+        closestNote = "B3";
+    } else if (x == 3) {
+        closestNote = "G3";
+    } else if (x == 4) {
+        closestNote = "D3";
+    } else if (x == 5) {
+        closestNote = "A2";
+    } else if (x == 6) {
+        closestNote = "E2";
+    }
+
+    quint16 i;
+    for (i = 0; i < 88; i++) {
+        if (noteNames[i] == closestNote) {
+            break;
+        }
+    }
+
+    setPercentageOfDistanceFromTheClosestNote(i, confidentFrequency, percentageOfDistanceFromTheClosestNote);
+}
+
+void NotesController::setFreeMode(qreal &confidentFrequency, QString &closestNote, qreal &percentageOfDistanceFromTheClosestNote) {
+    quint16 minI = -1;
+    qreal minDistance = 10000, test;
+    for (quint16 i = 0; i < 88; i++) {
+        test = qFabs(confidentFrequency - noteFrequencies[i]);
+        if (minDistance > test) {
+            minDistance = test;
+            minI = i;
+        }
+    }
+
+    closestNote = noteNames[minI];
+    setPercentageOfDistanceFromTheClosestNote(minI, confidentFrequency, percentageOfDistanceFromTheClosestNote);
+}
+
+void NotesController::setPercentageOfDistanceFromTheClosestNote(quint16 i, qreal &confidentFrequency, qreal &percentageOfDistanceFromTheClosestNote) {
+    if (i == 0) {
+        qreal freq = noteFrequencies[i];
+        qreal freqNext = noteFrequencies[i + 1];
+        if (confidentFrequency >= freqNext) {
+            percentageOfDistanceFromTheClosestNote = 100;
+        } else if (confidentFrequency >= freq) {
+            percentageOfDistanceFromTheClosestNote =
+                    ((confidentFrequency - freq) / (freqNext - freq)) * 100;
+        }
+    } else if (i == 87) {
+        qreal freq = noteFrequencies[i];
+        qreal freqPrevious = noteFrequencies[i - 1];
+        if (confidentFrequency <= freqPrevious) {
+            percentageOfDistanceFromTheClosestNote = -100;
+        } else {
+            percentageOfDistanceFromTheClosestNote =
+                    ((confidentFrequency - freq) / (freq - freqPrevious)) * 100;
+        }
+    } else {
+        qreal freq = noteFrequencies[i];
+        qreal freqPrevious = noteFrequencies[i - 1];
+        qreal freqNext = noteFrequencies[i + 1];
+
+        if (confidentFrequency <= freqPrevious) {
+            percentageOfDistanceFromTheClosestNote = -100;
+        } else if (confidentFrequency >= freqNext) {
+            percentageOfDistanceFromTheClosestNote = 100;
+        } else if (confidentFrequency >= freq) {
+            percentageOfDistanceFromTheClosestNote =
+                    ((confidentFrequency - freq) / (freqNext - freq)) * 100;
+        } else {
+            percentageOfDistanceFromTheClosestNote = ((confidentFrequency - freq) / (freq - freqPrevious)) * 100;
+        }
+    }
+
+
+    if (percentageOfDistanceFromTheClosestNote > 50 ) {
+        percentageOfDistanceFromTheClosestNote = 100;
+    } else if (percentageOfDistanceFromTheClosestNote < -50) {
+        percentageOfDistanceFromTheClosestNote = -100;
+    } else {
+       percentageOfDistanceFromTheClosestNote *= 2;
+    }
 }
 
 void NotesController::readNotes() {

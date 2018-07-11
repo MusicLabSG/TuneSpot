@@ -12,8 +12,7 @@
 #include <bits/unique_ptr.h>
 #include "pitch/pitch.h"
 
-class AubioWrapper
-{
+class AubioWrapper {
 public:
 	AubioWrapper();
 

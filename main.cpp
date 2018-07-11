@@ -2,9 +2,6 @@
 #include <QQmlApplicationEngine>
 #include <QQmlComponent>
 #include <Configurator.hpp>
-#include <NotesController.hpp>
-#include <QAudioDeviceInfo>
-#include <QDebug>
 
 int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);

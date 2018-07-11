@@ -29,8 +29,8 @@ public:
     explicit Configurator(QObject *parent = nullptr);
 
     /**
-     * @brief setActive this function activates and deactivates the tuner
-     * @param active is a variable indicates if the tuner is gonna be active or not
+     * @brief setActive this function activates and deactivates the microphone of the tuner
+     * @param active is a variable which indicates if the tuner is gonna be active or not
      */
     void setActive(bool active);
 
@@ -38,8 +38,8 @@ public:
      * @brief setOrganSetter is a function that sets the organ setter that is gonna be used
      * @param setter is the setter that defines the organSetter
      * freeMode
-     * celloX where x {1-4} check below what every number means e.g. cello1
-     * guitarX where x {1-6] check below what every number means e.g. guitar6
+     * celloX where x {1-4} check Notes Controller what every number means e.g. cello1
+     * guitarX where x {1-6] check Notes Controller what every number means e.g. guitar6
      */
     void setOrganSetter(QString setter);
 
@@ -94,39 +94,6 @@ private:
      */
     void applyFormat();
 
-    /**
-     * @brief setCloseNoteAndPercentageAccordingToSetterID this functions sets variable that the front need according to setted id
-     */
-    void setCloseNoteAndPercentageAccordingToSetterID();
-
-    /**
-     * @brief setCello1String is a function that sets the variables for the x string
-     * 1 is the string with the highest pitch and 4 is the string with the lowest pitch
-     * String: 1 = A3, 2 = D3, 3 = G2, 4 = C2
-     * @param x is the number of the string
-     */
-    void setCelloXString(quint16 x);
-
-    /**
-     * @brief setGuitarXString is a function that sets the variables x string.
-     * 1 is the string with the highest pitch and 6 is the string with the lowest pitch
-     * String: 1 = E4, 2 = B3, 3 = G3, 4 = D3, 5 = A, 6 = E2
-     * @param x is the number of the string
-     */
-    void setGuitarXString(quint16 x);
-
-    /**
-     * @brief setFreeMode is a function that sets the variables for the input note
-     */
-    void setFreeMode();
-
-
-    /**
-     * @brief setTheVariables is a function that sets percentageOfDistanceFromTheClosestNote
-     * @param i is the pointer of the closest note
-     */
-    void setPercentageOfDistanceFromTheClosestNote(quint16 i);
-
     //  the audioinput device
     std::unique_ptr<QAudioInput> recorder;
 
@@ -142,7 +109,7 @@ private:
     //  the aubio object
     AubioWrapper aubio;
 
-    //  this variable indicates if the tuner is active or not
+    //  this variable indicates if the tuner's microphone is active or not
     bool activeTuner;
 
     //  this varibles is the setter id

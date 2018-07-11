@@ -96,140 +96,6 @@ void Configurator::applyFormat() {
     pitchBuffer.setSampleType(formatSettings.sampleType(), formatSettings.sampleSize() / 8);
 }
 
-
-void Configurator::setCloseNoteAndPercentageAccordingToSetterID() {
-    if(organSetter == "freeMode") {
-        setFreeMode();
-    } else if (organSetter == "cello1") {
-        setCelloXString(1);
-    } else if (organSetter == "cello2") {
-        setCelloXString(2);
-    } else if (organSetter == "cello3") {
-        setCelloXString(3);
-    } else if (organSetter == "cello4") {
-        setCelloXString(4);
-    } else if (organSetter == "guitar1") {
-        setGuitarXString(1);
-    } else if (organSetter == "guitar2") {
-        setGuitarXString(2);
-    } else if (organSetter == "guitar3") {
-        setGuitarXString(3);
-    } else if (organSetter == "guitar4") {
-        setGuitarXString(4);
-    } else if (organSetter == "guitar5") {
-        setGuitarXString(5);
-    } else if (organSetter == "guitar6") {
-        setGuitarXString(6);
-    }
-}
-
-void Configurator::setCelloXString(quint16 x) {
-    if (x == 1) {
-        closestNote = "A3";
-    } else if (x == 2) {
-        closestNote = "D3";
-    } else if (x == 3) {
-        closestNote = "G2";
-    } else if (x == 4) {
-        closestNote = "C2";
-    }
-
-    quint16 i;
-    for (i = 0; i < 88; i++) {
-        if (notesController.getNoteNames()[i] == closestNote) {
-            break;
-        }
-    }
-
-    setPercentageOfDistanceFromTheClosestNote(i);
-}
-
-void Configurator::setGuitarXString(quint16 x) {
-    if (x == 1) {
-        closestNote = "E4";
-    } else if (x == 2) {
-        closestNote = "B3";
-    } else if (x == 3) {
-        closestNote = "G3";
-    } else if (x == 4) {
-        closestNote = "D3";
-    } else if (x == 5) {
-        closestNote = "A2";
-    } else if (x == 6) {
-        closestNote = "E2";
-    }
-
-    quint16 i;
-    for (i = 0; i < 88; i++) {
-        if (notesController.getNoteNames()[i] == closestNote) {
-            break;
-        }
-    }
-
-    setPercentageOfDistanceFromTheClosestNote(i);
-}
-
-void Configurator::setFreeMode() {
-    quint16 minI = -1;
-    qreal minDistance = 10000, test;
-    for (quint16 i = 0; i < 88; i++) {
-        test = qFabs(confidentFrequency - notesController.getNoteFrequencies()[i]);
-        if (minDistance > test) {
-            minDistance = test;
-            minI = i;
-        }
-    }
-
-    closestNote = notesController.getNoteNames()[minI];
-    setPercentageOfDistanceFromTheClosestNote(minI);
-}
-
-void Configurator::setPercentageOfDistanceFromTheClosestNote(quint16 i) {
-    if (i == 0) {
-        qreal freq = notesController.getNoteFrequencies()[i];
-        qreal freqNext = notesController.getNoteFrequencies()[i + 1];
-        if (confidentFrequency >= freqNext) {
-            percentageOfDistanceFromTheClosestNote = 100;
-        } else if (confidentFrequency >= freq) {
-            percentageOfDistanceFromTheClosestNote =
-                    ((confidentFrequency - freq) / (freqNext - freq)) * 100;
-        }
-    } else if (i == 87) {
-        qreal freq = notesController.getNoteFrequencies()[i];
-        qreal freqPrevious = notesController.getNoteFrequencies()[i - 1];
-        if (confidentFrequency <= freqPrevious) {
-            percentageOfDistanceFromTheClosestNote = -100;
-        } else {
-            percentageOfDistanceFromTheClosestNote =
-                    ((confidentFrequency - freq) / (freq - freqPrevious)) * 100;
-        }
-    } else {
-        qreal freq = notesController.getNoteFrequencies()[i];
-        qreal freqPrevious = notesController.getNoteFrequencies()[i - 1];
-        qreal freqNext = notesController.getNoteFrequencies()[i + 1];
-
-        if (confidentFrequency <= freqPrevious) {
-            percentageOfDistanceFromTheClosestNote = -100;
-        } else if (confidentFrequency >= freqNext) {
-            percentageOfDistanceFromTheClosestNote = 100;
-        } else if (confidentFrequency >= freq) {
-            percentageOfDistanceFromTheClosestNote =
-                    ((confidentFrequency - freq) / (freqNext - freq)) * 100;
-        } else {
-            percentageOfDistanceFromTheClosestNote = ((confidentFrequency - freq) / (freq - freqPrevious)) * 100;
-        }
-    }
-
-
-    if (percentageOfDistanceFromTheClosestNote > 50 ) {
-        percentageOfDistanceFromTheClosestNote = 100;
-    } else if (percentageOfDistanceFromTheClosestNote < -50) {
-        percentageOfDistanceFromTheClosestNote = -100;
-    } else {
-       percentageOfDistanceFromTheClosestNote *= 2;
-    }
-}
-
 void Configurator::analyzeSamples() {
     // while new samples are available
     while (pitchBuffer.getSamples(aubio.aubioIn)) {
@@ -244,7 +110,7 @@ void Configurator::analyzeSamples() {
             qDebug() << confidentFrequency << "\n";
         }
 
-        setCloseNoteAndPercentageAccordingToSetterID();
+        notesController.setCloseNoteAndPercentageAccordingToSetterID(organSetter, confidentFrequency, closestNote, percentageOfDistanceFromTheClosestNote);
 
         emit samplesAnalyzed();
     }
